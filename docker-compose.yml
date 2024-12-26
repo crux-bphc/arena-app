@@ -1,0 +1,10 @@
+services:
+  db:
+    build:
+      context: ./db
+    env_file: .env
+    ports:
+      - $PB_PORT:$PB_PORT
+    volumes:
+      - ./db/migrations:/pb/pb_migrations
+      - ./db/data:/pb/pb_data
