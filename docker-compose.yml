@@ -1,4 +1,18 @@
 services:
+  app-dev:
+    build:
+      context: ./app
+      dockerfile: dev.Dockerfile
+    env_file: .env
+    ports:
+      - $APP_PORT:$APP_PORT
+    volumes:
+      - ./app:/app
+      - node_modules:/app/node_modules
+    depends_on:
+      - db
+    profiles:
+      - dev
   db:
     build:
       context: ./db
@@ -8,3 +22,8 @@ services:
     volumes:
       - ./db/migrations:/pb/pb_migrations
       - ./db/data:/pb/pb_data
+    profiles:
+      - dev
+
+volumes:
+  node_modules:
