@@ -11,4 +11,4 @@ RUN unzip /tmp/pb.zip -d /pb/
 
 COPY ./migrations /pb/pb_migrations
 
-CMD /pb/pocketbase serve --http=0.0.0.0:$PB_PORT
+CMD /pb/pocketbase serve --http=0.0.0.0:$PB_PORT --automigrate=0
