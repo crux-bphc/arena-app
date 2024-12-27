@@ -1,38 +1,45 @@
-# sv
+# Arena App
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Setup:
 
-## Creating a project
+1. Install NodeJS v22.12.0 LTS. You can use a NodeJS version manager like `nvm` to do this:
 
-If you're seeing this, you've probably already done this step. Congrats!
+    ```
+    nvm install v22.12.0
+    nvm use v22.12.0
+    ```
 
-```bash
-# create a new project in the current directory
-npx sv create
+2. Install `pnpm` by running `npm i -g pnpm`.
 
-# create a new project in my-app
-npx sv create my-app
-```
+3. Create a `.env` file. You can use the `.env.example` as a template.
 
-## Developing
+4. Install dependencies:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+    ```
+    cd app
+    pnpm i
+    ```
 
-```bash
-npm run dev
+## Docker Build System:
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+This project uses [Docker Compose profiles](https://docs.docker.com/compose/how-tos/profiles/). Currently, there is one profile: `dev` and `prod`.
 
-## Building
+Run `docker compose --profile PROFILE down` to stop and delete all containers in the specified profile.
 
-To create a production version of your app:
+> [!NOTE]
+> Adding the `-v` flag only deletes the `node_modules` cache mount. To clear database data, you'll need to delete the `db/data` folder, which usually needs root permissions.
 
-```bash
-npm run build
-```
+Run `docker compose --profile PROFILE up --build` to build and run all containers in the specified profile. Adding the `-d` flag runs the containers in the background.
 
-You can preview the production build with `npm run preview`.
+The `dev` profile binds mount your source code into the containers and so supports hot reloading with Vite. **However, changes to the `package.json` and `pnpm-lock.yaml` do require full container rebuilds.**
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+> [!NOTE]
+> If you're on Windows and hot-reloading doesn't seem to be working, add this snippet inside the config object in `app/vite.config.ts`:
+> ```
+> server: {
+>   watch: {
+>     usePolling: true,
+>   }
+> }
+> ```
+> This is detailed [here](https://vite.dev/config/server-options#server-watch).
