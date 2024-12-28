@@ -16,7 +16,9 @@
 	style="grid-column-start: {colStart};
 		grid-row: {rowStart} / span {rowSpan};"
 >
-	<div class="flex h-full w-full flex-col justify-between rounded-md bg-blue-900 px-2 py-1 text-xs">
+	<div
+		class="flex h-full w-full flex-col justify-between overflow-hidden rounded-md bg-blue-900 px-2 py-1 text-xs"
+	>
 		<div class="flex flex-col {rowSpan > 6 && 'gap-1'}">
 			<div class="line-clamp-2 font-bold">
 				{title}
