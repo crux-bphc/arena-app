@@ -10,7 +10,7 @@
 
 <div class="flex w-full flex-row bg-slate-900 p-2 text-white">
 	<!-- Time stamps -->
-	<div class="flex w-12 flex-col text-sm">
+	<div class="flex w-10 flex-col text-xs">
 		{#each { length: rows }, i}
 			<div class="h-20 pr-1 text-right">
 				{((i + startTime - 1) % 12) + 1}
@@ -20,7 +20,7 @@
 		<div class="text-center">12 AM</div>
 	</div>
 
-	<div class="relative my-3 w-[calc(100%-3rem)]">
+	<div class="relative my-2 w-[calc(100%-2.5rem)]">
 		<!-- background grid -->
 		<div
 			class="grid"
@@ -41,10 +41,6 @@
 			class="absolute inset-0 grid h-full"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows * 4}, minmax(0, 1fr))"
-		>
-			<CalenderItem colStart="1" rowStart="14" rowSpan="13" />
-			<CalenderItem colStart="2" rowStart="24" rowSpan="5" />
-			<CalenderItem colStart="3" rowStart="5" rowSpan="10" />
-		</div>
+		></div>
 	</div>
 </div>
