@@ -80,11 +80,11 @@
 	}
 </script>
 
-<div class="flex w-full flex-row bg-slate-900 p-2 text-white">
+<div class="flex flex-row bg-slate-900 p-2 text-white">
 	<!-- Time stamps -->
-	<div class="flex w-10 flex-col text-xs">
+	<div class="flex flex-col text-xs">
 		{#each { length: rows }, i}
-			<div class="h-20 pr-1 text-right">
+			<div class="h-20 w-10 pr-1 text-right">
 				{((i + calStartTime - 1) % 12) + 1}
 				{i < 12 - calStartTime ? 'AM' : 'PM'}
 			</div>
@@ -92,12 +92,13 @@
 		<div class="text-center">12 AM</div>
 	</div>
 
-	<div class="relative my-2 w-[calc(100%-2.5rem)]">
+	<div class="relative my-2 overflow-x-scroll" style="width:{cols <= 2 && '100%'};">
 		<!-- background grid -->
 		<div
 			class="grid"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
-                grid-template-rows: repeat({rows}, minmax(0, 1fr))"
+                grid-template-rows: repeat({rows}, minmax(0, 1fr));
+				width: {cols <= 2 ? '100%' : String(cols * 7.5) + 'rem'}"
 		>
 			{#each { length: rows * cols }, i}
 				<div
@@ -112,7 +113,8 @@
 		<div
 			class="absolute inset-0 grid h-full"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
-                grid-template-rows: repeat({rows * 4}, minmax(0, 1fr))"
+                grid-template-rows: repeat({rows * 4}, minmax(0, 1fr));
+				width: {cols <= 2 ? '100%' : String(cols * 7.5) + 'rem'}"
 		>
 			{#each eventsWithPos ?? [] as event, i}
 				<CalenderItem {...event} />
