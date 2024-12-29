@@ -16,10 +16,10 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		return error(403, 'Invalid auth state');
 	}
 
-	const user = await locals.pb
+	const { record: user } = await locals.pb
 		.collection('users')
 		.authWithOAuth2Code(provider.name, code, provider.codeVerifier, PUBLIC_AUTH_REDIRECT_URL);
 	console.log(user);
-		
+
 	return redirect(302, '/');
 };
