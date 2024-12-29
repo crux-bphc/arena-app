@@ -1,9 +1,10 @@
 import PocketBase from 'pocketbase';
 import { type Handle } from '@sveltejs/kit';
 import { PB_URL } from '$env/static/private';
+import type { TypedPocketBase } from '$lib/types/pocketbase';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.pb = new PocketBase(PB_URL);
+	event.locals.pb = new PocketBase(PB_URL) as TypedPocketBase;
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
 	try {
