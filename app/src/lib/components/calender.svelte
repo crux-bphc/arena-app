@@ -80,7 +80,7 @@
 	}
 </script>
 
-<div class="flex flex-row bg-slate-900 p-2 text-white">
+<div class="flex flex-row bg-transparent p-2 text-white">
 	<!-- Time stamps -->
 	<div class="flex flex-col text-xs">
 		{#each { length: rows }, i}
