@@ -52,7 +52,7 @@
     // Update user balance
     async function getBalance() {
         try {
-            const res = await fetch('/user/bet/api/balance', { method: 'POST' })
+            const res = await fetch('/user/bet/api/balance')
             const { balance: bal }: { balance: number } = await res.json();
 
             balance = bal;

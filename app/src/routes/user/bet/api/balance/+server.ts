@@ -1,31 +1,11 @@
-import { DEBUG } from '$env/static/private';
-import pb from '$lib/server/database';
-import { json, type RequestHandler } from '@sveltejs/kit';
+import { error, json, type RequestHandler } from '@sveltejs/kit';
 
-async function getBalance(userid: any): Promise<number> {
-    try {
+export const GET: RequestHandler = async ({ locals }) => {
+	if (!locals.user) {
+		return error(401, 'User not found');
+	}
 
-        const { balance } = await pb.collection('users').getFirstListItem(`id="${userid}"`)
-
-        return new Promise((resolve, reject) => resolve(balance))
-    } catch(error) {
-        if (DEBUG) console.log('An error occured when trying to obtain the balance of user', userid, 'Error:', error)
-        return new Promise((resolve, reject) => reject(-1))
-    }
-}
-
-const handlePOST: RequestHandler = async ({ locals }: { locals: any }) => {
-    const userid = locals.user?.id
-    
-    if (userid == null)
-        return new Response('', { status: 308 })
-    
-    try {
-        const balance = await getBalance(userid);
-        return json({ balance });
-    } catch(error) {
-        return json(error)
-    }
+	// this will always work because the `authentication` hook in `hooks.server.ts` always updates `locals` every request if the auth store is valid, and if it isn't, the `authorization` hook will redirect it away
+	const balance = locals.user.balance;
+	return json({ balance });
 };
-
-export const POST = handlePOST;
