@@ -7,7 +7,6 @@ import { sequence } from '@sveltejs/kit/hooks';
 const authentication: Handle = async ({ event, resolve }) => {
 	event.locals.pb = new PocketBase(PB_URL) as TypedPocketBase;
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
-
 	try {
 		if (event.locals.pb.authStore.isValid) {
 			const { record: user } = await event.locals.pb.collection('users').authRefresh();
