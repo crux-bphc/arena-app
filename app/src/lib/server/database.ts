@@ -1,4 +1,5 @@
 import PocketBase from 'pocketbase'
+import { type EventsRecord } from '$lib/types/pocketbase.d.ts';
 import { PB_URL, DEBUG, PB_SUPERUSER_EMAIL, PB_SUPERUSER_PASSWORD } from '$env/static/private';
 
 const debug = DEBUG;
@@ -33,15 +34,6 @@ interface Team {
     betAmount: number,
 }
 
-interface Event {
-    sport: string,
-    title: string,
-    endTime: Date,
-    location: string,
-    startTime: Date,
-    description: string,
-}
-
 // Gets the bets made by the user
 export async function getUserBets(open: boolean, userid: any): Promise<Bet[]> {
     try {
@@ -67,22 +59,23 @@ export async function getUserBets(open: boolean, userid: any): Promise<Bet[]> {
 }
 
 // Gets all available events
-export async function getEvents(): Promise<Event[]> {
+export async function getEvents(): Promise<EventsRecord[]> {
     try {
         await auth();
         const eventData = await pb.collection('events').getFullList();
-        const events: Event[] = [];
+        const events: EventsRecord[] = [];
 
         // Go through all avalilable events and add it to the events array
-        for (let { sport, title, description, startTime, endTime, location } of eventData) {
+        for (let { sport, title, description, startTime, endTime, location, id } of eventData) {
 
-            const newEvent: Event = {
+            const newEvent: EventsRecord = {
                 description,
                 startTime,
                 location,
                 endTime,
                 sport,
                 title,
+                id, // Not neccessary, just to satisfy the types
             }
 
             events.push(newEvent);
