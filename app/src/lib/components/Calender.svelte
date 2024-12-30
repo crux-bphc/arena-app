@@ -91,13 +91,13 @@
 			class="grid"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows}, minmax(0, 1fr));
-				width: {cols <= 2 ? '100%' : `calc(${100 * cols / 3}vw - 7.5rem)`}"
+				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 7.5rem)`}"
 		>
 			{#each { length: rows * cols }, i}
 				<div
 					class="h-20 border-t-[1px] border-white/20
                         {i >= (rows - 1) * cols ? 'border-b-[1px]' : ''}
-                        {i % cols !== 0 ? 'border-l-[1px]': ''}"
+                        {i % cols !== 0 ? 'border-l-[1px]' : ''}"
 				></div>
 			{/each}
 		</div>
@@ -107,7 +107,7 @@
 			class="absolute inset-0 grid h-full"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows * 4}, minmax(0, 1fr));
-				width: {cols <= 2 ? '100%' : `calc(${100 * cols / 3}vw - 7.5rem)`}"
+				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 7.5rem)`}"
 		>
 			{#each eventsWithPos as event}
 				<CalenderItem {...event} />
