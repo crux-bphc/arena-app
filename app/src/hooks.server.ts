@@ -7,6 +7,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 const authentication: Handle = async ({ event, resolve }) => {
 	event.locals.pb = new PocketBase(PB_URL) as TypedPocketBase;
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
+
 	try {
 		if (event.locals.pb.authStore.isValid) {
 			const { record: user } = await event.locals.pb.collection('users').authRefresh();
@@ -32,7 +33,7 @@ const authentication: Handle = async ({ event, resolve }) => {
 
 const authorization: Handle = async ({ event, resolve }) => {
 	if (!event.route.id?.startsWith('/(auth)/')) {
-		if (!event.locals.pb.authStore.record) {
+		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
 			return redirect(303, '/login');
 		}
 	}
