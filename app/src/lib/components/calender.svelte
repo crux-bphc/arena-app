@@ -15,12 +15,15 @@
 		rowSpan: number;
 	}
 
-	// calender starts at {calenderStartHour} AM
-	let { events, calenderStartHour = 6 }: { calenderStartHour?: number; events: eventData[] } =
-		$props();
+	// calender is between {calenderStartHour}th hour and {calenderEndHour}th hour
+	let {
+		events,
+		calenderStartHour = 6,
+		calenderEndHour = 24
+	}: { calenderStartHour?: number; calenderEndHour?: number; events: eventData[] } = $props();
 
 	// removing {calenderStartHour} hours from total day of 24 hours
-	let rows = 24 - calenderStartHour;
+	let rows = calenderEndHour - calenderStartHour;
 	let cols = $state(1);
 	let eventsWithPos: eventDataWithPos[] = $state([]);
 	let occupiedGrids: number[][] = [[]];
@@ -29,7 +32,6 @@
 		eventsWithPos = events.map((event) => {
 			return { ...event, ...calculatePos(event) };
 		});
-
 		cols = occupiedGrids.length;
 	});
 
@@ -77,7 +79,10 @@
 				{i < 12 - calenderStartHour ? 'AM' : 'PM'}
 			</div>
 		{/each}
-		<div class="text-center">12 AM</div>
+		<div class="w-10 pr-1 text-right">
+			{((calenderEndHour - 1) % 12) + 1}
+			{calenderEndHour >= 12 ? 'PM' : 'AM'}
+		</div>
 	</div>
 
 	<div class="relative my-2 overflow-x-scroll" style="width:{cols <= 2 && '100%'};">
