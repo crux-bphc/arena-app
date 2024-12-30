@@ -6,5 +6,5 @@ export const load: PageLoad = async ({ fetch }: { fetch: Function }) => {
     if (res.status == 308)
         return redirect(308, '/login')
     let bets = await res.json();
-	return { bets };
+    return { bets };
 };
