@@ -70,34 +70,34 @@
 	}
 </script>
 
-<div class="flex flex-row bg-transparent p-2 text-white">
+<div class="flex flex-row bg-transparent px-1 py-2 text-white">
 	<!-- Time stamps -->
-	<div class="flex flex-col text-xs">
+	<div class="flex flex-col text-xs font-semibold">
 		{#each { length: rows }, i}
-			<div class="h-20 w-10 pr-1 text-right">
+			<div class="h-20 w-10 pr-1">
 				{((i + calenderStartHour - 1) % 12) + 1}
 				{i < 12 - calenderStartHour ? 'AM' : 'PM'}
 			</div>
 		{/each}
-		<div class="w-10 pr-1 text-right">
+		<div class="w-10 pr-1">
 			{((calenderEndHour - 1) % 12) + 1}
-			{calenderEndHour >= 12 ? 'PM' : 'AM'}
+			{calenderEndHour % 24 >= 12 ? 'PM' : 'AM'}
 		</div>
 	</div>
 
-	<div class="relative my-2 overflow-x-scroll" style="width:{cols <= 2 && '100%'};">
+	<div class="relative my-2 overflow-x-scroll {cols <= 2 ? 'w-full' : ''}">
 		<!-- background grid -->
 		<div
 			class="grid"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows}, minmax(0, 1fr));
-				width: {cols <= 2 ? '100%' : String(cols * 7.5) + 'rem'}"
+				width: {cols <= 2 ? '100%' : `calc(${100 * cols / 3}vw - 7.5rem)`}"
 		>
 			{#each { length: rows * cols }, i}
 				<div
-					class="h-20 border-t-[1px] border-white/50
-                        {rows * cols - i <= cols && 'border-b-[1px]'}
-                        {i % cols !== 0 && 'border-l-[1px]'}"
+					class="h-20 border-t-[1px] border-white/20
+                        {i >= (rows - 1) * cols ? 'border-b-[1px]' : ''}
+                        {i % cols !== 0 ? 'border-l-[1px]': ''}"
 				></div>
 			{/each}
 		</div>
@@ -107,7 +107,7 @@
 			class="absolute inset-0 grid h-full"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows * 4}, minmax(0, 1fr));
-				width: {cols <= 2 ? '100%' : String(cols * 7.5) + 'rem'}"
+				width: {cols <= 2 ? '100%' : `calc(${100 * cols / 3}vw - 7.5rem)`}"
 		>
 			{#each eventsWithPos as event}
 				<CalenderItem {...event} />

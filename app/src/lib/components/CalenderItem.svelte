@@ -12,14 +12,14 @@
 </script>
 
 <div
-	class="col-span-1 px-1 py-0.5"
+	class="col-span-1 p-[3px]"
 	style="grid-column-start: {colStart};
 		grid-row: {rowStart} / span {rowSpan};"
 >
 	<div
 		class="bg-primary flex h-full w-full flex-col justify-between overflow-hidden rounded-md px-2 py-1 text-xs"
 	>
-		<div class="flex flex-col {rowSpan > 6 && 'gap-1'}">
+		<div class="flex flex-col {rowSpan > 6 ? 'gap-1' : ''}">
 			<div class="line-clamp-2 font-bold">
 				{title}
 			</div>
