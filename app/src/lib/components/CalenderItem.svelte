@@ -1,5 +1,5 @@
 <script lang="ts">
-	interface calenderItemProps {
+	interface CalenderItemProps {
 		colStart: number;
 		rowStart: number;
 		rowSpan: number;
@@ -8,7 +8,7 @@
 		sport: string;
 	}
 
-	let { colStart, rowStart, rowSpan, title, location, sport }: calenderItemProps = $props();
+	let { colStart, rowStart, rowSpan, title, location, sport }: CalenderItemProps = $props();
 </script>
 
 <div

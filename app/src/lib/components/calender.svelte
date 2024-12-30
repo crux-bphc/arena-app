@@ -2,14 +2,14 @@
 	import { onMount } from 'svelte';
 	import CalenderItem from '$lib/components/CalenderItem.svelte';
 
-	interface eventData {
+	interface EventData {
 		title: string;
 		sport: string;
 		startTime: string;
 		endTime: string;
 		location: string;
 	}
-	interface eventDataWithPos extends eventData {
+	interface EventDataWithPos extends EventData {
 		colStart: number;
 		rowStart: number;
 		rowSpan: number;
@@ -20,12 +20,12 @@
 		events,
 		calenderStartHour = 6,
 		calenderEndHour = 24
-	}: { calenderStartHour?: number; calenderEndHour?: number; events: eventData[] } = $props();
+	}: { calenderStartHour?: number; calenderEndHour?: number; events: EventData[] } = $props();
 
 	// removing {calenderStartHour} hours from total day of 24 hours
 	let rows = calenderEndHour - calenderStartHour;
 	let cols = $state(1);
-	let eventsWithPos: eventDataWithPos[] = $state([]);
+	let eventsWithPos: EventDataWithPos[] = $state([]);
 	let occupiedGrids: number[][] = [[]];
 
 	onMount(() => {
@@ -36,7 +36,7 @@
 	});
 
 	// returns the position of a specific event on the event grid
-	function calculatePos(event: eventData) {
+	function calculatePos(event: EventData) {
 		let startRow = getRow(new Date(event.startTime));
 		let endRow = getRow(new Date(event.endTime));
 
