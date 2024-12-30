@@ -15,68 +15,56 @@
 		rowSpan: number;
 	}
 
-	// calender starts at {startTime} AM
-	let { events, calStartTime = 6 }: { calStartTime?: number; events: eventData[] } = $props();
+	// calender starts at {calenderStartHour} AM
+	let { events, calenderStartHour = 6 }: { calenderStartHour?: number; events: eventData[] } =
+		$props();
 
-	let rows = $state(12 + 12 - calStartTime);
+	// removing {calenderStartHour} hours from total day of 24 hours
+	let rows = 24 - calenderStartHour;
 	let cols = $state(1);
-	let eventsWithPos: eventDataWithPos[] | null = $state(null);
+	let eventsWithPos: eventDataWithPos[] = $state([]);
+	let occupiedGrids: number[][] = [[]];
 
 	onMount(() => {
-		let occupiedGrids: number[][] = [[]];
-
-		let newEventData: eventDataWithPos[] = events.map((event) => {
-			let data = calculatePos(event, occupiedGrids);
-			occupiedGrids = data.occupiedGrids;
-			return { ...event, ...data.pos };
+		eventsWithPos = events.map((event) => {
+			return { ...event, ...calculatePos(event) };
 		});
 
 		cols = occupiedGrids.length;
-		eventsWithPos = newEventData;
 	});
 
 	// returns the position of a specific event on the event grid
-	function calculatePos(event: eventData, occupiedGrids: number[][]) {
+	function calculatePos(event: eventData) {
 		let startRow = getRow(new Date(event.startTime));
 		let endRow = getRow(new Date(event.endTime));
-		let newOccupiedGrids = [...occupiedGrids];
 
 		// finding column with no clashes
 		let col = -1;
-		for (let i = 0; i < newOccupiedGrids.length; i++) {
-			if (!isAnyNumberInRange(startRow, endRow - 1, newOccupiedGrids[i])) {
+		for (let i = 0; i < occupiedGrids.length; i++) {
+			if (!isAnyNumberInRange(startRow, endRow - 1, occupiedGrids[i])) {
 				col = i;
 				break;
 			}
 		}
 		if (col === -1) {
-			col = newOccupiedGrids.length;
-			newOccupiedGrids.push([]);
+			col = occupiedGrids.length;
+			occupiedGrids.push([]);
 		}
-		newOccupiedGrids[col].push(
-			...Array.from({ length: endRow - startRow }, (_, i) => startRow + i)
-		);
+		occupiedGrids[col].push(...Array.from({ length: endRow - startRow }, (_, i) => startRow + i));
 
 		return {
-			pos: {
-				colStart: col + 1,
-				rowStart: startRow,
-				rowSpan: endRow - startRow
-			},
-			occupiedGrids: newOccupiedGrids
+			colStart: col + 1,
+			rowStart: startRow,
+			rowSpan: endRow - startRow
 		};
 	}
 	// converts hours and mins to its corresponding row
 	function getRow(date: Date) {
-		return (date.getUTCHours() - calStartTime) * 4 + 1 + date.getUTCMinutes() / 15;
+		return (date.getUTCHours() - calenderStartHour) * 4 + 1 + date.getUTCMinutes() / 15;
 	}
 	// finds if any number between x & y (inclusive) is in arr
 	function isAnyNumberInRange(x: number, y: number, arr: number[]) {
-		const set = new Set(arr);
-		for (let i = x; i <= y; i++) {
-			if (set.has(i)) return true;
-		}
-		return false;
+		return arr.some((num) => num >= x && num <= y);
 	}
 </script>
 
@@ -85,8 +73,8 @@
 	<div class="flex flex-col text-xs">
 		{#each { length: rows }, i}
 			<div class="h-20 w-10 pr-1 text-right">
-				{((i + calStartTime - 1) % 12) + 1}
-				{i < 12 - calStartTime ? 'AM' : 'PM'}
+				{((i + calenderStartHour - 1) % 12) + 1}
+				{i < 12 - calenderStartHour ? 'AM' : 'PM'}
 			</div>
 		{/each}
 		<div class="text-center">12 AM</div>
@@ -116,7 +104,7 @@
                 grid-template-rows: repeat({rows * 4}, minmax(0, 1fr));
 				width: {cols <= 2 ? '100%' : String(cols * 7.5) + 'rem'}"
 		>
-			{#each eventsWithPos ?? [] as event, i}
+			{#each eventsWithPos as event}
 				<CalenderItem {...event} />
 			{/each}
 		</div>

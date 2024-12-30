@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="bg-red- col-span-1 px-1 py-0.5"
+	class="col-span-1 px-1 py-0.5"
 	style="grid-column-start: {colStart};
 		grid-row: {rowStart} / span {rowSpan};"
 >
