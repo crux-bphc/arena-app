@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import CalenderItem from '$lib/components/calender-item.svelte';
+	import CalenderItem from '$lib/components/CalenderItem.svelte';
 
 	interface eventData {
 		title: string;
