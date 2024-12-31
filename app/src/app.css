@@ -4,7 +4,7 @@
 
 @layer base {
 	:root {
-		--background: 217 93% 5%;
+		--background: 217 94% 5%;
 		--foreground: 0 0% 97%;
 
 		--border: 270 3% 26%;
@@ -16,7 +16,7 @@
 		--secondary: 246 55% 30%;
 		--secondary-foreground: 0 0% 100%;
 
-		--accent: 259 100% 50%;
+		--accent: 0 0% 26%;
 		--accent-foreground: 0 0% 100%;
 
 		/* these colors are not customised for this app yet */
