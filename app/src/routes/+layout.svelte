@@ -11,7 +11,7 @@
 {@render children()}
 <div class="xs:p-4 fixed inset-x-0 bottom-0 w-full p-3">
 	<div
-		class="bg-accent/10 xs:rounded-3xl xs:p-4 flex w-full flex-row items-center justify-around rounded-2xl p-2 backdrop-blur-lg"
+		class="bg-accent/35 xs:rounded-3xl xs:p-4 flex w-full flex-row items-center justify-around rounded-2xl p-2 backdrop-blur-lg"
 	>
 		<!-- Home / Events page buttom -->
 		<Button variant="ghost" href="/" class="rounded-full ">
