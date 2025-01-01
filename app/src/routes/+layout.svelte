@@ -18,7 +18,7 @@
 			<IconHomeFilled class="text-text xs:size-8 size-6" />
 		</Button>
 
-		<!-- loaderboard page button -->
+		<!-- Leaderboard page button -->
 		<Button variant="ghost" href="/leaderboard" class="rounded-full ">
 			<IconFlagFilled class="text-text xs:size-8 size-6" />
 		</Button>
