@@ -6,17 +6,17 @@
 
     let bets = $state(data.bets);
 
-    const get = async (dir) => {
-        const res = await fetch(`/user/bets/api/${dir}`)
+    const get = async (state) => {
+        const res = await fetch(`/api/user/bets/?open=${state}`)
         if (res.status == 308)
             goto('/login')
         else 
             bets = await res.json();
     }
 
-    const open = async () => get('open')
+    const open = async () => get('true')
 
-    const closed = async () => get('closed')
+    const closed = async () => get('false')
 </script>
 <!-- A template -->
 <div>
@@ -29,13 +29,13 @@
         {#each bets as bet}
             <div class="item bg-slate-700 rounded-md p-2 h-fit w-fit text-amber-100">
                 <div>
-                    <span id="coins" class="font-bold"><u>{bet.coins}</u></span> <label for="coins">Coins bet</label> 
+                    <span id="coins" class="font-bold"><u>{bet.amount}</u></span> <label for="coins">Coins bet</label> 
                 </div>
                 <div>
-                    <label class="font-bold" for="sport"><u>Event:</u> </label> <span id="sport">{bet.sport}</span>
+                    <label class="font-bold" for="sport"><u>Event:</u> </label> <span id="sport">{bet.eventId.title}</span>
                 </div>
                 <div>
-                    <label class="font-bold" for="team"><u>Team:</u> </label> <span id="team">{bet.team}</span>
+                    <label class="font-bold" for="team"><u>Team:</u> </label> <span id="team">{bet.teamId.name}</span>
                 </div>
                 <div>
                     <label class="font-bold" for="time"><u>Time bet:</u> </label> <span id="time">{new Date(bet.updated)}</span>

@@ -104,7 +104,7 @@
             return;
         }
 
-        const res = await fetch('/user/bet/api/newbet', { method: 'POST', body: JSON.stringify({ title }) })
+        const res = await fetch('/api/user/bet/', { method: 'POST', body: JSON.stringify({ title }) })
 
         teams = await res.json();
 
