@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_PB_URL } from '$env/static/public';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { IconHomeFilled } from '@tabler/icons-svelte';
 	import { IconFlagFilled } from '@tabler/icons-svelte';
