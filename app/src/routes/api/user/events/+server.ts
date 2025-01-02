@@ -2,12 +2,9 @@ import pb from '$lib/server/database';
 import type { EventsRecord } from '$lib/types/pocketbase';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
-const handleGET: RequestHandler = async ({ locals, url }) => {
-	
-    if (!locals.user)
-		return error(401, 'User not found');
-
-    // Filter by sport and title
+// This does not require login
+const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
+	// Filter by sport and title
 	const sport = url.searchParams.get('sport');
 	const title = url.searchParams.get('title');
 	try {
