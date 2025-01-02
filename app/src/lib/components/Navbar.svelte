@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { PUBLIC_PB_URL } from '$env/static/public';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import type { UsersResponse } from '$lib/types/pocketbase';
 	import { IconHomeFilled } from '@tabler/icons-svelte';
 	import { IconFlagFilled } from '@tabler/icons-svelte';
 	import { IconCalendarEvent } from '@tabler/icons-svelte';
+
+	let { user }: { user: UsersResponse | undefined } = $props();
 </script>
 
 <div class="xs:p-4 fixed inset-x-0 bottom-0 w-full p-3">
@@ -27,8 +30,15 @@
 
 		<!-- Profile page button -->
 		<Button variant="ghost" href="/profile" class="rounded-full ">
-			<!-- add avatar to this -->
-			<div class="bg-foreground xs:size-8 size-6 rounded-full"></div>
+			<div class="bg-foreground xs:size-8 size-6 rounded-full">
+				{#if user}
+					<img
+						src={`${PUBLIC_PB_URL}/api/files/users/${user.id}/${user.avatar}`}
+						alt="avatar"
+						class="rounded-full"
+					/>
+				{/if}
+			</div>
 		</Button>
 	</div>
 </div>
