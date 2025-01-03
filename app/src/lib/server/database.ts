@@ -1,9 +1,8 @@
 import PocketBase from 'pocketbase';
-import { PB_SUPERUSER_EMAIL, PB_SUPERUSER_PASSWORD } from '$env/static/private';
-import { PUBLIC_PB_URL } from '$env/static/public';
+import { INTERNAL_PB_URL, PB_SUPERUSER_EMAIL, PB_SUPERUSER_PASSWORD } from '$env/static/private';
 import type { TypedPocketBase } from '$lib/types/pocketbase';
 
-const pb = new PocketBase(PUBLIC_PB_URL) as TypedPocketBase;
+const pb = new PocketBase(INTERNAL_PB_URL) as TypedPocketBase;
 pb.autoCancellation(false);
 
 await pb
