@@ -15,17 +15,17 @@
 	>
 		<!-- Home / Events page buttom -->
 		<Button variant="ghost" href="/" class="rounded-full ">
-			<IconHomeFilled class="text-text xs:size-8 size-6" />
+			<IconHomeFilled class="xs:size-8 size-6" />
 		</Button>
 
 		<!-- Leaderboard page button -->
 		<Button variant="ghost" href="/leaderboard" class="rounded-full ">
-			<IconFlagFilled class="text-text xs:size-8 size-6" />
+			<IconFlagFilled class="xs:size-8 size-6" />
 		</Button>
 
 		<!-- Calender page button -->
 		<Button variant="ghost" href="/calender" class="rounded-full ">
-			<IconCalendarEvent class="text-text xs:size-8 size-6" />
+			<IconCalendarEvent class="xs:size-8 size-6" />
 		</Button>
 
 		<!-- Profile page button -->
