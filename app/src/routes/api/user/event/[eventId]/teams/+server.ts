@@ -4,7 +4,7 @@ import type { StandingsResponse } from '$lib/types/pocketbase';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 // This does not require login
-const handleGET: RequestHandler = async ({ params }: { params: { eventId: string } }) => {
+const handleGET: RequestHandler = async ({ params }) => {
     try {
 		const { eventId } = params;
 
