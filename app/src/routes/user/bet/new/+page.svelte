@@ -52,61 +52,68 @@
     // Update user balance
     async function getBalance() {
         try {
-            const res = await fetch('/user/bet/api/balance')
+            const res = await fetch('/api/user/balance')
             const { balance: bal }: { balance: number } = await res.json();
 
             balance = bal;
-        } catch(error) {}
+
+        } catch(error) {
+            console.error('Failed to get user balance, error:', error)
+        }
     }
 
     // TODO: Change alerts and confirms to an actual modal
     async function bet() {
-        const { name, event } = this;
+        const { name, event, teamId, eventId } = this;
         // TODO?: Add input to allow user to enter custom amount of coins
-        const coins = 10;
+        let coins = 10;
+
         // This is client side
-        if (balance <= 0) {
-            alert('Your balance is too low!')
+        if (coins == 0) {
+            alert('You\'re trying to bet 0 coins!');
             return;
         }
 
-        // Confirm once again with user
-        if (!confirm(`Are you sure you want to bet +${coins} coins on team ${name} participating in the event ${event}?`)) return;
+        if (balance < coins) {
+            alert('Your balance is too low!');
+            return;
+        }
 
-        const res = await fetch('/user/bet/api/newbet', { method: 'POST', body: JSON.stringify({ name, event, coins }) })
+        let sign = coins > 0 ? '+' : '-';
+
+        // Confirm once again with user
+        if (!confirm(`Are you sure you want to bet ${sign}${coins} coins on team ${name} participating in the event ${event}?`)) return;
+
+        const res = await fetch('/api/user/bet', { method: 'POST', body: JSON.stringify({ teamId, eventId, amount: coins }) })
         
         // Get event data again
-        const eventRes = await fetch('/user/bet/api/newbet')
-        events = await eventRes.json();
-
-        const teamRes = await fetch('/user/bet/api/newbet', { method: 'POST', body: JSON.stringify({ title: event }) })
-        teams = await teamRes.json();
+        const eventRes = await fetch('/api/user/events')
+        events = (await eventRes.json())?.events;
         
         // Redirects don't seem to work on the server side
         // This is probably not a good alternative though
         if (res.status == 308) goto('/login')
-
-        const json = await res.json();
-
+    
         await getBalance();
 
-        // This is server side
-        if (json.balanceTooLow) alert('Your balance is too low!')
-        else if (json.closedBet) alert(`The bets are now closed for team ${name} in event ${event}! Your newest bet was not counted.`)
-        else { alert(`Successfully bet for team ${name} in event ${event}! You now have ${balance} coins remaining.`) }
+        const json = await res.json();
+        if (res.status == 400)
+            alert(`An error occured while trying to process your request: ${json.message}`);
+        else 
+            alert(`Successfully bet for team ${name} in event ${event}! You now have ${balance} coins remaining, and have bet a total of ${json.amount} coins in this division.`);
     }
 
     // Load teams into the teams view and enable the modal
     async function displayTeams() {
-        const { title, sport, startTime } = this;
+        const { id, title, sport, startTime } = this;
         if (new Date(startTime).getTime() < Date.now()) {
             alert('This event can no longer accept bets!')
             return;
         }
 
-        const res = await fetch('/api/user/bet/', { method: 'POST', body: JSON.stringify({ title }) })
+        const res = await fetch(`/api/user/event/${id}/teams`)
 
-        teams = await res.json();
+        teams = (await res.json())?.standings;
 
         document.querySelector('.modal')?.classList.remove('none');
         eventNameAndSport = `${title}/${sport}`;
@@ -137,7 +144,7 @@
 <div class="text-3xl m-2 font-bold text-center">Events</div>
 <div class="gap-2 m-2" id="events">
 {#each events as event} 
-    <button onclick={displayTeams.bind({ title: event.title, startTime: event.startTime, sport: event.sport })} id="event" class="bg-slate-700 rounded-md p-2 h-fit my-2 text-amber-100 flex flex-row place-items-center place-content-between">
+    <button onclick={displayTeams.bind({ id: event.id, title: event.title, startTime: event.startTime, sport: event.sport })} id="event" class="bg-slate-700 rounded-md p-2 h-fit my-2 text-amber-100 flex flex-row place-items-center place-content-between">
         <div id="stats">
             <div>
                 <label class="font-bold" for="name"><u>Title:</u> </label> <span id="name">{event.title}</span>
@@ -179,14 +186,14 @@
 {/each}
 </div>
 
-<button onclick={clickModal} class="modal absolute left-0 top-0 h-screen w-screen flex none text-left" style="background-color: rgba(50, 50, 50, 0.80); backdrop-filter: blur(4px);">
+<div onclick={clickModal} role="button" tabindex="0" onkeypress="{clickModal}" class="modal absolute left-0 top-0 h-screen w-screen flex none text-left" style="background-color: rgba(50, 50, 50, 0.80); backdrop-filter: blur(4px);">
     <div class="message-box bg-slate-700 m-auto p-4 rounded-md flex flex-col text-amber-100 gap-2 overflow-auto" style="min-width: 30%; max-height:75%;">
         <div id="event-name" class="font-bold text-3xl place-self-center">{eventNameAndSport}</div>
         {#each teams as team}
         <div id="team" class="flex flex-row bg-slate-800 p-2 rounded-md place-content-between gap-2">
             <div id="stats">
                 <div>
-                    <label class="font-bold" for="name"><u>Team:</u> </label> <span id="name">{team.name}</span>
+                    <label class="font-bold" for="name"><u>Team:</u> </label> <span id="name">{team.expand.teamId.name}</span>
                 </div>
                 <div>
                     <label class="font-bold" for="score"><u>Score:</u> </label> <span id="score">{team.score}</span>
@@ -194,16 +201,10 @@
                 <div>
                     <label class="font-bold" for="leaderboard"><u>Leaderboard:</u> </label> <span id="score">{position(team.position)}</span>
                 </div>
-                {#if (team.betAmount > 0)}
-                <div>
-                    <span class="font-bold" id="amount"><u>{team.betAmount}</u></span> <label for="amount">Coins bet</label> 
-                </div>
-                {:else}
-                {/if}
             </div>
             <!-- This should be an input I guess? -->
             <div id="buttons" class="place-self-center justify-self-center">
-                <button onclick={bet.bind({ name: team.name, event: team.event })} class="bg-amber-200 p-1 rounded-sm text-black h-fit">Bet +10 Coins</button>
+                <button onclick={bet.bind({ name: team.expand.teamId.name, event: team.expand.eventId.title, teamId: team.expand.teamId.id, eventId: team.expand.eventId.id })} class="bg-amber-200 p-1 rounded-sm text-black h-fit">Bet +10 Coins</button>
             </div>
         </div>
         {:else}
@@ -212,4 +213,4 @@
         </div>
         {/each}
     </div>
-</button>
+</div>

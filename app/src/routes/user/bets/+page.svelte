@@ -3,15 +3,14 @@
     import type { PageData } from './$types';
 
     const { data }: { data: PageData } = $props();
-
     let bets = $state(data.bets);
 
     const get = async (state) => {
-        const res = await fetch(`/api/user/bets/?open=${state}`)
+        const res = await fetch(`/api/user/bets?open=${state}`)
         if (res.status == 308)
             goto('/login')
         else 
-            bets = await res.json();
+            bets = (await res.json())?.bets;
     }
 
     const open = async () => get('true')
