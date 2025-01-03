@@ -7,10 +7,7 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 	// Filter by sport
 	const sport = url.searchParams.get('sport');
 	try {
-        let filter = null;
-    
-        if (sport) filter = `sport="${sport}"`;
-		
+        const filter = sport ? `sport="${sport}"` : undefined;
         const events: EventsRecord[] = await pb.collection('events').getFullList({ filter });
 
 		return json({ events });
