@@ -34,6 +34,11 @@ Run `docker compose --profile PROFILE up --build` to build and run all container
 The `dev` profile binds mount your source code into the containers and so supports hot reloading with Vite. **However, changes to the `package.json` and `pnpm-lock.yaml` do require full container rebuilds.**
 
 > [!NOTE]
+> It is advised to run `pnpm i` locally and also delete the `node_modules` cache mount by running `docker compose --profile PROFILE down -v` in this case before rebuilding.
+
+Obviously, changes to `.env` also require container restarts.
+
+> [!NOTE]
 > If you're on Windows and hot-reloading doesn't seem to be working, add this snippet inside the config object in `app/vite.config.ts`:
 > ```
 > server: {
