@@ -5,7 +5,6 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 const handleGET: RequestHandler = async () => {
 	try {
         // Sort by desc. order of balance -> More balance = higher on the leaderboard
-        // NOTE: Should users be filtered for verified status here?
         const users = await pb.collection('users').getFullList({ sort: '-balance' });
         return json({ users })
 	} catch (err) {
