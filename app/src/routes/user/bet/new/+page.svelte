@@ -87,7 +87,7 @@
         const res = await fetch('/api/user/bet', { method: 'POST', body: JSON.stringify({ teamId, eventId, amount: coins }) })
         
         // Get event data again
-        const eventRes = await fetch('/api/user/events')
+        const eventRes = await fetch('/api/events')
         events = (await eventRes.json())?.events;
         
         // Redirects don't seem to work on the server side
@@ -111,7 +111,7 @@
             return;
         }
 
-        const res = await fetch(`/api/user/event/${id}/teams`)
+        const res = await fetch(`/api/event/${id}/teams`)
 
         teams = (await res.json())?.standings;
 
