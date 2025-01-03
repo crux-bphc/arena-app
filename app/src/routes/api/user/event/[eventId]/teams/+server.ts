@@ -10,11 +10,9 @@ const handleGET: RequestHandler = async ({ params }: { params: { eventId: string
 
 		const standings: StandingsResponse<StandingsExpand>[] = 
 			await pb
-				// This is querying standings, which is the only relation between events and teams.
-				// But, this would not be able to access events that will air at a later time, if 
-				// standings are updated as teams start playing.
+				// TODO: Change this to query events when database schema is changed to 
+				// incorperate registerd teams in events
 				.collection('standings')
-				// Is eventId expansion needed?
 				.getFullList({ filter: `eventId="${eventId}"`, expand: 'teamId, eventId' });
 
 		return json({ standings });
