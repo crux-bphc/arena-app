@@ -1,11 +1,11 @@
 import PocketBase from 'pocketbase';
 import { redirect, type Handle } from '@sveltejs/kit';
-import { PUBLIC_PB_URL } from '$env/static/public';
 import type { TypedPocketBase } from '$lib/types/pocketbase';
 import { sequence } from '@sveltejs/kit/hooks';
+import { INTERNAL_PB_URL } from '$env/static/private';
 
 const authentication: Handle = async ({ event, resolve }) => {
-	event.locals.pb = new PocketBase(PUBLIC_PB_URL) as TypedPocketBase;
+	event.locals.pb = new PocketBase(INTERNAL_PB_URL) as TypedPocketBase;
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
 	try {
@@ -33,7 +33,7 @@ const authentication: Handle = async ({ event, resolve }) => {
 
 const authorization: Handle = async ({ event, resolve }) => {
 	if (!event.route.id?.startsWith('/(auth)/')) {
-		if (!event.locals.pb.authStore.record) {
+		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
 			return redirect(303, '/login');
 		}
 	}

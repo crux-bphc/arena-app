@@ -4,4 +4,8 @@ declare module '$env/static/public' {
 }
 
 declare module '$env/static/private' {
+	export const DEBUG: boolean;
+	export const PB_SUPERUSER_EMAIL: string;
+	export const PB_SUPERUSER_PASSWORD: string;
+	export const INTERNAL_PB_URL: string;
 }
