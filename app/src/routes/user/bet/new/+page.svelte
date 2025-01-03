@@ -140,7 +140,8 @@
 </script>
 
 <!-- A template -->
-<div id="balance" class="font-bold text-l m-2 bg-slate-700 rounded-md p-2 w-fit text-amber-100">{ balance } Coins</div>
+<div id="balance" class="inline-block font-bold text-l m-2 bg-slate-700 rounded-md p-2 w-fit text-amber-100">{ balance } Coins</div>
+<a href="/user/bets" class="text-l my-2 bg-slate-700 rounded-md p-2 w-fit text-amber-100 underline">View your bets</a>
 <div class="text-3xl m-2 font-bold text-center">Events</div>
 <div class="gap-2 m-2" id="events">
 {#each events as event} 

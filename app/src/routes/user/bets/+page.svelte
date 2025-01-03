@@ -19,6 +19,7 @@
 </script>
 <!-- A template -->
 <div>
+    <a href="/user/bet/new" class="inline-block text-l m-2 bg-slate-700 rounded-md p-2 w-fit text-amber-100 underline">Make your bets</a>
     <div class="text-3xl m-2 font-bold text-center">Your bets</div>
     <div class="options place-content-center flex">
         <button onclick={open} class="bg-amber-200 p-1 rounded-sm ms-2">Open</button>
@@ -31,10 +32,10 @@
                     <span id="coins" class="font-bold"><u>{bet.amount}</u></span> <label for="coins">Coins bet</label> 
                 </div>
                 <div>
-                    <label class="font-bold" for="sport"><u>Event:</u> </label> <span id="sport">{bet.eventId.title}</span>
+                    <label class="font-bold" for="sport"><u>Event:</u> </label> <span id="sport">{bet.expand.eventId.title}</span>
                 </div>
                 <div>
-                    <label class="font-bold" for="team"><u>Team:</u> </label> <span id="team">{bet.teamId.name}</span>
+                    <label class="font-bold" for="team"><u>Team:</u> </label> <span id="team">{bet.expand.teamId.name}</span>
                 </div>
                 <div>
                     <label class="font-bold" for="time"><u>Time bet:</u> </label> <span id="time">{new Date(bet.updated)}</span>
