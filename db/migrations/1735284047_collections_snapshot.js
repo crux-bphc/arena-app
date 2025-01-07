@@ -744,7 +744,7 @@ migrate((app) => {
       },
       "name": "users",
       "oauth2": {
-        "enabled": false,
+        "enabled": true,
         "mappedFields": {
           "avatarURL": "avatar",
           "id": "",
@@ -762,7 +762,7 @@ migrate((app) => {
         "length": 8
       },
       "passwordAuth": {
-        "enabled": true,
+        "enabled": false,
         "identityFields": [
           "email"
         ]
@@ -842,7 +842,25 @@ migrate((app) => {
           "system": false,
           "type": "select",
           "values": [
-            "football"
+            "football",
+            "skating",
+            "squash",
+            "table tennis",
+            "pool",
+            "hockey",
+            "chess",
+            "tennis",
+            "cricket",
+            "athletics",
+            "powerlifting",
+            "swimming",
+            "carrom",
+            "throwball",
+            "kabbadi",
+            "badminton",
+            "snooker",
+            "volleyball",
+            "ultimate frisbee"
           ]
         },
         {
@@ -868,17 +886,18 @@ migrate((app) => {
           "type": "date"
         },
         {
+          "autogeneratePattern": "",
           "hidden": false,
-          "id": "select1587448267",
-          "maxSelect": 1,
+          "id": "text1587448267",
+          "max": 0,
+          "min": 0,
           "name": "location",
+          "pattern": "",
           "presentable": false,
+          "primaryKey": false,
           "required": true,
           "system": false,
-          "type": "select",
-          "values": [
-            "OFG"
-          ]
+          "type": "text"
         },
         {
           "hidden": false,
