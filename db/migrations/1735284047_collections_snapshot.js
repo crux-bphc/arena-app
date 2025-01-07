@@ -900,6 +900,19 @@ migrate((app) => {
           "type": "text"
         },
         {
+          "cascadeDelete": false,
+          "collectionId": "pbc_1568971955",
+          "hidden": false,
+          "id": "relation2529305176",
+          "maxSelect": 999,
+          "minSelect": 0,
+          "name": "teams",
+          "presentable": false,
+          "required": true,
+          "system": false,
+          "type": "relation"
+        },
+        {
           "hidden": false,
           "id": "file1872607463",
           "maxSelect": 1,
