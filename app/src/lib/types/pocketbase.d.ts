@@ -92,19 +92,33 @@ export type SuperusersRecord = {
 export type BetsRecord = {
 	amount: number;
 	created?: IsoDateString;
-	eventId: RecordIdString;
+	event: RecordIdString;
 	id: string;
-	teamId: RecordIdString;
+	team: RecordIdString;
 	updated?: IsoDateString;
-	userId: RecordIdString;
+	user: RecordIdString;
 };
 
 export enum EventsSportOptions {
-	'football' = 'football'
-}
-
-export enum EventsLocationOptions {
-	'OFG' = 'OFG'
+	'football' = 'football',
+	'skating' = 'skating',
+	'squash' = 'squash',
+	'table tennis' = 'table tennis',
+	'pool' = 'pool',
+	'hockey' = 'hockey',
+	'chess' = 'chess',
+	'tennis' = 'tennis',
+	'cricket' = 'cricket',
+	'athletics' = 'athletics',
+	'powerlifting' = 'powerlifting',
+	'swimming' = 'swimming',
+	'carrom' = 'carrom',
+	'throwball' = 'throwball',
+	'kabbadi' = 'kabbadi',
+	'badminton' = 'badminton',
+	'snooker' = 'snooker',
+	'volleyball' = 'volleyball',
+	'ultimate frisbee' = 'ultimate frisbee'
 }
 export type EventsRecord = {
 	banner?: string;
@@ -112,20 +126,21 @@ export type EventsRecord = {
 	description?: string;
 	endTime: IsoDateString;
 	id: string;
-	location: EventsLocationOptions;
+	location: string;
 	sport: EventsSportOptions;
 	startTime: IsoDateString;
+	teams: RecordIdString[];
 	title: string;
 	updated?: IsoDateString;
 };
 
 export type StandingsRecord = {
 	created?: IsoDateString;
-	eventId: RecordIdString;
+	event: RecordIdString;
 	id: string;
 	position: number;
 	score: string;
-	teamId: RecordIdString;
+	team: RecordIdString;
 	updated?: IsoDateString;
 };
 

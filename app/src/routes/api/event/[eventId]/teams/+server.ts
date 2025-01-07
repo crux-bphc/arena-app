@@ -12,7 +12,7 @@ const handleGET: RequestHandler = async ({ params }) => {
 			// TODO: Change this to query events when database schema is changed to
 			// incorperate registerd teams in events
 			.collection('standings')
-			.getFullList({ filter: `eventId="${eventId}"`, expand: 'teamId, eventId' });
+			.getFullList({ filter: `event="${eventId}"`, expand: 'team, event' });
 
 		return json({ standings });
 	} catch (err) {

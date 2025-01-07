@@ -194,7 +194,7 @@
         <div id="team" class="flex flex-row bg-slate-800 p-2 rounded-md place-content-between gap-2">
             <div id="stats">
                 <div>
-                    <label class="font-bold" for="name"><u>Team:</u> </label> <span id="name">{team.expand.teamId.name}</span>
+                    <label class="font-bold" for="name"><u>Team:</u> </label> <span id="name">{team.expand.team.name}</span>
                 </div>
                 <div>
                     <label class="font-bold" for="score"><u>Score:</u> </label> <span id="score">{team.score}</span>
@@ -205,7 +205,7 @@
             </div>
             <!-- This should be an input I guess? -->
             <div id="buttons" class="place-self-center justify-self-center">
-                <button onclick={bet.bind({ name: team.expand.teamId.name, event: team.expand.eventId.title, teamId: team.expand.teamId.id, eventId: team.expand.eventId.id })} class="bg-amber-200 p-1 rounded-sm text-black h-fit">Bet +10 Coins</button>
+                <button onclick={bet.bind({ name: team.expand.team.name, event: team.expand.event.title, teamId: team.expand.team.id, eventId: team.expand.event.id })} class="bg-amber-200 p-1 rounded-sm text-black h-fit">Bet +10 Coins</button>
             </div>
         </div>
         {:else}
