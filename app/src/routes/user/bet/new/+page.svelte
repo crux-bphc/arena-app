@@ -11,14 +11,20 @@
 
 <script lang="ts">
     import { goto } from '$app/navigation'
+	import { onMount } from 'svelte';
     import type { PageData } from './$types';
     const { data }: { data: PageData } = $props();
 
-    let balance = $state(getBalance());
+    let balance = $state(0);
+
+    onMount(async () => {
+        await getBalance();
+    });
 
     let events = $state(data.events);
 
     let teams = $state([]);
+    let selectedEvent = $state(null);
 
     let eventNameAndSport = $state('Event Name/Sport');
 
@@ -111,9 +117,9 @@
             return;
         }
 
-        const res = await fetch(`/api/event/${id}/teams`)
-
-        teams = (await res.json())?.standings;
+        const res = await fetch(`/api/event/${id}`);
+        selectedEvent = await res.json();
+        teams = selectedEvent?.expand.teams;
 
         document.querySelector('.modal')?.classList.remove('none');
         eventNameAndSport = `${title}/${sport}`;
@@ -194,18 +200,18 @@
         <div id="team" class="flex flex-row bg-slate-800 p-2 rounded-md place-content-between gap-2">
             <div id="stats">
                 <div>
-                    <label class="font-bold" for="name"><u>Team:</u> </label> <span id="name">{team.expand.teamId.name}</span>
+                    <label class="font-bold" for="name"><u>Team:</u> </label> <span id="name">{team.name}</span>
                 </div>
-                <div>
+                <!-- <div>
                     <label class="font-bold" for="score"><u>Score:</u> </label> <span id="score">{team.score}</span>
                 </div>
                 <div>
                     <label class="font-bold" for="leaderboard"><u>Leaderboard:</u> </label> <span id="score">{position(team.position)}</span>
-                </div>
+                </div> -->
             </div>
             <!-- This should be an input I guess? -->
             <div id="buttons" class="place-self-center justify-self-center">
-                <button onclick={bet.bind({ name: team.expand.teamId.name, event: team.expand.eventId.title, teamId: team.expand.teamId.id, eventId: team.expand.eventId.id })} class="bg-amber-200 p-1 rounded-sm text-black h-fit">Bet +10 Coins</button>
+                <button onclick={bet.bind({ name: team.name, event: selectedEvent.title, teamId: team.id, eventId: selectedEvent.id })} class="bg-amber-200 p-1 rounded-sm text-black h-fit">Bet +10 Coins</button>
             </div>
         </div>
         {:else}

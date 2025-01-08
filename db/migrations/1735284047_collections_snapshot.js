@@ -744,7 +744,7 @@ migrate((app) => {
       },
       "name": "users",
       "oauth2": {
-        "enabled": false,
+        "enabled": true,
         "mappedFields": {
           "avatarURL": "avatar",
           "id": "",
@@ -762,7 +762,7 @@ migrate((app) => {
         "length": 8
       },
       "passwordAuth": {
-        "enabled": true,
+        "enabled": false,
         "identityFields": [
           "email"
         ]
@@ -842,7 +842,25 @@ migrate((app) => {
           "system": false,
           "type": "select",
           "values": [
-            "football"
+            "football",
+            "skating",
+            "squash",
+            "table tennis",
+            "pool",
+            "hockey",
+            "chess",
+            "tennis",
+            "cricket",
+            "athletics",
+            "powerlifting",
+            "swimming",
+            "carrom",
+            "throwball",
+            "kabbadi",
+            "badminton",
+            "snooker",
+            "volleyball",
+            "ultimate frisbee"
           ]
         },
         {
@@ -868,17 +886,31 @@ migrate((app) => {
           "type": "date"
         },
         {
+          "autogeneratePattern": "",
           "hidden": false,
-          "id": "select1587448267",
-          "maxSelect": 1,
+          "id": "text1587448267",
+          "max": 0,
+          "min": 0,
           "name": "location",
+          "pattern": "",
+          "presentable": false,
+          "primaryKey": false,
+          "required": true,
+          "system": false,
+          "type": "text"
+        },
+        {
+          "cascadeDelete": false,
+          "collectionId": "pbc_1568971955",
+          "hidden": false,
+          "id": "relation2529305176",
+          "maxSelect": 999,
+          "minSelect": 0,
+          "name": "teams",
           "presentable": false,
           "required": true,
           "system": false,
-          "type": "select",
-          "values": [
-            "OFG"
-          ]
+          "type": "relation"
         },
         {
           "hidden": false,
@@ -1025,7 +1057,7 @@ migrate((app) => {
           "id": "relation1689669068",
           "maxSelect": 1,
           "minSelect": 0,
-          "name": "userId",
+          "name": "user",
           "presentable": false,
           "required": true,
           "system": false,
@@ -1038,7 +1070,7 @@ migrate((app) => {
           "id": "relation724482924",
           "maxSelect": 1,
           "minSelect": 0,
-          "name": "eventId",
+          "name": "event",
           "presentable": false,
           "required": true,
           "system": false,
@@ -1051,7 +1083,7 @@ migrate((app) => {
           "id": "relation3629289297",
           "maxSelect": 1,
           "minSelect": 0,
-          "name": "teamId",
+          "name": "team",
           "presentable": false,
           "required": true,
           "system": false,
@@ -1119,12 +1151,12 @@ migrate((app) => {
         },
         {
           "cascadeDelete": false,
-          "collectionId": "pbc_1568971955",
+          "collectionId": "pbc_1687431684",
           "hidden": false,
-          "id": "relation3629289297",
+          "id": "relation724482924",
           "maxSelect": 1,
           "minSelect": 0,
-          "name": "teamId",
+          "name": "event",
           "presentable": false,
           "required": true,
           "system": false,
@@ -1132,12 +1164,12 @@ migrate((app) => {
         },
         {
           "cascadeDelete": false,
-          "collectionId": "pbc_1687431684",
+          "collectionId": "pbc_1568971955",
           "hidden": false,
-          "id": "relation724482924",
+          "id": "relation3629289297",
           "maxSelect": 1,
           "minSelect": 0,
-          "name": "eventId",
+          "name": "team",
           "presentable": false,
           "required": true,
           "system": false,

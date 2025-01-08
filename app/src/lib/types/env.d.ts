@@ -8,4 +8,5 @@ declare module '$env/static/private' {
 	export const PB_SUPERUSER_EMAIL: string;
 	export const PB_SUPERUSER_PASSWORD: string;
 	export const INTERNAL_PB_URL: string;
+	export const STARTING_BALANCE: number;
 }

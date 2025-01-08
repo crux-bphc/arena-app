@@ -32,10 +32,10 @@
                     <span id="coins" class="font-bold"><u>{bet.amount}</u></span> <label for="coins">Coins bet</label> 
                 </div>
                 <div>
-                    <label class="font-bold" for="sport"><u>Event:</u> </label> <span id="sport">{bet.expand.eventId.title}</span>
+                    <label class="font-bold" for="sport"><u>Event:</u> </label> <span id="sport">{bet.expand.event.title}</span>
                 </div>
                 <div>
-                    <label class="font-bold" for="team"><u>Team:</u> </label> <span id="team">{bet.expand.teamId.name}</span>
+                    <label class="font-bold" for="team"><u>Team:</u> </label> <span id="team">{bet.expand.team.name}</span>
                 </div>
                 <div>
                     <label class="font-bold" for="time"><u>Time bet:</u> </label> <span id="time">{new Date(bet.updated)}</span>

@@ -13,11 +13,11 @@ const handleGET: RequestHandler = async ({ locals, url }) => {
 	try {
 		const bets: BetsResponse<BetExpand>[] = await pb
 			.collection('bets')
-			.getFullList({ filter: `userId="${locals.user.id}"`, expand: 'teamId,eventId' });
+			.getFullList({ filter: `user="${locals.user.id}"`, expand: 'team,event' });
 
 		const now = Date.now();
 		const filteredBets = bets.filter((bet) => {
-			const startTime = new Date(bet.expand?.eventId.startTime ?? '').getTime();
+			const startTime = new Date(bet.expand?.event.startTime ?? '').getTime();
 			return open ? startTime > now : startTime < now;
 		});
 

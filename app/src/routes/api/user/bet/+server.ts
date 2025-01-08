@@ -17,8 +17,8 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 
 	let bet = (
 		await pb.collection('bets').getFullList({
-			filter: `userId="${locals.user.id}" && teamId="${teamId}" && eventId="${eventId}"`,
-			expand: 'eventId'
+			filter: `user="${locals.user.id}" && team="${teamId}" && event="${eventId}"`,
+			expand: 'event'
 		})
 	).at(0) as BetsResponse<BetExpand> | undefined;
 
@@ -30,7 +30,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			return error(400, 'Bet amount cannot be negative!');
 		}
 
-		const startTime = new Date(bet.expand?.eventId.startTime ?? '').getTime();
+		const startTime = new Date(bet.expand?.event.startTime ?? '').getTime();
 		if (now > startTime) {
 			return error(400, 'Bets are closed!');
 		}
@@ -49,7 +49,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 
 		newBet = await pb
 			.collection('bets')
-			.create({ userId: locals.user.id, teamId, eventId, amount });
+			.create({ user: locals.user.id, team: teamId, event: eventId, amount });
 	}
 
 	await pb.collection('users').update(userid, { balance: locals.user.balance - amount });

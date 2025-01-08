@@ -1,9 +1,9 @@
 export type BetExpand = {
-	eventId: EventsResponse;
-	teamId: TeamsResponse;
+	event: EventsResponse;
+	team: TeamsResponse;
 };
 
 export type StandingsExpand = {
-	eventId: EventsResponse,
-	teamId: TeamsResponse
-}
+	event: EventsResponse;
+	team: TeamsResponse;
+};

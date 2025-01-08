@@ -2,6 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { PUBLIC_AUTH_REDIRECT_URL } from '$env/static/public';
 import type { AuthProviderInfo } from 'pocketbase';
+import { STARTING_BALANCE } from '$env/static/private';
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	const code = url.searchParams.get('code');
@@ -18,7 +19,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 
 	const { record: user } = await locals.pb
 		.collection('users')
-		.authWithOAuth2Code(provider.name, code, provider.codeVerifier, PUBLIC_AUTH_REDIRECT_URL);
+		.authWithOAuth2Code(provider.name, code, provider.codeVerifier, PUBLIC_AUTH_REDIRECT_URL, { balance: STARTING_BALANCE });
 	console.log(user);
 
 	return redirect(302, '/');
