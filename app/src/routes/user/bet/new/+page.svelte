@@ -11,10 +11,15 @@
 
 <script lang="ts">
     import { goto } from '$app/navigation'
+	import { onMount } from 'svelte';
     import type { PageData } from './$types';
     const { data }: { data: PageData } = $props();
 
-    let balance = $state(getBalance());
+    let balance = $state(0);
+
+    onMount(async () => {
+        await getBalance();
+    });
 
     let events = $state(data.events);
 
