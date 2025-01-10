@@ -22,6 +22,7 @@ services:
     volumes:
       - ./db/migrations:/pb/pb_migrations
       - ./db/data:/pb/pb_data
+      - ./db/hooks:/pb/pb_hooks
     profiles:
       - dev
 
