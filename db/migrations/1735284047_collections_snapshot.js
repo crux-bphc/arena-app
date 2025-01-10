@@ -928,6 +928,15 @@ migrate((app) => {
         },
         {
           "hidden": false,
+          "id": "bool847678146",
+          "name": "standingsUpdated",
+          "presentable": false,
+          "required": false,
+          "system": false,
+          "type": "bool"
+        },
+        {
+          "hidden": false,
           "id": "autodate2990389176",
           "name": "created",
           "onCreate": true,
