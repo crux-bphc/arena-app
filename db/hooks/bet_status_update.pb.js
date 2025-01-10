@@ -1,5 +1,8 @@
-// run every minute
-cronAdd("bet_status_update", "*/1 * * * *", () => {
+onRecordUpdate((e) => {
+  if (!e.record.getBool("standingsUpdated")) {
+    return e.next();
+  }
+
   // unfortunately pocketbase admin UI doesn't support showing timestamps in local time and defaults to UTC
   // i don't think it's realistic or convenient to expect them to convert local time to UTC while adding events
   // so this means a lot of reverse timezone shenanigans will be needed in the frontend too
@@ -37,7 +40,9 @@ cronAdd("bet_status_update", "*/1 * * * *", () => {
       // does this make things safe from race conditions? i hope so
       let user = $app.findRecordById("users", bet.get("user"));
       user.set("balance", user.getInt("balance") + payout);
-      app.save(user);
+      $app.save(user);
     }
   }
-});
+
+  e.next();
+}, "events");
