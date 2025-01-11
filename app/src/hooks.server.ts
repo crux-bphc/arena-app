@@ -1,8 +1,10 @@
 import PocketBase from 'pocketbase';
-import { redirect, type Handle } from '@sveltejs/kit';
+import { error, redirect, type Handle } from '@sveltejs/kit';
 import type { TypedPocketBase } from '$lib/types/pocketbase';
 import { sequence } from '@sveltejs/kit/hooks';
 import { INTERNAL_PB_URL } from '$env/static/private';
+import { _betCreateSchema } from './routes/api/user/bet/+server';
+import type { AnyZodObject } from 'zod';
 
 const authentication: Handle = async ({ event, resolve }) => {
 	event.locals.pb = new PocketBase(INTERNAL_PB_URL) as TypedPocketBase;
@@ -42,4 +44,23 @@ const authorization: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-export const handle = sequence(authentication, authorization);
+const schemaMap: { [keys: string]: AnyZodObject } = {
+	'/api/user/bet': _betCreateSchema
+};
+
+const validation: Handle = async ({ event, resolve }) => {
+	const schema = schemaMap[event.url.pathname];
+	if (schema) {
+		// apparently sveltekit doesn't like it if you read the request body twice, so we need to clone the request every time
+		const clonedRequest = event.request.clone();
+		const result = schema.safeParse(await clonedRequest.json());
+		if (!result.success) {
+			return error(400, result.error);
+		}
+	}
+
+	const response = await resolve(event);
+	return response;
+};
+
+export const handle = sequence(authentication, authorization, validation);

@@ -1,7 +1,14 @@
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import pb from '$lib/server/database';
+import { z } from 'zod';
 import type { BetsResponse } from '$lib/types/pocketbase';
 import type { BetExpand } from '$lib/types/expand';
+
+export const _betCreateSchema = z.object({
+	teamId: z.string(),
+	eventId: z.string(),
+	amount: z.number().int()
+});
 
 const handlePOST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
