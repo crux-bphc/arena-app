@@ -17,6 +17,15 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 
 	const { teamId, eventId, amount } = await request.json();
 
+	const event = (await pb.collection('events').getFullList({ filter: `id="${eventId}"` })).at(0);
+	if (!event) {
+		return error(400, 'Event not found!');
+	}
+
+	if (!event.teams.includes(teamId)) {
+		return error(400, 'Team not found!');
+	}
+
 	if (locals.user.balance < amount) {
 		return error(400, 'Balance too low!');
 	}
@@ -47,7 +56,6 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			return error(400, 'Bet amount cannot be negative!');
 		}
 
-		const event = await pb.collection('events').getFirstListItem(`id="${eventId}"`);
 		const startTime = new Date(event.startTime).getTime();
 		if (now > startTime) {
 			return error(400, 'Bets are closed!');
