@@ -9,7 +9,6 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	const { teamId, eventId, amount } = await request.json();
-	const userid = locals.user.id;
 
 	if (locals.user.balance < amount) {
 		return error(400, 'Balance too low!');
@@ -64,7 +63,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		await pb.collection('betPool').create({ event: eventId, team: teamId, amount });
 	}
 
-	await pb.collection('users').update(userid, { balance: locals.user.balance - amount });
+	await pb.collection('users').update(locals.user.id, { balance: locals.user.balance - amount });
 	return json(newBet);
 };
 
