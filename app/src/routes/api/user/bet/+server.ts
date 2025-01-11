@@ -52,6 +52,18 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			.create({ user: locals.user.id, team: teamId, event: eventId, amount });
 	}
 
+	let betPool = (
+		await pb.collection('betPool').getFullList({
+			filter: `team="${teamId}" && event="${eventId}"`
+		})
+	).at(0);
+
+	if (betPool) {
+		await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + amount });
+	} else {
+		await pb.collection('betPool').create({ event: eventId, team: teamId, amount });
+	}
+
 	await pb.collection('users').update(userid, { balance: locals.user.balance - amount });
 	return json(newBet);
 };
