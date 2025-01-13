@@ -104,6 +104,7 @@ export type BetsRecord = {
 	created?: IsoDateString;
 	event: RecordIdString;
 	id: string;
+	payout?: number;
 	team: RecordIdString;
 	updated?: IsoDateString;
 	user: RecordIdString;

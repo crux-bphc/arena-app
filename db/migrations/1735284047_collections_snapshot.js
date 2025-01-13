@@ -1112,6 +1112,18 @@ migrate((app) => {
         },
         {
           "hidden": false,
+          "id": "number1311680770",
+          "max": null,
+          "min": 0,
+          "name": "payout",
+          "onlyInt": true,
+          "presentable": false,
+          "required": false,
+          "system": false,
+          "type": "number"
+        },
+        {
+          "hidden": false,
           "id": "autodate2990389176",
           "name": "created",
           "onCreate": true,
