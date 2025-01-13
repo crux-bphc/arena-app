@@ -53,6 +53,8 @@ onRecordUpdate((e) => {
   for (const bet of wonBets) {
     const amount = bet.getInt("amount");
     const payout = Math.floor((amount * totalPool) / wonPool);
+    bet.set("payout", payout);
+    $app.save(bet);
 
     // not using the user expands on bets since it might have stale data (which means money could be disappearing)
     // does this make things safe from race conditions? i hope so
