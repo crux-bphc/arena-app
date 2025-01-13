@@ -1,7 +1,14 @@
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import pb from '$lib/server/database';
+import { z } from 'zod';
 import type { BetsResponse } from '$lib/types/pocketbase';
 import type { BetExpand } from '$lib/types/expand';
+
+export const _betCreateSchema = z.object({
+	teamId: z.string(),
+	eventId: z.string(),
+	amount: z.number().int()
+});
 
 const handlePOST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
@@ -9,7 +16,15 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	const { teamId, eventId, amount } = await request.json();
-	const userid = locals.user.id;
+
+	const event = (await pb.collection('events').getFullList({ filter: `id="${eventId}"` })).at(0);
+	if (!event) {
+		return error(400, 'Event not found!');
+	}
+
+	if (!event.teams.includes(teamId)) {
+		return error(400, 'Team not found!');
+	}
 
 	if (locals.user.balance < amount) {
 		return error(400, 'Balance too low!');
@@ -41,7 +56,6 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			return error(400, 'Bet amount cannot be negative!');
 		}
 
-		const event = await pb.collection('events').getFirstListItem(`id="${eventId}"`);
 		const startTime = new Date(event.startTime).getTime();
 		if (now > startTime) {
 			return error(400, 'Bets are closed!');
@@ -52,7 +66,19 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			.create({ user: locals.user.id, team: teamId, event: eventId, amount });
 	}
 
-	await pb.collection('users').update(userid, { balance: locals.user.balance - amount });
+	let betPool = (
+		await pb.collection('betPool').getFullList({
+			filter: `team="${teamId}" && event="${eventId}"`
+		})
+	).at(0);
+
+	if (betPool) {
+		await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + amount });
+	} else {
+		await pb.collection('betPool').create({ event: eventId, team: teamId, amount });
+	}
+
+	await pb.collection('users').update(locals.user.id, { balance: locals.user.balance - amount });
 	return json(newBet);
 };
 

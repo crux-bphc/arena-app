@@ -11,6 +11,7 @@ export enum Collections {
 	Mfas = '_mfas',
 	Otps = '_otps',
 	Superusers = '_superusers',
+	BetPool = 'betPool',
 	Bets = 'bets',
 	Events = 'events',
 	Standings = 'standings',
@@ -89,11 +90,21 @@ export type SuperusersRecord = {
 	verified?: boolean;
 };
 
+export type BetPoolRecord = {
+	amount?: number;
+	created?: IsoDateString;
+	event: RecordIdString;
+	id: string;
+	team: RecordIdString;
+	updated?: IsoDateString;
+};
+
 export type BetsRecord = {
 	amount: number;
 	created?: IsoDateString;
 	event: RecordIdString;
 	id: string;
+	payout?: number;
 	team: RecordIdString;
 	updated?: IsoDateString;
 	user: RecordIdString;
@@ -128,6 +139,7 @@ export type EventsRecord = {
 	id: string;
 	location: string;
 	sport: EventsSportOptions;
+	standingsUpdated?: boolean;
 	startTime: IsoDateString;
 	teams: RecordIdString[];
 	title: string;
@@ -175,6 +187,8 @@ export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemF
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>;
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> &
 	AuthSystemFields<Texpand>;
+export type BetPoolResponse<Texpand = unknown> = Required<BetPoolRecord> &
+	BaseSystemFields<Texpand>;
 export type BetsResponse<Texpand = unknown> = Required<BetsRecord> & BaseSystemFields<Texpand>;
 export type EventsResponse<Texpand = unknown> = Required<EventsRecord> & BaseSystemFields<Texpand>;
 export type StandingsResponse<Texpand = unknown> = Required<StandingsRecord> &
@@ -190,6 +204,7 @@ export type CollectionRecords = {
 	_mfas: MfasRecord;
 	_otps: OtpsRecord;
 	_superusers: SuperusersRecord;
+	betPool: BetPoolRecord;
 	bets: BetsRecord;
 	events: EventsRecord;
 	standings: StandingsRecord;
@@ -203,6 +218,7 @@ export type CollectionResponses = {
 	_mfas: MfasResponse;
 	_otps: OtpsResponse;
 	_superusers: SuperusersResponse;
+	betPool: BetPoolResponse;
 	bets: BetsResponse;
 	events: EventsResponse;
 	standings: StandingsResponse;
@@ -219,6 +235,7 @@ export type TypedPocketBase = PocketBase & {
 	collection(idOrName: '_mfas'): RecordService<MfasResponse>;
 	collection(idOrName: '_otps'): RecordService<OtpsResponse>;
 	collection(idOrName: '_superusers'): RecordService<SuperusersResponse>;
+	collection(idOrName: 'betPool'): RecordService<BetPoolResponse>;
 	collection(idOrName: 'bets'): RecordService<BetsResponse>;
 	collection(idOrName: 'events'): RecordService<EventsResponse>;
 	collection(idOrName: 'standings'): RecordService<StandingsResponse>;
