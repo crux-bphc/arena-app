@@ -27,7 +27,8 @@ services:
       - dev
   sports-db:
     build:
-      context: ./db
+      dockerfile: ./db/Dockerfile
+      context: ./sports_db
     env_file: .env
     ports:
       - $SPORTS_PB_PORT:$PB_PORT
