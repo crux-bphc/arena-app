@@ -11,6 +11,7 @@ services:
       - node_modules:/app/node_modules
     depends_on:
       - db
+      - sports-db
     profiles:
       - dev
   db:
@@ -23,6 +24,18 @@ services:
       - ./db/migrations:/pb/pb_migrations
       - ./db/data:/pb/pb_data
       - ./db/hooks:/pb/pb_hooks
+    profiles:
+      - dev
+  sports-db:
+    build:
+      dockerfile: ./db/Dockerfile
+      context: ./sports_db
+    env_file: .env
+    ports:
+      - $SPORTS_PB_PORT:$PB_PORT
+    volumes:
+      - ./sports_db/migrations:/pb/pb_migrations
+      - ./sports_db/data:/pb/pb_data
     profiles:
       - dev
 
