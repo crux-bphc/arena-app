@@ -36,6 +36,7 @@ services:
     volumes:
       - ./sports_db/migrations:/pb/pb_migrations
       - ./sports_db/data:/pb/pb_data
+      - ./sports_db/hooks:/pb/pb_hooks
     profiles:
       - dev
 

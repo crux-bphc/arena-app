@@ -34,7 +34,8 @@ const authentication: Handle = async ({ event, resolve }) => {
 };
 
 const authorization: Handle = async ({ event, resolve }) => {
-	if (!event.route.id?.startsWith('/(auth)/')) {
+	const noAuthRoutes = ['/api/collection/update'];
+	if (!noAuthRoutes.includes(event.route.id) && !event.route.id?.startsWith('/(auth)/')) {
 		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
 			return redirect(303, '/login');
 		}
