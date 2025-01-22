@@ -33,9 +33,16 @@ const authentication: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
+const unauthenticatedRoutePrefixes = [
+	'/(auth)/',
+	'/api/event/',
+	'/api/events/',
+	'/api/user/leaderboard',
+	'/api/collection'
+];
+
 const authorization: Handle = async ({ event, resolve }) => {
-	const noAuthRoutes = ['/api/collection/update'];
-	if (!noAuthRoutes.includes(event.route.id) && !event.route.id?.startsWith('/(auth)/')) {
+	if (!unauthenticatedRoutePrefixes.some((prefix) => event.route.id?.startsWith(prefix))) {
 		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
 			return redirect(303, '/login');
 		}
