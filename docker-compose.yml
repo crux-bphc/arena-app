@@ -45,8 +45,8 @@ services:
 
   app-prod:
     build:
-      context: ./app
-      dockerfile: prod.Dockerfile
+      context: ./
+      dockerfile: ./app/prod.Dockerfile
     env_file: .env
     ports:
       - $APP_PORT:$APP_PORT
