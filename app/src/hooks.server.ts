@@ -33,8 +33,15 @@ const authentication: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
+const unauthenticatedRoutePrefixes = [
+	'/(auth)/',
+	'/api/event/',
+	'/api/events/',
+	'/api/user/leaderboard'
+];
+
 const authorization: Handle = async ({ event, resolve }) => {
-	if (!event.route.id?.startsWith('/(auth)/')) {
+	if (!unauthenticatedRoutePrefixes.some((prefix) => event.route.id?.startsWith(prefix))) {
 		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
 			return redirect(303, '/login');
 		}
