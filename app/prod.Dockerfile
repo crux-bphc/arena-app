@@ -1,6 +1,5 @@
 FROM node:lts-alpine3.21 AS base
 
-# ENV NODE_ENV production
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
@@ -23,5 +22,7 @@ RUN pnpm run build
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app/build
+
+ENV NODE_ENV production
 
 CMD pnpm start --host --port $APP_PORT
