@@ -1,9 +1,12 @@
 import type { IsoDateString } from "$lib/types/pocketbase";
 
-// Ehhhh. too many types I guess
-const validate = (
-    { collectionName, startTime, endTime }: 
-    { collectionName: string | undefined, startTime: IsoDateString | undefined, endTime: IsoDateString | undefined }): { error: string | undefined } => {
+interface ValidateParams {
+    collectionName: string | undefined,
+    startTime: IsoDateString | undefined,
+    endTime: IsoDateString | undefined,
+}
+
+const validate = ({ collectionName, startTime, endTime }: ValidateParams): { error: string | undefined } => {
     // Validate events records
     if (collectionName == 'events') {
         if (new Date(startTime).getTime() > new Date(endTime).getTime()) {
