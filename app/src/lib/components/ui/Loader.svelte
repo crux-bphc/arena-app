@@ -32,7 +32,6 @@
   }
 </style>
 
-<div>HIIIIIIIIIIIIIIIII</div>
 <div class="loading-container">
     <div class="spinner"></div>
     <p class="loading-text">Loading...</p>
