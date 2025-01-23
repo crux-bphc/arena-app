@@ -12,7 +12,7 @@ const handleGET: RequestHandler = async ({ params }) => {
 		});
 		return json({ standings });
 	} catch (err) {
-		return error(500, `Failed to get team leaderboard data due to error: ${err}`);
+		return error(500, `Failed to get event standings: ${err}`);
 	}
 };
 

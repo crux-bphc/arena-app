@@ -8,7 +8,7 @@ const handleGET: RequestHandler = async () => {
 		const users = await pb.collection('users').getFullList({ sort: '-balance' });
 		return json({ users });
 	} catch (err) {
-		return error(500, `Failed to get user leaderboard data due to error: ${err}`);
+		return error(500, `Failed to get leaderboard: ${err}`);
 	}
 };
 

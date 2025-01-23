@@ -43,6 +43,7 @@ const unauthenticatedRoutePrefixes = [
 
 const authorization: Handle = async ({ event, resolve }) => {
 	if (!unauthenticatedRoutePrefixes.some((prefix) => event.route.id?.startsWith(prefix))) {
+	if (!unauthenticatedRoutePrefixes.some((prefix) => event.route.id?.startsWith(prefix))) {
 		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
 			return redirect(303, '/login');
 		}

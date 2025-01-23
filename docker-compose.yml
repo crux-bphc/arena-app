@@ -8,12 +8,25 @@ services:
       - $APP_PORT:$APP_PORT
     volumes:
       - ./app:/app
-      - node_modules:/app/node_modules
     depends_on:
       - db
       - sports-db
     profiles:
       - dev
+
+  app-prod:
+    build:
+      context: ./
+      dockerfile: ./app/prod.Dockerfile
+    env_file: .env
+    ports:
+      - $APP_PORT:$APP_PORT
+    depends_on:
+      - db
+      - sports-db
+    profiles:
+      - prod
+      
   db:
     build:
       context: ./db
@@ -26,6 +39,8 @@ services:
       - ./db/hooks:/pb/pb_hooks
     profiles:
       - dev
+      - prod
+
   sports-db:
     build:
       dockerfile: ../db/Dockerfile
@@ -39,6 +54,4 @@ services:
       - ./sports_db/hooks:/pb/pb_hooks
     profiles:
       - dev
-
-volumes:
-  node_modules:
+      - prod
