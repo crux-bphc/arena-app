@@ -4,15 +4,12 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 // This does not require login
 const handleGET: RequestHandler = async ({ params }) => {
 	try {
-		const { eventId } = params;
-
-		const event = (
-			await pb.collection('events').getFullList({ filter: `id="${eventId}"`, expand: 'teams' })
-		).at(0);
-
-		return json(event);
+		const betPools = await pb
+			.collection('betPool')
+			.getFullList({ filter: `event.id="${params.eventId}"` });
+		return json(betPools);
 	} catch (err) {
-		return error(500, `Failed to get event details: ${err}`);
+		return error(500, `Failed to get event bet pools: ${err}`);
 	}
 };
 
