@@ -40,11 +40,6 @@
 						{index + 1}
 					</span>
 					<span class="user-details flex items-center">
-						<img
-							src={`${PUBLIC_PB_URL}/api/files/users/${user.id}/${user.avatar}`}
-							alt="avatar"
-							class="h-12 w-12 rounded-full border-2 border-white object-cover"
-						/>
 						<span
 							class="ml-4 max-w-[200px] overflow-hidden truncate text-ellipsis text-lg font-semibold"
 						>
