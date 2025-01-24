@@ -2,8 +2,12 @@
     import { PUBLIC_PB_URL } from '$env/static/public';
     import { onMount } from 'svelte';
     import Loader from '$lib/components/Loader.svelte';
+    import type { UsersResponse } from '$lib/types/pocketbase';
 
-    let leaderboard = $state(null)
+    interface LeaderboardData {
+      users: UsersResponse[];
+    }
+    let leaderboard = $state<LeaderboardData | null>(null);
 
     async function getLeaderboardData(){
         try {
