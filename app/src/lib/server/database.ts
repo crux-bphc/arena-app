@@ -6,10 +6,15 @@ import type { TypedPocketBase } from '$lib/types/pocketbase';
 const pb = new PocketBase(INTERNAL_PB_URL) as TypedPocketBase;
 pb.autoCancellation(false);
 
-if (!building) {
-	await pb
-		.collection('_superusers')
-		.authWithPassword(PB_SUPERUSER_EMAIL, PB_SUPERUSER_PASSWORD, { autoRefreshThreshold: 30 * 60 });
+try {
+	if (!building) {
+		await pb
+			.collection('_superusers')
+			.authWithPassword(PB_SUPERUSER_EMAIL, PB_SUPERUSER_PASSWORD, {
+				autoRefreshThreshold: 30 * 60
+			});
+	}
+} catch (error) {
+	console.error('Failed to authenticate with PocketBase:', error);
 }
-
 export default pb;
