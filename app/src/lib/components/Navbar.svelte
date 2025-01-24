@@ -1,13 +1,7 @@
 <script lang="ts">
-	import { PUBLIC_PB_URL } from '$env/static/public';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import type { UsersResponse } from '$lib/types/pocketbase';
-	import {
-		IconBallBasketball,
-		IconCalendarWeek,
-		IconChartBar,
-		IconHome
-	} from '@tabler/icons-svelte';
+	import { Calendar, ChartNoAxesColumn, Dribbble, House, User } from 'lucide-svelte';
 
 	let { user }: { user: UsersResponse | undefined } = $props();
 </script>
@@ -20,35 +14,27 @@
 	>
 		<!-- Home / Events page buttom -->
 		<Button variant="ghost" size="icon" href="/" class="rounded-full ">
-			<IconHome stroke={1.5} class="size-8" />
+			<House class="size-8" />
 		</Button>
 
 		<!-- Sports page button -->
 		<Button variant="ghost" size="icon" href="/sports" class="rounded-full ">
-			<IconBallBasketball stroke={1.5} class="size-8" />
+			<Dribbble class="size-8" />
 		</Button>
 
 		<!-- Calender page button -->
 		<Button variant="ghost" size="icon" href="/calender" class="rounded-full ">
-			<IconCalendarWeek stroke={1.5} class="size-8" />
+			<Calendar class="size-8" />
 		</Button>
 
 		<!-- Leaderboard page button -->
 		<Button variant="ghost" size="icon" href="/leaderboard" class="rounded-full ">
-			<IconChartBar stroke={1.5} class="size-8" />
+			<ChartNoAxesColumn class="size-8" />
 		</Button>
-
+		
 		<!-- Profile page button -->
 		<Button variant="ghost" size="icon" href="/profile" class="rounded-full ">
-			<div class="size-8 rounded-full">
-				{#if user}
-					<img
-						src={`${PUBLIC_PB_URL}/api/files/users/${user.id}/${user.avatar}`}
-						alt="avatar"
-						class="rounded-full"
-					/>
-				{/if}
-			</div>
+			<User class="size-8" />
 		</Button>
 	</div>
 </div>
