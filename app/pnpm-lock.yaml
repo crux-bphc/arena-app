@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@tabler/icons-svelte':
-        specifier: ^3.26.0
-        version: 3.26.0(svelte@5.16.0)
       pocketbase:
         specifier: ^0.24.0
         version: 0.24.0
@@ -449,14 +446,6 @@ packages:
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
-
-  '@tabler/icons-svelte@3.26.0':
-    resolution: {integrity: sha512-dKDcPgrXF6xnS1Wih9AMBidBt/TsEuJeZE/1w8o6MzHK1wkzUQDlT9+2sDz+3sw+XzZKFfUKCpvOwR6OOtJbAg==}
-    peerDependencies:
-      svelte: '>=3 <6 || >=5.0.0-next.0'
-
-  '@tabler/icons@3.26.0':
-    resolution: {integrity: sha512-oO3D4ss+DxzxqU1aDy0f1HmToyrO0gcQWIMpzHAfV1quPUx0BZYvNm5xz1DQb4DxNm/+xNvbBGLJy4pzTLYWag==}
 
   '@tootallnate/once@1.1.2':
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
@@ -1946,13 +1935,6 @@ snapshots:
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
-
-  '@tabler/icons-svelte@3.26.0(svelte@5.16.0)':
-    dependencies:
-      '@tabler/icons': 3.26.0
-      svelte: 5.16.0
-
-  '@tabler/icons@3.26.0': {}
 
   '@tootallnate/once@1.1.2':
     optional: true
