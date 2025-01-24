@@ -9,28 +9,28 @@
 	let { user }: { user: UsersResponse | undefined } = $props();
 </script>
 
-<div class="xs:p-4 fixed inset-x-0 bottom-0 w-full p-3">
+<div class="fixed inset-x-0 bottom-0 w-full p-3 xs:p-4">
 	<div
-		class="bg-accent/35 xs:rounded-3xl xs:p-4 flex w-full flex-row items-center justify-around rounded-2xl p-2 backdrop-blur-lg"
+		class="flex w-full flex-row items-center justify-around rounded-2xl bg-accent/35 p-2 backdrop-blur-lg xs:rounded-3xl xs:p-4"
 	>
 		<!-- Home / Events page buttom -->
 		<Button variant="ghost" href="/" class="rounded-full ">
-			<IconHomeFilled class="xs:size-8 size-6" />
+			<IconHomeFilled class="size-6 xs:size-8" />
 		</Button>
 
 		<!-- Leaderboard page button -->
 		<Button variant="ghost" href="/leaderboard" class="rounded-full ">
-			<IconFlagFilled class="xs:size-8 size-6" />
+			<IconFlagFilled class="size-6 xs:size-8" />
 		</Button>
 
 		<!-- Calender page button -->
 		<Button variant="ghost" href="/calender" class="rounded-full ">
-			<IconCalendarEvent class="xs:size-8 size-6" />
+			<IconCalendarEvent class="size-6 xs:size-8" />
 		</Button>
 
 		<!-- Profile page button -->
 		<Button variant="ghost" href="/profile" class="rounded-full ">
-			<div class="bg-foreground xs:size-8 size-6 rounded-full">
+			<div class="size-6 rounded-full bg-foreground xs:size-8">
 				{#if user}
 					<img
 						src={`${PUBLIC_PB_URL}/api/files/users/${user.id}/${user.avatar}`}
