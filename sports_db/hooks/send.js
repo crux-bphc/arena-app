@@ -1,6 +1,6 @@
 const send = (e, name) => {
     const res = $http.send({
-        url: `${process.env.APP_URL}/api/collection/${name}`, 
+        url: `${process.env.INTERNAL_PB_URL}/api/collection/${name}`, 
         method: 'POST', 
         body: JSON.stringify(e.record),
         headers: { 'content-type': 'application/json' }
@@ -10,7 +10,7 @@ const send = (e, name) => {
             throw new BadRequestError(`Failed to ${name} record! ${res.json.message}`);
         else
             // Will always be a 500?
-            throw new BadRequestError(`${res.statusCode}: Failed to ${name} record! Please try again.`);
+            throw new BadRequestError(`${res.statusCode}: Failed to ${name} record! Please try again. ${res.json.message}`);
     }
     e.next();
 }

@@ -7,6 +7,7 @@ onRecordDelete((e) => require(`${__hooks}/send.js`).send(e, 'delete'), 'events',
 
 // If a user tries to modify any part of the pre-determined collections,
 // an error is produced
+// Note that these event hooks do not allow migrations to occur, and must be removed when migrating
 onCollectionCreate((_) => {
     throw new BadRequestError('Unauthorized attempt to create a new collection!');
 });
