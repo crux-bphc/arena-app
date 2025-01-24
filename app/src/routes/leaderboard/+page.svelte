@@ -45,14 +45,14 @@
           />
           <span class="font-semibold text-lg ml-4 max-w-[200px] truncate text-ellipsis overflow-hidden">
             {user.name}
-            {#if index === 0}
-              <span class="ml-2 text-yellow-400">🏆</span>
-            {:else if index === 1}
-              <span class="ml-2 text-gray-300">🥈</span>
-            {:else if index === 2}
-              <span class="ml-2 text-yellow-600">🥉</span>
-            {/if}
           </span>
+          {#if index === 0}
+            <span class="ml-2 text-yellow-400">🏆</span>
+          {:else if index === 1}
+            <span class="ml-2 text-gray-300">🥈</span>
+          {:else if index === 2}
+            <span class="ml-2 text-yellow-600">🥉</span>
+          {/if}
         </span>
         <span class="text-lg font-bold text-center">
           {user.balance}
