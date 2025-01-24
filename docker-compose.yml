@@ -1,13 +1,14 @@
 services:
   app-dev:
     build:
-      context: ./app
-      dockerfile: dev.Dockerfile
+      context: ./
+      dockerfile: ./app/dev.Dockerfile
     env_file: .env
     ports:
       - $APP_PORT:$APP_PORT
     volumes:
       - ./app:/app
+      - /app/node_modules
     depends_on:
       - db
       - sports-db

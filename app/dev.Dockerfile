@@ -8,12 +8,12 @@ RUN corepack enable
 
 WORKDIR /app
 
-COPY package.json ./
-COPY pnpm-lock.yaml ./
-COPY tsconfig.json ./
+COPY ./app/package.json ./
+COPY ./app/pnpm-lock.yaml ./
+COPY ./app/tsconfig.json ./
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-COPY . .
+COPY ./app .
 
 CMD pnpm run dev --host --port $APP_PORT
