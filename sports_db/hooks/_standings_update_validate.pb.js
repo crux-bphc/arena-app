@@ -34,3 +34,15 @@ onRecordUpdate((e) => {
 
 	e.next();
 }, "events");
+
+onRecordCreate((e) => {
+	const event = e.record;
+
+	if (event.getBool("standingsUpdated")) {
+		throw new BadRequestError(
+			"Cannot create event with standingsUpdated set to true!"
+		);
+	}
+
+	e.next();
+}, "events");
