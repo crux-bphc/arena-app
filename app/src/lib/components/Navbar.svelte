@@ -4,7 +4,9 @@
 	import { page } from '$app/state';
 
 	let check = (path: string) =>
-		page.url.pathname == path ? 'bg-primary text-primary-foreground' : '';
+		page.url.pathname == path
+			? 'hover:bg-transparent duration-0 bg-primary text-primary-foreground'
+			: '';
 </script>
 
 <div
@@ -14,23 +16,23 @@
 		class="bg-secondary flex w-full flex-row items-center justify-between rounded-full border-[1.5px] p-3"
 	>
 		<!-- Home / Events page buttom -->
-		<Button variant="ghost" size="icon" href="/" class="rounded-full {check('/')}">
+		<Button variant="navbar" size="icon" href="/" class="rounded-full {check('/')}">
 			<House class="size-8" />
 		</Button>
 
 		<!-- Sports page button -->
-		<Button variant="ghost" size="icon" href="/sports" class="rounded-full {check('/sports')}">
+		<Button variant="navbar" size="icon" href="/sports" class="rounded-full {check('/sports')}">
 			<Dribbble class="size-8" />
 		</Button>
 
 		<!-- Calender page button -->
-		<Button variant="ghost" size="icon" href="/calender" class="rounded-full {check('/calender')}">
+		<Button variant="navbar" size="icon" href="/calender" class="rounded-full {check('/calender')}">
 			<Calendar class="size-8" />
 		</Button>
 
 		<!-- Leaderboard page button -->
 		<Button
-			variant="ghost"
+			variant="navbar"
 			size="icon"
 			href="/leaderboard"
 			class="rounded-full {check('/leaderboard')}"
@@ -39,7 +41,7 @@
 		</Button>
 
 		<!-- Profile page button -->
-		<Button variant="ghost" size="icon" href="/profile" class="rounded-full {check('/profile')}">
+		<Button variant="navbar" size="icon" href="/profile" class="rounded-full {check('/profile')}">
 			<User class="size-8" />
 		</Button>
 	</div>
