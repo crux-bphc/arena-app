@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
-	import type { UsersResponse } from '$lib/types/pocketbase';
 	import { Calendar, ChartNoAxesColumn, Dribbble, House, User } from 'lucide-svelte';
-	import { page } from '$app/state'
+	import { page } from '$app/state';
 
-	let { user }: { user: UsersResponse | undefined } = $props();
-	let check = path => page.url.pathname == path ? 'bg-primary text-black' : ''
-</script> 
+	let check = (path: string) =>
+		page.url.pathname == path ? 'bg-primary text-primary-foreground' : '';
+</script>
 
 <div
 	class="xs:px-4 to-background via-background/80 fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-transparent px-2 py-4"
@@ -30,10 +29,15 @@
 		</Button>
 
 		<!-- Leaderboard page button -->
-		<Button variant="ghost" size="icon" href="/leaderboard" class="rounded-full {check('/leaderboard')}">
+		<Button
+			variant="ghost"
+			size="icon"
+			href="/leaderboard"
+			class="rounded-full {check('/leaderboard')}"
+		>
 			<ChartNoAxesColumn class="size-8" />
 		</Button>
-		
+
 		<!-- Profile page button -->
 		<Button variant="ghost" size="icon" href="/profile" class="rounded-full {check('/profile')}">
 			<User class="size-8" />
