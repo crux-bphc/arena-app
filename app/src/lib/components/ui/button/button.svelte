@@ -25,7 +25,7 @@
 	{#if variant === 'navbar'}
 		<!-- hover card -->
 		<span
-			class="bg-primary absolute inset-7 rounded-full transition-all duration-100 ease-in group-hover:inset-0 group-[.on-page]:inset-0"
+			class="bg-primary absolute inset-7 rounded-full transition-all duration-100 ease-in group-[.on-page]:inset-0"
 		></span>
 		<span class="z-10">
 			<slot />
