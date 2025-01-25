@@ -37,8 +37,7 @@ const unauthenticatedRoutePrefixes = [
 	'/(auth)/',
 	'/api/event/',
 	'/api/events/',
-	'/api/user/leaderboard',
-	'/api/collection'
+	'/api/user/leaderboard'
 ];
 
 const authorization: Handle = async ({ event, resolve }) => {
