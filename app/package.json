@@ -35,7 +35,7 @@
 	},
 	"packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",
 	"dependencies": {
-		"@tabler/icons-svelte": "^3.26.0",
+		"lucide-svelte": "^0.474.0",
 		"pocketbase": "^0.24.0",
 		"zod": "^3.24.1"
 	}

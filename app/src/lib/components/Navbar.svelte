@@ -1,44 +1,46 @@
 <script lang="ts">
-	import { PUBLIC_PB_URL } from '$env/static/public';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import type { UsersResponse } from '$lib/types/pocketbase';
-	import { IconHomeFilled } from '@tabler/icons-svelte';
-	import { IconFlagFilled } from '@tabler/icons-svelte';
-	import { IconCalendarEvent } from '@tabler/icons-svelte';
+	import { Calendar, ChartNoAxesColumn, Dribbble, House, User } from 'lucide-svelte';
+	import { page } from '$app/state';
 
-	let { user }: { user: UsersResponse | undefined } = $props();
+	const check = (path: string) =>
+		page.url.pathname == path ? 'text-primary-foreground on-page' : '';
 </script>
 
-<div class="xs:p-4 fixed inset-x-0 bottom-0 w-full p-3">
+<div
+	class="fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-transparent via-background/80 to-background px-2 py-4 xs:px-4"
+>
 	<div
-		class="bg-accent/35 xs:rounded-3xl xs:p-4 flex w-full flex-row items-center justify-around rounded-2xl p-2 backdrop-blur-lg"
+		class="flex w-full flex-row items-center justify-between rounded-full border-[1.5px] bg-secondary p-3"
 	>
 		<!-- Home / Events page buttom -->
-		<Button variant="ghost" href="/" class="rounded-full ">
-			<IconHomeFilled class="xs:size-8 size-6" />
+		<Button variant="navbar" size="icon" href="/" class="rounded-full {check('/')}">
+			<House class="size-8" />
 		</Button>
 
-		<!-- Leaderboard page button -->
-		<Button variant="ghost" href="/leaderboard" class="rounded-full ">
-			<IconFlagFilled class="xs:size-8 size-6" />
+		<!-- Sports page button -->
+		<Button variant="navbar" size="icon" href="/sports" class="rounded-full {check('/sports')}">
+			<Dribbble class="size-8" />
 		</Button>
 
 		<!-- Calender page button -->
-		<Button variant="ghost" href="/calender" class="rounded-full ">
-			<IconCalendarEvent class="xs:size-8 size-6" />
+		<Button variant="navbar" size="icon" href="/calender" class="rounded-full {check('/calender')}">
+			<Calendar class="size-8" />
+		</Button>
+
+		<!-- Leaderboard page button -->
+		<Button
+			variant="navbar"
+			size="icon"
+			href="/leaderboard"
+			class="rounded-full {check('/leaderboard')}"
+		>
+			<ChartNoAxesColumn class="size-8" />
 		</Button>
 
 		<!-- Profile page button -->
-		<Button variant="ghost" href="/profile" class="rounded-full ">
-			<div class="bg-foreground xs:size-8 size-6 rounded-full">
-				{#if user}
-					<img
-						src={`${PUBLIC_PB_URL}/api/files/users/${user.id}/${user.avatar}`}
-						alt="avatar"
-						class="rounded-full"
-					/>
-				{/if}
-			</div>
+		<Button variant="navbar" size="icon" href="/profile" class="rounded-full {check('/profile')}">
+			<User class="size-8" />
 		</Button>
 	</div>
 </div>
