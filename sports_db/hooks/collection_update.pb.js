@@ -20,17 +20,16 @@ onRecordDelete(
   "teams"
 );
 
-// If a user tries to modify any part of the pre-determined collections,
-// an error is produced
-// Note that these event hooks do not allow migrations to occur, and must be removed when migrating
-onCollectionCreate((_) => {
+// Using the standard collection event hooks do not allow migrations to occur
+// However, using the `...Request` variants do allow migrations to occur but still guard against any changes made from the web UI
+onCollectionCreateRequest((_) => {
   throw new BadRequestError("Unauthorized attempt to create a new collection!");
 });
 
-onCollectionDelete((_) => {
+onCollectionDeleteRequest((_) => {
   throw new BadRequestError("Unauthorized attempt to delete collection!");
 });
 
-onCollectionUpdate((_) => {
+onCollectionUpdateRequest((_) => {
   throw new BadRequestError("Unauthorized attempt to change collection!");
 });
