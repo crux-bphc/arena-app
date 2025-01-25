@@ -5,7 +5,7 @@
 
 	let check = (path: string) =>
 		page.url.pathname == path
-			? 'hover:bg-transparent duration-0 bg-primary text-primary-foreground'
+			? 'text-primary-foreground on-page'
 			: '';
 </script>
 
