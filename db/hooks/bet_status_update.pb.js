@@ -1,4 +1,3 @@
-// TODO: Move this to sports-db <OR> validate in router when events gets changed
 onRecordUpdate((e) => {
   const event = e.record;
   if (!event.getBool("standingsUpdated")) {
