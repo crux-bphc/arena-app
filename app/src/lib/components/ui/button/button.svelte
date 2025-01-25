@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { Button as ButtonPrimitive } from "bits-ui";
-	import { type Events, type Props, buttonVariants } from "./index.js";
-	import { cn } from "$lib/utils.js";
+	import { Button as ButtonPrimitive } from 'bits-ui';
+	import { type Events, type Props, buttonVariants } from './index.js';
+	import { cn } from '$lib/utils.js';
 
 	type $$Props = Props;
 	type $$Events = Events;
 
-	let className: $$Props["class"] = undefined;
-	export let variant: $$Props["variant"] = "default";
-	export let size: $$Props["size"] = "default";
-	export let builders: $$Props["builders"] = [];
+	let className: $$Props['class'] = undefined;
+	export let variant: $$Props['variant'] = 'default';
+	export let size: $$Props['size'] = 'default';
+	export let builders: $$Props['builders'] = [];
 	export { className as class };
 </script>
 
@@ -21,5 +21,16 @@
 	on:click
 	on:keydown
 >
-	<slot />
+	<!-- this condition is just so this component can be used in other places too -->
+	{#if variant === 'navbar'}
+		<!-- hover card -->
+		<span
+			class="absolute inset-7 rounded-full bg-primary transition-all duration-100 ease-in group-[.on-page]:inset-0"
+		></span>
+		<span class="z-10">
+			<slot />
+		</span>
+	{:else}
+		<slot />
+	{/if}
 </ButtonPrimitive.Root>

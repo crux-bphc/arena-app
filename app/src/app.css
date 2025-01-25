@@ -4,22 +4,23 @@
 
 @layer base {
 	:root {
-		--background: 217 94% 5%;
-		--foreground: 0 0% 97%;
+		--background: 0 0% 8%;
+		--foreground: 0 0% 100%;
 
-		--border: 270 3% 26%;
+		--border: 0 0% 45%;
 		--input: 0 0% 8%;
 
-		--primary: 248 74% 41%;
-		--primary-foreground: 0 0% 100%;
+		--primary: 90 70% 57%;
+		--primary-foreground: 0 0% 0%;
 
-		--secondary: 246 55% 30%;
+		--secondary: 0 0% 13%;
 		--secondary-foreground: 0 0% 100%;
 
-		--accent: 0 0% 26%;
+		--accent: 269 97% 44%;
 		--accent-foreground: 0 0% 100%;
 
 		/* these colors are not customised for this app yet */
+		/* if you are using a new shadcn-svelte component which uses these colors pls configure first */
 		--muted: 217.2 32.6% 17.5%;
 		--muted-foreground: 215 20.2% 65.1%;
 
