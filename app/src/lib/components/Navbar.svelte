@@ -3,17 +3,15 @@
 	import { Calendar, ChartNoAxesColumn, Dribbble, House, User } from 'lucide-svelte';
 	import { page } from '$app/state';
 
-	let check = (path: string) =>
-		page.url.pathname == path
-			? 'text-primary-foreground on-page'
-			: '';
+	const check = (path: string) =>
+		page.url.pathname == path ? 'text-primary-foreground on-page' : '';
 </script>
 
 <div
-	class="xs:px-4 to-background via-background/80 fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-transparent px-2 py-4"
+	class="fixed inset-x-0 bottom-0 w-full bg-gradient-to-b from-transparent via-background/80 to-background px-2 py-4 xs:px-4"
 >
 	<div
-		class="bg-secondary flex w-full flex-row items-center justify-between rounded-full border-[1.5px] p-3"
+		class="flex w-full flex-row items-center justify-between rounded-full border-[1.5px] bg-secondary p-3"
 	>
 		<!-- Home / Events page buttom -->
 		<Button variant="navbar" size="icon" href="/" class="rounded-full {check('/')}">
