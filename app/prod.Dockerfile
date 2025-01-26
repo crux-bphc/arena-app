@@ -25,4 +25,4 @@ COPY --from=build /app/build /app/build
 
 ENV NODE_ENV production
 
-CMD pnpm start --host --port $APP_PORT
+CMD PORT=$APP_PORT pnpm start --host --port $APP_PORT
