@@ -24,7 +24,7 @@ onRecordUpdate((e) => {
 
 	if (!winners.length) {
 		throw new BadRequestError(
-			"Failed to trigger bet payout: No winners found!"
+			"Failed to trigger bet payout: No winners found! Is the team in 1st place assigned the position of 1?"
 		);
 	}
 
