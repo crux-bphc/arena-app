@@ -37,7 +37,7 @@ const authentication: Handle = async ({ event, resolve }) => {
 const authorization: Handle = async ({ event, resolve }) => {
 	if (needsAuth(event.route.id)) {
 		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
-			return redirect(303, '/login');
+			return redirect(302, '/login');
 		}
 	}
 

@@ -4,7 +4,7 @@ import { needsAuth } from '$lib/auth';
 
 export const load: LayoutLoad = async ({ route, data }) => {
     if (needsAuth(route.id) && !data.user) {
-        return redirect(303, '/login');
+        return redirect(302, '/login');
     }
 	return { user: data.user };
 };
