@@ -17,7 +17,14 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 
 	const { teamId, eventId, amount } = await request.json();
 
-	const event = (await pb.collection('events').getFullList({ filter: `id="${eventId}"` })).at(0);
+	let event;
+	try {
+		event = (await pb.collection('events').getFullList({ filter: `id="${eventId}"` })).at(0);
+	} catch (err) {
+		console.error(`Failed to get event while placing bet: ${err}`);
+		return error(500);
+	}
+
 	if (!event) {
 		return error(400, 'Event not found!');
 	}
@@ -30,12 +37,18 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		return error(400, 'Balance too low!');
 	}
 
-	let bet = (
-		await pb.collection('bets').getFullList({
-			filter: `user="${locals.user.id}" && team="${teamId}" && event="${eventId}"`,
-			expand: 'event'
-		})
-	).at(0) as BetsResponse<BetExpand> | undefined;
+	let bet;
+	try {
+		bet = (
+			await pb.collection('bets').getFullList({
+				filter: `user="${locals.user.id}" && team="${teamId}" && event="${eventId}"`,
+				expand: 'event'
+			})
+		).at(0) as BetsResponse<BetExpand> | undefined;
+	} catch (err) {
+		console.error(`Failed to check bet existence while placing bet: ${err}`);
+		return error(500);
+	}
 
 	const now = Date.now();
 
@@ -50,7 +63,12 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			return error(400, 'Bets are closed!');
 		}
 
-		newBet = await pb.collection('bets').update(bet.id, { amount: bet.amount + amount });
+		try {
+			newBet = await pb.collection('bets').update(bet.id, { amount: bet.amount + amount });
+		} catch (err) {
+			console.error(`Failed to update bet: ${err}`);
+			return error(500);
+		}
 	} else {
 		if (amount < 0) {
 			return error(400, 'Bet amount cannot be negative!');
@@ -61,24 +79,39 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 			return error(400, 'Bets are closed!');
 		}
 
-		newBet = await pb
-			.collection('bets')
-			.create({ user: locals.user.id, team: teamId, event: eventId, amount });
+		try {
+			newBet = await pb
+				.collection('bets')
+				.create({ user: locals.user.id, team: teamId, event: eventId, amount });
+		} catch (err) {
+			console.error(`Failed to create bet: ${err}`);
+			return error(500);
+		}
 	}
 
-	let betPool = (
-		await pb.collection('betPool').getFullList({
-			filter: `team="${teamId}" && event="${eventId}"`
-		})
-	).at(0);
+	try {
+		let betPool = (
+			await pb.collection('betPool').getFullList({
+				filter: `team="${teamId}" && event="${eventId}"`
+			})
+		).at(0);
 
-	if (betPool) {
-		await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + amount });
-	} else {
-		await pb.collection('betPool').create({ event: eventId, team: teamId, amount });
+		if (betPool) {
+			await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + amount });
+		} else {
+			await pb.collection('betPool').create({ event: eventId, team: teamId, amount });
+		}
+	} catch (err) {
+		console.error(`Failed to fetch and update bet pool: ${err}`);
+		return error(500);
 	}
 
-	await pb.collection('users').update(locals.user.id, { balance: locals.user.balance - amount });
+	try {
+		await pb.collection('users').update(locals.user.id, { balance: locals.user.balance - amount });
+	} catch (err) {
+		console.error(`Failed to update user balance: ${err}`);
+		return error(500);
+	}
 	return json(newBet);
 };
 
