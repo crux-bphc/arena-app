@@ -1,0 +1,15 @@
+{
+	"name": "Arena App",
+	"short_name": "Arena App",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#141414",
+	"theme_color": "#141414",
+	"icons": [
+		{
+			"src": "/favicon.svg",
+			"type": "image/svg+xml",
+			"sizes": "any"
+		}
+	]
+}
