@@ -5,7 +5,7 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 const handleGET: RequestHandler = async ({ locals, url }) => {
 	if (!locals.user) {
-		return error(401, 'User not found');
+		return error(401, 'User not found!');
 	}
 
 	const open = url.searchParams.get('open') === 'true';
@@ -23,7 +23,8 @@ const handleGET: RequestHandler = async ({ locals, url }) => {
 
 		return json({ bets: filteredBets });
 	} catch (err) {
-		return error(500, `Failed to get bets: ${err}`);
+		console.error(`Failed to get bets: ${err}`);
+		return error(500);
 	}
 };
 

@@ -12,7 +12,7 @@ export const _betCreateSchema = z.object({
 
 const handlePOST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
-		return error(401, 'User not found');
+		return error(401, 'User not found!');
 	}
 
 	const { teamId, eventId, amount } = await request.json();
