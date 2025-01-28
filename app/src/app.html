@@ -3,8 +3,13 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="theme-color" content="#141414" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+		<!-- Apple does not allow svg icons. -->
+		<!-- Use 196x196 png instead -->
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />
+		<link rel="icon" sizes="196x196" href="%sveltekit.assets%/apple-touch-icon.png" />
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-wep-app-capable" content="yes" />
 		<title>Arena App</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
