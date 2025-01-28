@@ -5,7 +5,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { INTERNAL_PB_URL } from '$env/static/private';
 import { _betCreateSchema } from './routes/api/user/bet/+server';
 import type { AnyZodObject } from 'zod';
-import { needsAuth } from '$lib/auth';
+import { needsAuth } from '$lib/utils';
 
 const authentication: Handle = async ({ event, resolve }) => {
 	event.locals.pb = new PocketBase(INTERNAL_PB_URL) as TypedPocketBase;
