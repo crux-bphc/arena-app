@@ -11,7 +11,8 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 	try {
 		const options = {
 			filter: sport ? `sport="${sport}"` : ``,
-			expand: `teams, ${standings === 'true' ? 'standings_via_event.team' : ''}`
+			expand: `teams, ${standings === 'true' ? 'standings_via_event.team' : ''}`,
+			sort: 'startTime'
 		};
 
 		const eventsData: any = await pb.collection('events').getFullList(options);
@@ -22,6 +23,9 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 				delete standing.expand;
 				return { ...standing, team: team };
 			});
+			standings?.sort(
+				(a: { position: number }, b: { position: number }) => a.position - b.position
+			);
 			const teams = event.expand.teams;
 			delete event.expand;
 			return { ...event, standings: standings, teams: teams };
