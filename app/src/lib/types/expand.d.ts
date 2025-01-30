@@ -1,3 +1,5 @@
+import type { EventsRecord, StandingsRecord, TeamsRecord } from './pocketbase';
+
 export type BetExpand = {
 	event: EventsResponse;
 	team: TeamsResponse;
@@ -8,6 +10,11 @@ export type StandingsExpand = {
 	team: TeamsResponse;
 };
 
+type StandingsRecordWithTeam = StandingsRecord & {
+	team: TeamsRecord;
+};
+
 type EventsRecordWithStandings = EventsRecord & {
-	standings?: StandingsRecord[];
+	teams: TeamsRecord[];
+	standings?: StandingsRecordWithTeam[];
 };
