@@ -23,7 +23,7 @@ const buttonVariants = tv({
 		},
 		width: {
 			long: 'min-w-44',
-			short: 'min-w-34',
+			short: 'min-w-28',
 			unset: '',
 		}
 	},
