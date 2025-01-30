@@ -19,6 +19,12 @@
 		--accent: 269 97% 44%;
 		--accent-foreground: 0 0% 100%;
 
+		--warning: 48 100% 64%;
+		--warning-foreground: 0 0% 100%;
+
+		--error: 0 100% 66%;
+		--error-foreground: 0 0% 100%;
+
 		/* these colors are not customised for this app yet */
 		/* if you are using a new shadcn-svelte component which uses these colors pls configure first */
 		--muted: 217.2 32.6% 17.5%;
