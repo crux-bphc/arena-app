@@ -66,6 +66,9 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.7.2
+      vaul-svelte:
+        specifier: ^0.3.2
+        version: 0.3.2(svelte@5.16.0)
       vite:
         specifier: ^5.4.11
         version: 5.4.11
@@ -552,6 +555,11 @@ packages:
 
   bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+
+  bits-ui@0.21.16:
+    resolution: {integrity: sha512-XFZ7/bK7j/K+5iktxX/ZpmoFHjYjpPzP5EOO/4bWiaFg5TG1iMcfjDhlBTQnJxD6BoVoHuqeZPHZvaTgF4Iv3Q==}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.118
 
   bits-ui@0.22.0:
     resolution: {integrity: sha512-r7Fw1HNgA4YxZBRcozl7oP0bheQ8EHh+kfMBZJgyFISix8t4p/nqDcHLmBgIiJ3T5XjYnJRorYDjIWaCfhb5fw==}
@@ -1560,6 +1568,11 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  vaul-svelte@0.3.2:
+    resolution: {integrity: sha512-X4OGWttSTVUl417qGDsSFgOvIx24DoiMRY/jaP9z0v9FL8LQQJ0RQ1ZM0QpdyQPRlNd24ewjNQHh5EgYDtfNpw==}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.1
+
   vite@5.4.11:
     resolution: {integrity: sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -2033,6 +2046,13 @@ snapshots:
   bindings@1.5.0:
     dependencies:
       file-uri-to-path: 1.0.0
+
+  bits-ui@0.21.16(svelte@5.16.0):
+    dependencies:
+      '@internationalized/date': 3.6.0
+      '@melt-ui/svelte': 0.76.2(svelte@5.16.0)
+      nanoid: 5.0.9
+      svelte: 5.16.0
 
   bits-ui@0.22.0(svelte@5.16.0):
     dependencies:
@@ -3114,6 +3134,11 @@ snapshots:
       picocolors: 1.1.1
 
   util-deprecate@1.0.2: {}
+
+  vaul-svelte@0.3.2(svelte@5.16.0):
+    dependencies:
+      bits-ui: 0.21.16(svelte@5.16.0)
+      svelte: 5.16.0
 
   vite@5.4.11:
     dependencies:
