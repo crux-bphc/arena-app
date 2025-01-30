@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
+import type { IsoDateString } from "./types/pocketbase";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -60,3 +61,8 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export const getDate = (dateString: IsoDateString) => {
+    // IST is UTC + 5:30
+    return new Date((new Date(dateString)).getTime() + 5.5 * 60 * 60 * 1000)
+}

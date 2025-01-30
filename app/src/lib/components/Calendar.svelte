@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import CalenderItem from '$lib/components/CalenderItem.svelte';
+	import CalendarItem from '$lib/components/CalendarItem.svelte';
 
 	interface EventData {
 		title: string;
@@ -15,15 +15,15 @@
 		rowSpan: number;
 	}
 
-	// calender is between {calenderStartHour}th hour and {calenderEndHour}th hour
+	// calendar is between {calendarStartHour}th hour and {calendarEndHour}th hour
 	let {
 		events,
-		calenderStartHour = 6,
-		calenderEndHour = 24
-	}: { calenderStartHour?: number; calenderEndHour?: number; events: EventData[] } = $props();
+		calendarStartHour = 6,
+		calendarEndHour = 24
+	}: { calendarStartHour?: number; calendarEndHour?: number; events: EventData[] } = $props();
 
-	// removing {calenderStartHour} hours from total day of 24 hours
-	let rows = calenderEndHour - calenderStartHour;
+	// removing {calendarStartHour} hours from total day of 24 hours
+	let rows = calendarEndHour - calendarStartHour;
 	let cols = $state(1);
 	let eventsWithPos: EventDataWithPos[] = $state([]);
 	let occupiedGrids: number[][] = [[]];
@@ -62,7 +62,7 @@
 	}
 	// converts hours and mins to its corresponding row
 	function getRow(date: Date) {
-		return (date.getUTCHours() - calenderStartHour) * 4 + 1 + date.getUTCMinutes() / 15;
+		return (date.getUTCHours() - calendarStartHour) * 4 + 1 + date.getUTCMinutes() / 15;
 	}
 	// finds if any number between x & y (inclusive) is in arr
 	function isAnyNumberInRange(x: number, y: number, arr: number[]) {
@@ -70,18 +70,18 @@
 	}
 </script>
 
-<div class="flex flex-row bg-transparent px-1 py-2 text-white">
+<div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
 	<div class="flex flex-col text-xs font-semibold">
 		{#each { length: rows }, i}
-			<div class="h-20 w-10 pr-1">
-				{((i + calenderStartHour - 1) % 12) + 1}
-				{i < 12 - calenderStartHour ? 'AM' : 'PM'}
+			<div class="h-20 w-10 pr-1 text-white">
+				{((i + calendarStartHour - 1) % 12) + 1}
+				{i < 12 - calendarStartHour ? 'AM' : 'PM'}
 			</div>
 		{/each}
 		<div class="w-10 pr-1">
-			{((calenderEndHour - 1) % 12) + 1}
-			{calenderEndHour % 24 >= 12 ? 'PM' : 'AM'}
+			{((calendarEndHour - 1) % 12) + 1}
+			{calendarEndHour % 24 >= 12 ? 'PM' : 'AM'}
 		</div>
 	</div>
 
@@ -110,7 +110,7 @@
 				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 7.5rem)`}"
 		>
 			{#each eventsWithPos as event}
-				<CalenderItem {...event} />
+				<CalendarItem {...event} />
 			{/each}
 		</div>
 	</div>

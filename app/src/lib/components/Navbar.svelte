@@ -23,8 +23,8 @@
 			<Dribbble class="size-8" />
 		</Button>
 
-		<!-- Calender page button -->
-		<Button variant="navbar" size="icon" href="/calender" class="rounded-full {check('/calender')}">
+		<!-- Calendar page button -->
+		<Button variant="navbar" size="icon" href="/calendar" class="rounded-full {check('/calendar')}">
 			<Calendar class="size-8" />
 		</Button>
 
