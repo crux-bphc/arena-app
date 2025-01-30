@@ -21,13 +21,13 @@
 <Button
 	variant="secondary"
 	size="icon"
-	class="mx-4 my-2"
+	class="m-3"
 	onclick={() => (showSidebar = !showSidebar)}
 >
 	<ListFilter class="size-8" />
 </Button>
 
-<div class="flex h-[80vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
+<div class="flex h-[90vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
 	<!-- side bar -->
 	<div
 		class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 [direction:rtl] {showSidebar
@@ -63,7 +63,9 @@
 	>
 		<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
 		{#each events as event}
-			<EventCard isMinimized={showSidebar} {event} />
+			{#if event.sport === activeSport || showAllSports}
+				<EventCard isMinimized={showSidebar} {event} />
+			{/if}
 		{/each}
 	</div>
 </div>
