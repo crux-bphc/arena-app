@@ -15,7 +15,7 @@
 	import Calendar from '$lib/components/Calendar.svelte';
 	import Loader from '$lib/components/Loader.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import type { IsoDateString } from '$lib/types/pocketbase';
+	import type { EventsRecord, IsoDateString } from '$lib/types/pocketbase';
 	import { getDate } from '$lib/utils';
 	import { onMount } from 'svelte';
 
@@ -23,24 +23,24 @@
 	let loaded = $state(false);
 
 	// Stores all the events available
-	let fullEvents = [];
+	let fullEvents: EventsRecord[] = [];
 
 	let startDate = new Date(Date.now());
 	let currentDay = 0;
 	
 	let days = $state(0);
 
-	let events = $state([]);
-	let sports = $state([]);
+	let events: EventsRecord[] = $state([]);
+	let sports: string[] = $state([]);
 
 	// Stores the currently active set of filters
-	let active = $state({
+	let active: { days: boolean, sports: boolean } = $state({
 		sports: true,
 		days: false,
 	});
 
 	// Filter storage
-	let filters = $state({
+	let filters: { days: boolean[], sports: {} } = $state({
 		days: [],
 		sports: {}
 	});
@@ -63,6 +63,40 @@
 		return -1;
 	}
 
+	const updateEventData = (): [number, number] => {
+		let minTime = Infinity;
+		let maxTime = -Infinity;
+
+		for (let event of events) {
+			const dateNum = getDate(event.startTime).getTime();
+
+			if (minTime > dateNum) minTime = dateNum;
+			if (maxTime < dateNum) maxTime = dateNum;
+
+			if (!sports.includes(event.sport)) {
+				sports.push(event.sport);
+				// Enable all sports
+				filters.sports[event.sport] = true;
+			}
+		}
+		return [minTime, maxTime];
+	}
+
+	const updateDayRange = (minTime: number, maxTime: number) => { 
+		let curr = new Date(minTime);
+		startDate = new Date(minTime);
+		let now = new Date(Date.now());
+		while (true) {
+			days += 1;
+			filters.days.push(false);
+			if (dayMatches(now, curr))
+				currentDay = days;
+			if (dayMatches(curr, new Date(maxTime)))
+				break;
+			curr.setDate(curr.getDate() + 1);
+		}
+	}
+
 	// Pupulate the calendar and calculate days and filters
     const getEvents = async () => {
 		let json = null;
@@ -78,35 +112,12 @@
 		fullEvents = json.events;
 		events = fullEvents;
 		
-		// Find start and dates of all events
-		let minDate = Infinity;
-		let maxDate = -Infinity;
-
-		for (let event of events) {
-			const dateNum = getDate(event.startTime).getTime();
-
-			if (minDate > dateNum) minDate = dateNum;
-			if (maxDate < dateNum) maxDate = dateNum;
-
-			if (!sports.includes(event.sport)) {
-				sports.push(event.sport);
-				// Enable all sports
-				filters.sports[event.sport] = true;
-			}
-		}
+		// Find start and end dates of all events and apply sports filters
+		let [minTime, maxTime] = updateEventData();
 
 		// Find the number of days and the day we are currently at
-		let curr = new Date(minDate);
-		startDate = new Date(minDate);
-		let now = getDate(new Date(Date.now()).toString());
-		while (getDate(curr.toString()).getTime() <= maxDate) {
-			days += 1;
-			filters.days.push(false);
-			curr.setDate(curr.getDate() + 1);
-			if (dayMatches(now, curr))
-				currentDay = days;
-		}
-
+		updateDayRange(minTime, maxTime);
+		
 		// If it is zero, then the user likely not is not in the date of the events
 		// OR something is wrong.
 		if (currentDay == 0) currentDay = days;
@@ -139,9 +150,8 @@
 
 	// reset filters to load state
 	const resetFilters = () => {
-		for (let i in filters.days)
-			filters.days[i] = false;
-		filters.days[currentDay - 1] = true;
+		for (let i = 0; i < filters.days.length; i += 1)
+			filters.days[i] = (i == currentDay - 1);
 		for (let sport of sports)
 			filters.sports[sport] = true;
 		applyFilters();
@@ -150,9 +160,8 @@
 	// When a filter button is clicked, add it to the filter list
 	const filterClick = (entry: string | number, days: boolean) => {
 		if (days) {
-			for (let i in filters.days)
-				filters.days[i] = false;
-			filters.days[entry] = true;
+			for (let i = 0; i < filters.days.length; i += 1)
+				filters.days[i] = i == entry;
 		} else
 			filters.sports[entry] = !filters.sports[entry];
 		applyFilters();
@@ -175,7 +184,6 @@
 			{#each sports as sport}
 				<Button variant="calendar" width="long" onclick={() => filterClick(sport, false)} class="transition-all duration-100 font-alata m-1 calendar-filter {filters.sports[sport] ? 'active text-black' : ''}">{sport.toUpperCase()}</Button>
 			{/each}
-
 		{:else if active.days}
 			{#each { length: days }, i}
 				<Button variant="calendar" width="short" onclick={() => filterClick(i, true)} class="transition-all duration-100 font-alata m-1 calendar-filter {filters.days[i] ? 'active text-black' : ''}">DAY {i + 1}</Button>

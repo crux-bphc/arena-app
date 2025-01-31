@@ -1,3 +1,13 @@
+<style>
+	* {		
+		box-sizing: border-box; 
+		-moz-box-sizing: border-box; 
+		-webkit-box-sizing: border-box;  
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+	}
+</style>
+
 <script lang="ts">
 	interface CalendarItemProps {
 		colStart: number;
@@ -17,8 +27,9 @@
 		grid-row: {rowStart} / span {rowSpan};"
 >
 	<div
-		class="flex h-full w-full flex-col justify-between overflow-hidden rounded-sm bg-accent/80 px-2 py-1 text-xs font-alata"
+		class="flex h-full w-full flex-col justify-between overflow-hidden rounded-sm bg-accent/90 px-2 py-1 text-xs font-alata"
 	>
+	{#if rowSpan > 2}
 		<div class="flex flex-col {rowSpan > 6 ? 'gap-1' : ''}">
 			<div class="line-clamp-2 font-bold text-accent-foreground/90">
 				{title.toUpperCase()}
@@ -28,5 +39,12 @@
 			</div>
 		</div>
 		<div class="line-clamp-1 text-accent-foreground/70">{sport.toUpperCase()}</div>
+	{:else}
+		<div class="line-clamp-2 font-bold text-accent-foreground/90 my-auto inline-flex gap-1">
+			<span class="overflow-hidden overflow-ellipsis whitespace-nowrap">{title.toUpperCase()}</span>
+			<span class="text-accent-foreground/60">at</span>
+			<span class="overflow-hidden overflow-ellipsis whitespace-nowrap">{location.toUpperCase()}</span>
+		</div>
+	{/if}
 	</div>
 </div>
