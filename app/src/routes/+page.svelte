@@ -1,36 +1,25 @@
 <script lang="ts">
 	import { PUBLIC_PB_URL } from '$env/static/public';
+
 	import { onMount } from 'svelte';
 
+	import type { PageData } from './$types';
 	import type { EventsRecord } from '$lib/types/pocketbase';
+
 	import Loader from '$lib/components/Loader.svelte';
+	import Banner from '$lib/components/Banner.svelte';
 
-	interface EventsData {
-		events: EventsRecord[];
-	}
-
-	onMount(() => {
-		getEventsData();
-	});
-
-	let events = $state<EventsData | null>(null);
-	let otherEvents = $state<EventsData | null>(null);
+	const { data }: { data: PageData } = $props();
+	let events = $state(data.events);
+	let otherEvents = $state<EventsRecord[]>([]);
 	let mainEvent = $state<EventsRecord | null>(null);
 
-	async function getEventsData() {
-		try {
-			const response = await fetch(`api/events`);
-			if (!response.ok) {
-				console.error(`Failed to fetch leaderboard data: ${response.status}`);
-				return;
-			}
-			events = await response.json();
-			mainEvent = events['events'][0];
-			otherEvents = events['events'].slice(1, 3);
-		} catch (e) {
-			console.error(`Failed to fetch leaderboard data: ${e}`);
+	onMount(() => {
+		if (events.length > 0) {
+			mainEvent = events[0];
+			otherEvents = events.slice(1, 3);
 		}
-	}
+	});
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -64,25 +53,7 @@
 
 <div class="flex justify-center items-center min-h-screen relative">
 	<!-- Header -->
-	<div
-		class="absolute left-1/2 top-[30px] w-[331px] h-[120px] bg-[#202020] border border-[#6A6A6A] rounded-[10px] overflow-hidden box-border transform -translate-x-1/2"
-	>
-		<div
-			class="absolute left-[2px] top-[68px] w-[551px] h-[60px] flex items-center font-[Haettenschweiler] font-normal text-[68px] leading-[20px] text-[#91DE43]"
-		>
-			app game app game app
-		</div>
-		<div
-			class="absolute left-[1px] top-[19px] w-[331px] h-[60px] flex items-center font-[Haettenschweiler] font-normal text-[68px] leading-[20px] text-[#91DE43]"
-		>
-			arena app game
-		</div>
-		<div
-			class="absolute left-[1px] top-[-30px] w-[486px] h-[60px] flex items-center font-[Haettenschweiler] font-normal text-[68px] leading-[20px] text-[#91DE43]"
-		>
-			game app game app
-		</div>
-	</div>
+	<Banner upper="app game app game app" center="arena app game" lower="game app game app" />
 
 	{#if mainEvent}
 		<div class="relative mt-[40px] w-[330px] flex flex-col items-start">
