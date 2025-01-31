@@ -3,7 +3,7 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch }: { fetch: Function }) => {
     try {
-        const res = await fetch('/api/events');
+        const res = await fetch('/api/events?priority=true');
         if (res.status === 308) {
             throw redirect(308, '/login');
         } else if (!res.ok) {
