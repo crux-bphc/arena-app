@@ -40,7 +40,7 @@
 	});
 
 	// Filter storage
-	let filters: { days: boolean[], sports: {} } = $state({
+	let filters: { days: boolean[], sports: Object } = $state({
 		days: [],
 		sports: {}
 	});
@@ -134,18 +134,16 @@
 	
 	// Apply date and sport filters
 	const applyFilters = () => {
-		events = fullEvents.filter((value) =>
-			filters.sports[value.sport] && filters.days[getEventDay(value.startTime) - 1]
+		events = fullEvents.filter((value: { startTime: IsoDateString, sport: string }) =>
+			filters.sports[value.sport as keyof typeof filters.sports] && 
+			filters.days[getEventDay(value.startTime) - 1]
 		);
 	}
  
 	const clickSwitch = (button: string) => {
-		// Swap state of the clicked button
-		active[button] = !active[button];
-		// Is an if statement more readable here?
-		// Set everything other than the button activated to off
+		// Swap the state of the clicked button, and make every other button off
 		for (let key of Object.keys(active))
-			if (key != button) active[key] = false;
+			active[key as keyof typeof active] = (key == button) && !active[button as keyof typeof active];
 	}
 
 	// reset filters to load state
