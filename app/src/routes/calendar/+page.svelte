@@ -53,15 +53,17 @@
 
 	// Gets the day of the event
 	const getEventDay = (eventDateString: IsoDateString) => {
-		let day = 0;
-		let curr = new Date(startDate);
-		while (days > day) {
-			day += 1;
-			if (isDateEqual(getDate(eventDateString), curr))
-				return day;
-			curr.setDate(curr.getDate() + 1);
-		}
-		return -1;
+		let zeroedStartDate = new Date(startDate);
+		// Get the start of the starting date
+		zeroedStartDate.setHours(0, 0, 0, 0);
+
+		const difference = getDate(eventDateString).getTime() - zeroedStartDate.getTime();
+		const day = Math.ceil(difference / (24 * 60 * 60 * 1000));
+
+		// Can't happen probably
+		if (day > days) return -1;
+
+		return day;
 	}
 
 	const updateEventData = (): [number, number] => {
@@ -106,7 +108,7 @@
 			json = await res.json();
 
 			if (json?.events?.length == 0) {
-				message = "It looks like there are no events yet! Come back again later!";
+				message = "It looks like there are no events yet!";
 				return;
 			}
 		} catch (error) {
