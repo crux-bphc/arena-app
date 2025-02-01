@@ -72,7 +72,7 @@
 				<img
 					class="w-full h-full object-cover rounded-[14px]"
 					src={`${PUBLIC_PB_URL}/api/files/${mainEvent['collectionId']}/${mainEvent['id']}/${mainEvent['banner']}`}
-					alt="main event image"
+					alt="Main Event"
 				/>
 			</div>
 
@@ -88,7 +88,7 @@
 						<img
 							class="w-full h-full object-cover rounded-[10px]"
 							src={`${PUBLIC_PB_URL}/api/files/${event['collectionId']}/${event['id']}/${event['banner']}`}
-							alt={`Event ${event['title']} image`}
+							alt={`Event ${event['title']}`}
 						/>
 						<div
 							class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 text-white p-2 text-xs"
