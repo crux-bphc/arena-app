@@ -62,3 +62,16 @@
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+
+/* Hide number input arrows Chrome, Safari, Edge, Opera */
+.hide-arrows::-webkit-outer-spin-button,
+.hide-arrows::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Hide number input arrows Firefox */
+.hide-arrows {
+	appearance: textfield;
+	-moz-appearance: textfield;
+}

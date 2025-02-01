@@ -11,7 +11,7 @@
 
 	let activeSport: string = $state(EventsSportOptions.football);
 	let showSidebar = $state(true);
-	let showAllSports = $state(false);
+	let showAllSports = $state(true);
 	let events: EventsRecordWithStandings[] = $state(data.events);
 
 	let sports: EventsSportOptions[] = Object.values(EventsSportOptions);

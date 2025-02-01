@@ -7,7 +7,7 @@
 <script lang="ts">
 	import type { EventsRecordWithStandings, StandingsRecordWithTeam } from '$lib/types/expand';
 	import { formatTime, getTimeLeft } from '$lib/util/helpers';
-	import Button from './ui/button/button.svelte';
+	import BetPopup from './BetPopup.svelte';
 
 	interface EventCardProps {
 		isMinimized?: boolean;
@@ -114,12 +114,7 @@
 			<span class="text-foreground/50 line-clamp-1 capitalize">
 				{event.location}
 			</span>
-			<Button
-				variant="accent"
-				class=" uppercase {isMinimized
-					? 'rounded-lg px-6 text-sm'
-					: 'rounded-xl px-8 py-6 text-lg'}">BET</Button
-			>
+			<BetPopup {isMinimized} {event} />
 		</div>
 	{:else}
 		<div
