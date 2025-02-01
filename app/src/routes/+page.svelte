@@ -57,11 +57,11 @@
 		<div class="relative mt-[40px] w-[330px] flex flex-col items-start">
 			<!-- Main Event Title & Date -->
 			<div
-				class="w-full flex items-center uppercase font-roboto font-bold text-[12px] text-white/60"
+				class="w-full uppercase font-roboto font-bold text-[12px] truncate text-white/60"
 			>
 				{formatDateCountdown(mainEvent.startTime)}
 			</div>
-			<div class="w-full flex items-center font-inter font-semibold text-[20px] text-white">
+			<div class="w-full font-inter font-semibold text-[20px] truncate text-white">
 				{mainEvent.title}
 			</div>
 
@@ -74,31 +74,33 @@
 				/>
 			</div>
 
-			<!-- Other Events Section -->
-			<div class="mt-4 w-full flex items-start font-inter font-semibold text-[20px] text-white">
-				Other Events
-			</div>
+			{#if otherEvents.length}
+				<!-- Other Events Section -->
+				<div class="mt-4 w-full flex items-start font-inter font-semibold text-[20px] text-white">
+					Other Events
+				</div>
 
-			<!-- Other Events List -->
-			<div class="mt-3 flex gap-4">
-				{#each otherEvents.slice(0, 2) as event}
-					<div class="relative w-[160px] h-[160px] bg-white rounded-[10px] overflow-hidden">
-						<img
-							class="w-full h-full object-cover rounded-[10px]"
-							src={`${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`}
-							alt={`Event ${event.title}`}
-						/>
-						<div
-							class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 text-white p-2 text-xs"
-						>
-							<p class="font-inter font-semibold text-[14px] truncate">{event.title}</p>
-							<p class="font-roboto font-bold text-[10px] uppercase text-white/70 truncate">
-								{formatDate(event.startTime)}
-							</p>
+				<!-- Other Events List -->
+				<div class="mt-3 flex gap-4">
+					{#each otherEvents.slice(0, 2) as event}
+						<div class="relative w-[160px] h-[160px] bg-white rounded-[10px] overflow-hidden">
+							<img
+								class="w-full h-full object-cover rounded-[10px]"
+								src={`${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`}
+								alt={`Event ${event.title}`}
+							/>
+							<div
+								class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 text-white p-2 text-xs"
+							>
+								<p class="font-inter font-semibold text-[14px] truncate">{event.title}</p>
+								<p class="font-roboto font-bold text-[10px] uppercase text-white/70 truncate">
+									{formatDate(event.startTime)}
+								</p>
+							</div>
 						</div>
-					</div>
-				{/each}
-			</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	{:else}
 		<Loader />
