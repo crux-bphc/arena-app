@@ -3,13 +3,12 @@
 
 	import { onMount } from 'svelte';
 
-	import type { PageData } from './$types';
 	import type { EventsRecord } from '$lib/types/pocketbase';
 
 	import Loader from '$lib/components/Loader.svelte';
 	import Banner from '$lib/components/Banner.svelte';
 
-	const { data }: { data: PageData } = $props();
+	const { data } = $props();
 	let events = $state(data.events);
 	let otherEvents = $state<EventsRecord[]>([]);
 	let mainEvent = $state<EventsRecord | null>(null);
@@ -61,17 +60,17 @@
 			<div
 				class="w-full flex items-center uppercase font-roboto font-bold text-[12px] text-white/60"
 			>
-				{formatDateCountdown(mainEvent['startTime'])}
+				{formatDateCountdown(mainEvent.startTime)}
 			</div>
 			<div class="w-full flex items-center font-inter font-semibold text-[20px] text-white">
-				{mainEvent['title']}
+				{mainEvent.title}
 			</div>
 
 			<!-- Main Event Image -->
 			<div class="mt-3 w-[330px] h-[193px] bg-white rounded-[14px] overflow-hidden">
 				<img
 					class="w-full h-full object-cover rounded-[14px]"
-					src={`${PUBLIC_PB_URL}/api/files/${mainEvent['collectionId']}/${mainEvent['id']}/${mainEvent['banner']}`}
+					src={`${PUBLIC_PB_URL}/api/files/events/${mainEvent.id}/${mainEvent.banner}`}
 					alt="Main Event"
 				/>
 			</div>
@@ -87,15 +86,15 @@
 					<div class="relative w-[160px] h-[160px] bg-white rounded-[10px] overflow-hidden">
 						<img
 							class="w-full h-full object-cover rounded-[10px]"
-							src={`${PUBLIC_PB_URL}/api/files/${event['collectionId']}/${event['id']}/${event['banner']}`}
-							alt={`Event ${event['title']}`}
+							src={`${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`}
+							alt={`Event ${event.title}`}
 						/>
 						<div
 							class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 text-white p-2 text-xs"
 						>
-							<p class="font-inter font-semibold text-[14px] truncate">{event['title']}</p>
+							<p class="font-inter font-semibold text-[14px] truncate">{event.title}</p>
 							<p class="font-roboto font-bold text-[10px] uppercase text-white/70 truncate">
-								{formatDate(event['startTime'])}
+								{formatDate(event.startTime)}
 							</p>
 						</div>
 					</div>
