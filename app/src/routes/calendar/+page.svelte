@@ -130,7 +130,9 @@
 		loaded = true;
 	}
 
-	onMount(getEvents);
+	onMount(() => {
+		getEvents();
+	});
 	
 	// Apply date and sport filters
 	const applyFilters = () => {
