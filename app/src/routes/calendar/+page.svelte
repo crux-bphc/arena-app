@@ -46,7 +46,7 @@
 	});
 
 	// Checks if a day matches another
-	const dayMatches = 
+	const isDateEqual = 
 		(dayA: Date, dayB: Date) => 
 			dayA.getDate() == dayB.getDate() && dayA.getMonth() == dayB.getMonth() && dayA.getFullYear() == dayB.getFullYear();
 
@@ -56,7 +56,7 @@
 		let curr = new Date(startDate);
 		while (days > day) {
 			day += 1;
-			if (dayMatches(getDate(eventDateString), curr))
+			if (isDateEqual(getDate(eventDateString), curr))
 				return day;
 			curr.setDate(curr.getDate() + 1);
 		}
@@ -89,9 +89,9 @@
 		while (true) {
 			days += 1;
 			filters.days.push(false);
-			if (dayMatches(now, curr))
+			if (isDateEqual(now, curr))
 				currentDay = days;
-			if (dayMatches(curr, new Date(maxTime)))
+			if (isDateEqual(curr, new Date(maxTime)))
 				break;
 			curr.setDate(curr.getDate() + 1);
 		}
