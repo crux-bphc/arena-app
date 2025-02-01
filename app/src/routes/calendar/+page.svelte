@@ -40,7 +40,7 @@
 	});
 
 	// Filter storage
-	let filters: { days: boolean[], sports: Object } = $state({
+	let filters: { days: boolean[], sports: { [key: string]: boolean} } = $state({
 		days: [],
 		sports: {}
 	});
@@ -137,7 +137,7 @@
 	// Apply date and sport filters
 	const applyFilters = () => {
 		events = fullEvents.filter((value: { startTime: IsoDateString, sport: string }) =>
-			filters.sports[value.sport as keyof typeof filters.sports] && 
+			filters.sports[value.sport] && 
 			filters.days[getEventDay(value.startTime) - 1]
 		);
 	}
