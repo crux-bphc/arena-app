@@ -31,8 +31,7 @@
 					: day % 10 === 3 && day !== 13
 						? 'rd'
 						: 'th';
-		const options = { month: 'long', hour: 'numeric', minute: 'numeric', hour12: true };
-		const formattedDate = `${day}${suffix} ${date.toLocaleString('en-US', options).replace(' at ', ', ')}`;
+		const formattedDate = `${day}${suffix} ${date.toLocaleString('en-US', { month: 'long', hour: 'numeric', minute: 'numeric', hour12: true }).replace(' at ', ', ')}`;
 		return formattedDate;
 	}
 
