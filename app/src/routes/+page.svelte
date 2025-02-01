@@ -49,26 +49,24 @@
 	}
 </script>
 
-<div class="flex justify-center items-center min-h-screen relative">
+<div class="relative flex min-h-screen items-center justify-center">
 	<!-- Header -->
 	<Banner upper="app game app game app" center="arena app game" lower="game app game app" />
 
 	{#if mainEvent}
-		<div class="relative mt-[40px] w-[330px] flex flex-col items-start">
+		<div class="relative mt-[40px] flex w-[330px] flex-col items-start">
 			<!-- Main Event Title & Date -->
-			<div
-				class="w-full uppercase font-roboto font-bold text-[12px] truncate text-white/60"
-			>
+			<div class="font-roboto w-full truncate text-[12px] font-bold uppercase text-white/60">
 				{formatDateCountdown(mainEvent.startTime)}
 			</div>
-			<div class="w-full font-inter font-semibold text-[20px] truncate text-white">
+			<div class="font-inter w-full truncate text-[20px] font-semibold text-white">
 				{mainEvent.title}
 			</div>
 
 			<!-- Main Event Image -->
-			<div class="mt-3 w-[330px] h-[193px] bg-white rounded-[14px] overflow-hidden">
+			<div class="mt-3 h-[193px] w-[330px] overflow-hidden rounded-[14px] bg-white">
 				<img
-					class="w-full h-full object-cover rounded-[14px]"
+					class="h-full w-full rounded-[14px] object-cover"
 					src={`${PUBLIC_PB_URL}/api/files/events/${mainEvent.id}/${mainEvent.banner}`}
 					alt="Main Event"
 				/>
@@ -76,24 +74,24 @@
 
 			{#if otherEvents.length}
 				<!-- Other Events Section -->
-				<div class="mt-4 w-full flex items-start font-inter font-semibold text-[20px] text-white">
+				<div class="font-inter mt-4 flex w-full items-start text-[20px] font-semibold text-white">
 					Other Events
 				</div>
 
 				<!-- Other Events List -->
 				<div class="mt-3 flex gap-4">
 					{#each otherEvents.slice(0, 2) as event}
-						<div class="relative w-[160px] h-[160px] bg-white rounded-[10px] overflow-hidden">
+						<div class="relative h-[160px] w-[160px] overflow-hidden rounded-[10px] bg-white">
 							<img
-								class="w-full h-full object-cover rounded-[10px]"
+								class="h-full w-full rounded-[10px] object-cover"
 								src={`${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`}
 								alt={`Event ${event.title}`}
 							/>
 							<div
-								class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 text-white p-2 text-xs"
+								class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 p-2 text-xs text-white"
 							>
-								<p class="font-inter font-semibold text-[14px] truncate">{event.title}</p>
-								<p class="font-roboto font-bold text-[10px] uppercase text-white/70 truncate">
+								<p class="font-inter truncate text-[14px] font-semibold">{event.title}</p>
+								<p class="font-roboto truncate text-[10px] font-bold uppercase text-white/70">
 									{formatDate(event.startTime)}
 								</p>
 							</div>
