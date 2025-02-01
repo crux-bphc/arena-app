@@ -21,6 +21,7 @@
 
 	// For the loading spinner
 	let loaded = $state(false);
+	let message = $state<string | null>(null)
 
 	// Stores all the events available
 	let fullEvents: EventsRecord[] = [];
@@ -30,17 +31,17 @@
 	
 	let days = $state(0);
 
-	let events: EventsRecord[] = $state([]);
-	let sports: string[] = $state([]);
+	let events= $state<EventsRecord[]>([]);
+	let sports = $state<string[]>([]);
 
 	// Stores the currently active set of filters
-	let active: { days: boolean, sports: boolean } = $state({
+	let active = $state<{ days: boolean, sports: boolean }>({
 		sports: true,
 		days: false,
 	});
 
 	// Filter storage
-	let filters: { days: boolean[], sports: { [key: string]: boolean} } = $state({
+	let filters = $state<{ days: boolean[], sports: { [key: string]: boolean} }>({
 		days: [],
 		sports: {}
 	});
@@ -103,14 +104,18 @@
 		try {
 			const res = await fetch('/api/events');
 			json = await res.json();
+
+			if (json?.events?.length == 0) {
+				message = "It looks like there are no events yet! Come back again later!";
+				return;
+			}
 		} catch (error) {
 			console.error('Failed to load calendar', error);
-			// Return to show the user nothing but a loader indefinitely
+			message = "Whoops! An error occured when trying to load the calendar! Please try again later."
 			return;
 		}
 
-		fullEvents = json.events;
-		events = fullEvents;
+		events = fullEvents = json.events;
 		
 		// Find start and end dates of all events and apply sports filters
 		let [minTime, maxTime] = updateEventData();
@@ -136,7 +141,7 @@
 	
 	// Apply date and sport filters
 	const applyFilters = () => {
-		events = fullEvents.filter((value: { startTime: IsoDateString, sport: string }) =>
+		events = fullEvents.filter((value) =>
 			filters.sports[value.sport] && 
 			filters.days[getEventDay(value.startTime) - 1]
 		);
@@ -194,5 +199,11 @@
 		<Calendar events={events} />
 	{/key}
 {:else}
-	<Loader />
+	{#if message == null}
+		<Loader />
+	{:else}
+		<div class="m-1 font-alata text-center">
+			{message}
+		</div>
+	{/if}
 {/if}
