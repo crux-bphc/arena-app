@@ -32,7 +32,7 @@
 
 	let top = $state(0);
 	let timeString = $state<string | null>(null);
-	let timestamp = $state<Element | null>(null);
+	let hourHeight = $state<number | null>(null);
 	let disabledTimeStamp = $state(-1);
 
 	// If the time-line is within 13 pixels above or below a timestamp, do not show the timestamp
@@ -92,10 +92,9 @@
 
 	// Update the location of the time display bar
 	const updateTimeLocation = () => {
-		if (timestamp == null) return;
+		if (hourHeight == null) return;
 
-		const time = new Date(Date.now());
-		const hourHeight = parseFloat(window.getComputedStyle(timestamp).height);
+		const time = new Date(new Date(Date.now()).setHours(11, 45));
 		const hours = time.getHours();
 		const minutes = time.getMinutes();
 		if (hours >= calendarStartHour) {
@@ -123,7 +122,7 @@
 			<div class="time text-red-600 absolute bg-background font-bold text-[10px]" style="top: {top}px;">{timeString}</div>
 		{/if}
 		{#each { length: rows }, i}
-			<div class="h-20 w-12 pr-1 text-white { i == disabledTimeStamp ? 'invisible' : '' }" bind:this={timestamp}>
+			<div class="h-20 w-12 pr-1 text-white { i == disabledTimeStamp ? 'invisible' : '' }" bind:offsetHeight={hourHeight}>
 				{((i + calendarStartHour - 1) % 12) + 1}
 				{i < 12 - calendarStartHour ? 'AM' : 'PM'}
 			</div>
@@ -136,7 +135,7 @@
 
 	<div class="relative my-2 overflow-x-scroll {cols <= 2 ? 'w-full' : ''}">
 		{#if timeString}
-			<div class="line bg-red-600 h-px absolute before:bg-red-600 w-full z-1" style="top: {top}px;">
+			<div class="line bg-red-600 h-px absolute before:bg-red-600 w-full z-[1]" style="top: {top}px;">
 				<div class="border-solid border-l-red-600 border-l-8 border-y-transparent border-y-4 border-r-0 absolute left-0" style="top: -3.5px"></div>
 			</div>
 		{/if}
