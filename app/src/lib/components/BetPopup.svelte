@@ -6,7 +6,7 @@
 	import Input from './ui/input/input.svelte';
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
-	import { UsersRound, Wallet } from 'lucide-svelte';
+	import { UsersRound, Wallet, X } from 'lucide-svelte';
 
 	interface BetPopupProps {
 		isMinimized?: Boolean;
@@ -100,6 +100,12 @@
 			>
 		</Drawer.Trigger>
 		<Drawer.Content>
+			<!-- close icon -->
+			<div class="relative w-full">
+				<Drawer.Close class="absolute right-4 top-0 rounded-full p-2 text-xl">
+					<X class="size-8" />
+				</Drawer.Close>
+			</div>
 			<Drawer.Header>
 				<Drawer.Title class="line-clamp-2 w-full truncate text-wrap text-center text-3xl capitalize"
 					>{event.title}</Drawer.Title
@@ -202,9 +208,8 @@
 				</form>
 			</div>
 			<Drawer.Footer>
-				<Drawer.Close class="py-4 text-xl">Cancel</Drawer.Close>
 				<!-- small padding at the bottom -->
-				<div class="h-12"></div>
+				<div class="h-16"></div>
 			</Drawer.Footer>
 		</Drawer.Content>
 	</Drawer.Root>
