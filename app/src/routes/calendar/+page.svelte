@@ -19,10 +19,13 @@
 	import type { EventsRecord, IsoDateString } from '$lib/types/pocketbase';
 	import { getDate } from '$lib/utils';
 	import { onMount } from 'svelte';
+	import { Bird } from 'lucide-svelte';
 
 	// For the loading spinner
 	let loaded = $state(false);
 	let firstLoad = $state(true);
+
+	let noEvents = $state(false);
 
 	// Stores all the events available
 	let fullEvents: EventsRecord[] = [];
@@ -108,13 +111,13 @@
 			const res = await fetch('/api/events');
 			json = await res.json();
 
-			if (json?.events?.length == 0 || !json.events) {
-				toast.message("It looks like there are no events yet!");
+			if (!json?.events || json?.events?.length == 0) {
+				noEvents = true;
 				return;
 			}
 		} catch (error) {
 			console.error('Failed to load calendar', error);
-			toast.error("Whoops! An error occured when trying to load the calendar! Please try again later.");
+			toast.error("Failed to load calendar!");
 			return;
 		}
 
@@ -203,5 +206,14 @@
 		<Calendar events={events} firstLoad={firstLoad} />
 	{/key}
 {:else}
-	<Loader />
+	{#if !noEvents}
+		<Loader />
+	{:else}
+		<div class="flex flex-col items-center gap-5">
+			<Bird color="#77767b" size={144} />
+			<div class="m-1 font-alata text-center">
+				It looks like there are no events yet!
+			</div>
+		</div>
+	{/if}
 {/if}
