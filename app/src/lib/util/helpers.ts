@@ -1,3 +1,5 @@
+import type { EventRecWithStandAndBet } from '$lib/types/expand';
+
 // formats time in a nice format
 export function formatTime(time: string) {
 	const date = new Date(time);
@@ -33,4 +35,15 @@ export async function getBalance() {
 		console.log('Failed to get user balance, error:', error);
 		return 0;
 	}
+}
+// gets a event's status
+export function getStatus(event: EventRecWithStandAndBet) {
+	const now = new Date().getTime() + 1000 * 60 * 330;
+	const startTime = new Date(event.startTime).getTime();
+	const endTime = new Date(event.endTime).getTime();
+
+	if (endTime < now) return 'finished';
+	if (startTime <= now && endTime >= now) return 'ongoing';
+	if (startTime > now && startTime - now <= 1000 * 60 * 60 * 3) return 'starting soon';
+	return 'default';
 }

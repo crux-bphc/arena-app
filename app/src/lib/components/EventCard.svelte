@@ -7,7 +7,7 @@
 <script lang="ts">
 	import type { EventRecWithStandAndBet, StandingsRecordWithTeam } from '$lib/types/expand';
 	import type { BetsRecord } from '$lib/types/pocketbase';
-	import { formatTime, getTimeLeft } from '$lib/util/helpers';
+	import { formatTime, getStatus, getTimeLeft } from '$lib/util/helpers';
 	import BetPopup from './BetPopup.svelte';
 
 	interface EventCardProps {
@@ -15,23 +15,14 @@
 		event: EventRecWithStandAndBet;
 		userBets: BetsRecord[];
 		balance: number;
+		id?: string;
 	}
 
 	// if isMinimized is true, the whole component scales down
 	// (this is for sports page when the side bar opens)
-	let { isMinimized = false, event, userBets, balance }: EventCardProps = $props();
+	let { isMinimized = false, event, userBets, balance, id }: EventCardProps = $props();
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
-	function getStatus(event: EventRecWithStandAndBet) {
-		const now = new Date().getTime() + 1000 * 60 * 330;
-		const startTime = new Date(event.startTime).getTime();
-		const endTime = new Date(event.endTime).getTime();
-
-		if (endTime < now) return 'finished';
-		if (startTime <= now && endTime >= now) return 'ongoing';
-		if (startTime > now && startTime - now <= 1000 * 60 * 60 * 3) return 'starting soon';
-		return 'default';
-	}
 	// calculates which color should a team have based on won/lost/ongoing etc
 	function calcColor(standing: StandingsRecordWithTeam) {
 		if (status == 'ongoing') return 'text-warning';
@@ -43,6 +34,7 @@
 </script>
 
 <div
+	{id}
 	class="bg-secondary flex w-full flex-col items-center justify-between gap-2 {isMinimized
 		? 'rounded-lg p-2'
 		: 'rounded-[10px] p-3'}"
