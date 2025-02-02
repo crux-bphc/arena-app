@@ -1,23 +1,23 @@
 import pb from '$lib/server/database';
-import type { EventsRecordWithStandings } from '$lib/types/expand';
-import type { EventsRecord, StandingsRecord } from '$lib/types/pocketbase';
+import type { EventRecWithStandAndBet } from '$lib/types/expand';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 // This does not require login
 const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 	// Filter by sport
 	const sport = url.searchParams.get('sport');
-	const standings = url.searchParams.get('standings');
+	const isStandings = url.searchParams.get('standings') === 'true';
+	const isBetPools = url.searchParams.get('betPools') === 'true';
 	try {
 		const options = {
 			filter: sport ? `sport="${sport}"` : ``,
-			expand: `teams, ${standings === 'true' ? 'standings_via_event.team' : ''}`,
+			expand: `teams, ${isStandings ? ' standings_via_event.team' : ''}, ${isBetPools ? 'betPool_via_event' : ''}`,
 			sort: 'startTime'
 		};
 
 		const eventsData: any = await pb.collection('events').getFullList(options);
 		// processing the incoming data to a nicer format
-		const events: EventsRecordWithStandings[] = eventsData.map((event: any) => {
+		const events: EventRecWithStandAndBet[] = eventsData.map((event: any) => {
 			const standings = event.expand?.standings_via_event?.map((standing: any) => {
 				const team = standing.expand.team;
 				delete standing.expand;
@@ -26,9 +26,10 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 			standings?.sort(
 				(a: { position: number }, b: { position: number }) => a.position - b.position
 			);
+			const betPools = event.expand?.betPool_via_event;
 			const teams = event.expand.teams;
 			delete event.expand;
-			return { ...event, standings: standings, teams: teams };
+			return { ...event, standings: standings, teams: teams, betPools: betPools };
 		});
 
 		return json({ events });

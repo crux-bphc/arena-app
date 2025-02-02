@@ -5,21 +5,23 @@
 <!-- default/starts at (>3hrs left from startTime) -->
 
 <script lang="ts">
-	import type { EventsRecordWithStandings, StandingsRecordWithTeam } from '$lib/types/expand';
+	import type { EventRecWithStandAndBet, StandingsRecordWithTeam } from '$lib/types/expand';
+	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { formatTime, getTimeLeft } from '$lib/util/helpers';
 	import BetPopup from './BetPopup.svelte';
 
 	interface EventCardProps {
 		isMinimized?: boolean;
-		event: EventsRecordWithStandings;
+		event: EventRecWithStandAndBet;
+		userBets: BetsRecord[];
 	}
 
 	// if isMinimized is true, the whole component scales down
 	// (this is for sports page when the side bar opens)
-	let { isMinimized = false, event }: EventCardProps = $props();
+	let { isMinimized = false, event, userBets }: EventCardProps = $props();
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
-	function getStatus(event: EventsRecordWithStandings) {
+	function getStatus(event: EventRecWithStandAndBet) {
 		const now = new Date().getTime() + 1000 * 60 * 330;
 		const startTime = new Date(event.startTime).getTime();
 		const endTime = new Date(event.endTime).getTime();
@@ -114,7 +116,7 @@
 			<span class="text-foreground/50 line-clamp-1 capitalize">
 				{event.location}
 			</span>
-			<BetPopup {isMinimized} {event} />
+			<BetPopup {isMinimized} {event} {userBets} />
 		</div>
 	{:else}
 		<div

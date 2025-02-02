@@ -2,7 +2,7 @@
 	import EventCard from '$lib/components/EventCard.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { EventsSportOptions } from '$lib/types/enums';
-	import type { EventsRecordWithStandings } from '$lib/types/expand';
+	import type { EventRecWithStandAndBet } from '$lib/types/expand';
 	import type { PageData } from './$types';
 
 	import { ListFilter } from 'lucide-svelte';
@@ -12,18 +12,13 @@
 	let activeSport: string = $state(EventsSportOptions.football);
 	let showSidebar = $state(true);
 	let showAllSports = $state(true);
-	let events: EventsRecordWithStandings[] = $state(data.events);
+	let events: EventRecWithStandAndBet[] = $state(data.events);
 
 	let sports: EventsSportOptions[] = Object.values(EventsSportOptions);
 </script>
 
 <!-- filter button -->
-<Button
-	variant="secondary"
-	size="icon"
-	class="m-3"
-	onclick={() => (showSidebar = !showSidebar)}
->
+<Button variant="secondary" size="icon" class="m-3" onclick={() => (showSidebar = !showSidebar)}>
 	<ListFilter class="size-8" />
 </Button>
 
@@ -64,7 +59,7 @@
 		<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
 		{#each events as event}
 			{#if event.sport === activeSport || showAllSports}
-				<EventCard isMinimized={showSidebar} {event} />
+				<EventCard isMinimized={showSidebar} {event} userBets={data.bets} />
 			{/if}
 		{/each}
 	</div>

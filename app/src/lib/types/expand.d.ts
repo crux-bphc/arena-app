@@ -1,4 +1,4 @@
-import type { EventsRecord, StandingsRecord, TeamsRecord } from './pocketbase';
+import type { BetPoolRecord, EventsRecord, StandingsRecord, TeamsRecord } from './pocketbase';
 
 export type BetExpand = {
 	event: EventsResponse;
@@ -14,7 +14,9 @@ type StandingsRecordWithTeam = StandingsRecord & {
 	team: TeamsRecord;
 };
 
-type EventsRecordWithStandings = EventsRecord & {
+// this is the data type for sports page events
+type EventRecWithStandAndBet = EventsRecord & {
 	teams: TeamsRecord[];
 	standings?: StandingsRecordWithTeam[];
+	betPools?: BetPoolRecord[];
 };
