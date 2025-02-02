@@ -5,6 +5,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { INTERNAL_PB_URL } from '$env/static/private';
 import { _betCreateSchema } from './routes/api/user/bet/+server';
 import type { AnyZodObject } from 'zod';
+import { needsAuth } from '$lib/utils';
 
 const authentication: Handle = async ({ event, resolve }) => {
 	event.locals.pb = new PocketBase(INTERNAL_PB_URL) as TypedPocketBase;
@@ -33,17 +34,10 @@ const authentication: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-const unauthenticatedRoutePrefixes = [
-	'/(auth)/',
-	'/api/event/',
-	'/api/events/',
-	'/api/user/leaderboard'
-];
-
 const authorization: Handle = async ({ event, resolve }) => {
-	if (!unauthenticatedRoutePrefixes.some((prefix) => event.route.id?.startsWith(prefix))) {
+	if (needsAuth(event.route.id)) {
 		if (!event.locals.pb.authStore.isValid || !event.locals.pb.authStore.record) {
-			return redirect(303, '/login');
+			return redirect(302, '/login');
 		}
 	}
 
