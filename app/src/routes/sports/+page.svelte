@@ -3,9 +3,12 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { EventsSportOptions } from '$lib/types/enums';
 	import type { EventRecWithStandAndBet } from '$lib/types/expand';
+	import { getBalance } from '$lib/util/helpers';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
 	import { ListFilter } from 'lucide-svelte';
+	import Loader from '$lib/components/Loader.svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -13,8 +16,17 @@
 	let showSidebar = $state(true);
 	let showAllSports = $state(true);
 	let events: EventRecWithStandAndBet[] = $state(data.events);
+	let balance: number | null = $state(null);
 
 	let sports: EventsSportOptions[] = Object.values(EventsSportOptions);
+
+	async function loadBalance() {
+		balance = await getBalance();
+	}
+
+	onMount(() => {
+		loadBalance();
+	});
 </script>
 
 <!-- filter button -->
@@ -22,45 +34,49 @@
 	<ListFilter class="size-8" />
 </Button>
 
-<div class="flex h-[90vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
-	<!-- side bar -->
-	<div
-		class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 [direction:rtl] {showSidebar
-			? 'flex'
-			: 'hidden'}"
-	>
-		<Button
-			class="h-14 w-full rounded-xl text-base capitalize"
-			variant={showAllSports ? 'default' : 'secondary'}
-			onclick={() => (showAllSports = true)}
+{#if balance == null}
+	<Loader />
+{:else}
+	<div class="flex h-[90vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
+		<!-- side bar -->
+		<div
+			class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 [direction:rtl] {showSidebar
+				? 'flex'
+				: 'hidden'}"
 		>
-			All sports
-		</Button>
-		{#each sports as sport}
 			<Button
 				class="h-14 w-full rounded-xl text-base capitalize"
-				variant={!showAllSports && activeSport === sport ? 'default' : 'secondary'}
-				onclick={() => {
-					activeSport = sport;
-					showAllSports = false;
-				}}
+				variant={showAllSports ? 'default' : 'secondary'}
+				onclick={() => (showAllSports = true)}
 			>
-				{sport}
+				All sports
 			</Button>
-		{/each}
-	</div>
+			{#each sports as sport}
+				<Button
+					class="h-14 w-full rounded-xl text-base capitalize"
+					variant={!showAllSports && activeSport === sport ? 'default' : 'secondary'}
+					onclick={() => {
+						activeSport = sport;
+						showAllSports = false;
+					}}
+				>
+					{sport}
+				</Button>
+			{/each}
+		</div>
 
-	<!-- event cards -->
-	<div
-		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto {showSidebar
-			? 'w-2/3'
-			: 'w-full'}"
-	>
-		<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
-		{#each events as event}
-			{#if event.sport === activeSport || showAllSports}
-				<EventCard isMinimized={showSidebar} {event} userBets={data.bets} />
-			{/if}
-		{/each}
+		<!-- event cards -->
+		<div
+			class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto {showSidebar
+				? 'w-2/3'
+				: 'w-full'}"
+		>
+			<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
+			{#each events as event}
+				{#if event.sport === activeSport || showAllSports}
+					<EventCard isMinimized={showSidebar} {event} userBets={data.bets} {balance} />
+				{/if}
+			{/each}
+		</div>
 	</div>
-</div>
+{/if}

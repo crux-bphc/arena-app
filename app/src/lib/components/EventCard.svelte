@@ -14,11 +14,12 @@
 		isMinimized?: boolean;
 		event: EventRecWithStandAndBet;
 		userBets: BetsRecord[];
+		balance: number;
 	}
 
 	// if isMinimized is true, the whole component scales down
 	// (this is for sports page when the side bar opens)
-	let { isMinimized = false, event, userBets }: EventCardProps = $props();
+	let { isMinimized = false, event, userBets, balance }: EventCardProps = $props();
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
 	function getStatus(event: EventRecWithStandAndBet) {
@@ -116,7 +117,7 @@
 			<span class="text-foreground/50 line-clamp-1 capitalize">
 				{event.location}
 			</span>
-			<BetPopup {isMinimized} {event} {userBets} />
+			<BetPopup {isMinimized} {event} {userBets} {balance} />
 		</div>
 	{:else}
 		<div

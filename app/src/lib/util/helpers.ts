@@ -22,3 +22,15 @@ export function getTimeLeft(time: string) {
 	const hrString = diff >= 60 ? `${Math.floor(diff / 60)}hr ` : '';
 	return `${hrString}${diff % 60} min`;
 }
+// gets user's balance
+export async function getBalance() {
+	try {
+		const res = await fetch('/api/user/balance');
+		const { balance: bal }: { balance: number } = await res.json();
+
+		return bal;
+	} catch (error) {
+		console.log('Failed to get user balance, error:', error);
+		return 0;
+	}
+}

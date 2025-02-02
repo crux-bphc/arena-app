@@ -19,4 +19,5 @@ type EventRecWithStandAndBet = EventsRecord & {
 	teams: TeamsRecord[];
 	standings?: StandingsRecordWithTeam[];
 	betPools?: BetPoolRecord[];
+	userCount?: number;
 };

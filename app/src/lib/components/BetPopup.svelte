@@ -2,19 +2,58 @@
 	import Button from './ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import type { EventRecWithStandAndBet } from '$lib/types/expand';
-	import { formatTime } from '$lib/util/helpers';
+	import { formatTime, getBalance } from '$lib/util/helpers';
 	import Input from './ui/input/input.svelte';
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
+	import { UsersRound, Wallet } from 'lucide-svelte';
 
 	interface BetPopupProps {
 		isMinimized?: Boolean;
 		event: EventRecWithStandAndBet;
 		userBets: BetsRecord[];
+		balance: number;
 	}
-	let { isMinimized = false, event, userBets }: BetPopupProps = $props();
+	let { isMinimized = false, event, userBets, balance }: BetPopupProps = $props();
 	let activeTeamId = $state(event.teams[0].id);
+	let bets = $state(userBets);
+	let userBalance = $state(balance);
 	let totalPool: number | null = $state(null);
+	let betAmount: number = $state(0);
+
+	async function loadBalance() {
+		userBalance = await getBalance();
+	}
+
+	async function submitBet() {
+		if (betAmount <= 0) {
+			console.log('Invalid amount');
+			return;
+		}
+		if (userBalance < betAmount) {
+			console.log('Your balance is too low!');
+			return;
+		}
+
+		try {
+			const res = await fetch('/api/user/bet', {
+				method: 'POST',
+				body: JSON.stringify({ teamId: activeTeamId, eventId: event.id, amount: betAmount })
+			});
+			const data = await res.json();
+
+			if (res.status == 400) throw new Error(data.message);
+
+			console.log(`Successfully bet in event ${event.title}!`);
+			// loading new balance
+			loadBalance();
+
+			let userBetRecord = bets.find((obj) => obj.team == activeTeamId && obj.event == event.id);
+			if (userBetRecord) userBetRecord.amount = data.amount;
+		} catch (error) {
+			console.log(`An error occured while trying to process your request: ${error}`);
+		}
+	}
 
 	function calcTotalPool() {
 		totalPool = event.betPools?.reduce((sum, obj) => sum + (obj.amount || 0), 0) ?? 0;
@@ -28,7 +67,7 @@
 		if (totalPool == null) return 1;
 
 		const teamPool = event.betPools?.find((obj) => obj.team === id)?.amount ?? 0;
-		const value = Math.floor((teamPool / totalPool) * 1000) / 10;
+		const value = Math.floor(Math.round((teamPool / totalPool) * 1000)) / 10;
 
 		return !Number.isNaN(value) ? value : 0;
 	}
@@ -37,13 +76,13 @@
 		if (totalPool == null) return 1;
 
 		const teamPool = event.betPools?.find((obj) => obj.team === id)?.amount ?? 0;
-		const value = Math.floor((totalPool / teamPool) * 100) / 100;
+		const value = Math.floor(Math.round((totalPool / teamPool) * 100)) / 100;
 
-		return !Number.isNaN(value) ? value : 1;
+		return !Number.isNaN(value) && Number.isFinite(value) ? value : 1;
 	}
 	// calculates a user's already bet amount for a team
 	function findBetAmount(teamId: string) {
-		return userBets.find((obj) => obj.team == teamId && obj.event == event.id)?.amount ?? 0;
+		return bets.find((obj) => obj.team == teamId && obj.event == event.id)?.amount ?? 0;
 	}
 </script>
 
@@ -69,8 +108,38 @@
 					>Bets close at {formatTime(event.startTime).toUpperCase()}</Drawer.Description
 				>
 			</Drawer.Header>
-			<div class="flex w-full flex-col gap-8 p-4">
-				<div class="flex max-h-[40vh] flex-col gap-2 overflow-auto">
+			<div class="flex w-full items-center justify-between px-6 text-xl font-bold capitalize">
+				<!-- balance tag -->
+				<div class="flex items-center justify-center">
+					<div
+						class="bg-primary text-primary-foreground flex items-center justify-center rounded-l-lg px-4 py-3"
+					>
+						<Wallet class="size-7" />
+					</div>
+					<div
+						class="bg-secondary text-secondary-foreground flex items-center justify-center rounded-r-lg px-4 py-3"
+					>
+						{userBalance}
+					</div>
+				</div>
+				<!-- user count tag -->
+				<div class="flex items-center justify-center">
+					<div
+						class="bg-secondary text-secondary-foreground flex items-center justify-center rounded-l-lg px-4 py-3"
+					>
+						{event.userCount}
+					</div>
+					<div
+						class="bg-primary text-primary-foreground flex items-center justify-center rounded-r-lg px-4 py-3"
+					>
+						<UsersRound class="size-7" />
+					</div>
+				</div>
+			</div>
+
+			<!-- standings -->
+			<div class="flex w-full flex-col p-4">
+				<div class="flex max-h-[40vh] flex-col gap-1 overflow-auto">
 					{#each event.teams as team, i}
 						<button
 							class="grid grid-cols-10 grid-rows-2 gap-y-1 rounded-xl p-3 {team.id == activeTeamId
@@ -98,25 +167,38 @@
 								</div>
 							</div>
 							<!-- bet amount -->
-							<div class="col-span-2 row-span-2 flex items-center justify-center p-2 text-2xl">
-								{findBetAmount(team.id)}
-							</div>
+							{#key bets}
+								<div class="col-span-2 row-span-2 flex items-center justify-center p-2 text-2xl">
+									{findBetAmount(team.id)}
+								</div>
+							{/key}
 						</button>
 					{/each}
 				</div>
+
 				<!-- bet amount input -->
-				<form class="flex w-full items-center justify-center gap-4">
+				<form class="mt-8 flex w-full items-center justify-between gap-8 px-4">
 					<div class="flex flex-row">
-						<Button class="bg-secondary size-14 rounded-l-lg text-3xl" variant="ghost">+</Button>
+						<Button
+							class="bg-secondary size-14 rounded-l-lg text-3xl"
+							variant="ghost"
+							onclick={() => (betAmount = Math.max(betAmount - 50, 0))}>-</Button
+						>
 						<Input
 							type="number"
 							class="hide-arrows border-secondary h-14 w-20 rounded-none border-x-0 border-y-2 p-1 text-center text-2xl"
 							placeholder="custom amount"
-							defaultValue={100}
+							bind:value={betAmount}
 						/>
-						<Button class="bg-secondary size-14 rounded-r-lg text-3xl" variant="ghost">-</Button>
+						<Button
+							class="bg-secondary size-14 rounded-r-lg text-3xl"
+							variant="ghost"
+							onclick={() => (betAmount = Math.max(betAmount + 50, 0))}>+</Button
+						>
 					</div>
-					<Button type="submit" class="h-14 rounded-lg px-6 text-2xl">Bet</Button>
+					<Button type="submit" class="h-14 rounded-lg px-6 text-2xl" onclick={submitBet}
+						>Bet</Button
+					>
 				</form>
 			</div>
 			<Drawer.Footer>
