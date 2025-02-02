@@ -31,11 +31,11 @@
 	let occupiedGrids: number[][] = [[]];
 
 	let top = $state(0);
-	let timeString = $state("6:00 AM");
+	let timeString = $state<string | null>(null);
 	let timestamp = $state<Element | null>(null);
 	let disabledTimeStamp = $state(-1);
 
-	// If the time-line is withing 13 pixels above or below a timestamp, do not show the timestamp
+	// If the time-line is within 13 pixels above or below a timestamp, do not show the timestamp
 	// This is an aribtrary constant that seems to cause no visual defects with overlapping times
 	const noShowTimeStampHeight = 13;
 
@@ -88,7 +88,7 @@
 	// Utility functions to display the time
 	const padZeroes = (number: number) => number < 10 ? '0' + number.toString() : number.toString();
 	const to12Hours = (hours: number) => hours > 12 ? hours - 12 : hours;
-	const timeDesignator = (hours: number) => hours > 12 ? 'PM' : 'AM';
+	const timeDesignator = (hours: number) => hours >= 12 ? 'PM' : 'AM';
 
 	// Update the location of the time display bar
 	const updateTimeLocation = () => {
@@ -119,7 +119,9 @@
 <div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
 	<div class="flex flex-col text-xs font-semibold relative">
-		<div class="time text-red-600 absolute bg-background font-bold" style="top: {top}px; font-size: 10px;">{timeString}</div>
+		{#if timeString}
+			<div class="time text-red-600 absolute bg-background font-bold text-[10px]" style="top: {top}px;">{timeString}</div>
+		{/if}
 		{#each { length: rows }, i}
 			<div class="h-20 w-12 pr-1 text-white { i == disabledTimeStamp ? 'invisible' : '' }" bind:this={timestamp}>
 				{((i + calendarStartHour - 1) % 12) + 1}
@@ -133,9 +135,11 @@
 	</div>
 
 	<div class="relative my-2 overflow-x-scroll {cols <= 2 ? 'w-full' : ''}">
-		<div class="line bg-red-600 h-px absolute before:bg-red-600 w-full" style="top: {top}px; z-index: 1;">
-			<div class="border-solid border-l-red-600 border-l-8 border-y-transparent border-y-4 border-r-0 absolute left-0" style="top: -3.5px"></div>
-		</div>
+		{#if timeString}
+			<div class="line bg-red-600 h-px absolute before:bg-red-600 w-full z-1" style="top: {top}px;">
+				<div class="border-solid border-l-red-600 border-l-8 border-y-transparent border-y-4 border-r-0 absolute left-0" style="top: -3.5px"></div>
+			</div>
+		{/if}
 		<!-- background grid -->
 		<div
 			class="grid"
