@@ -15,6 +15,7 @@
 	import Calendar from '$lib/components/Calendar.svelte';
 	import Loader from '$lib/components/Loader.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { toast } from 'svelte-sonner';
 	import type { EventsRecord, IsoDateString } from '$lib/types/pocketbase';
 	import { getDate } from '$lib/utils';
 	import { onMount } from 'svelte';
@@ -22,8 +23,6 @@
 	// For the loading spinner
 	let loaded = $state(false);
 	let firstLoad = $state(true);
-
-	let message = $state<string | null>(null)
 
 	// Stores all the events available
 	let fullEvents: EventsRecord[] = [];
@@ -110,12 +109,12 @@
 			json = await res.json();
 
 			if (json?.events?.length == 0 || !json.events) {
-				message = "It looks like there are no events yet!";
+				toast.message("It looks like there are no events yet!");
 				return;
 			}
 		} catch (error) {
 			console.error('Failed to load calendar', error);
-			message = "Whoops! An error occured when trying to load the calendar! Please try again later."
+			toast.error("Whoops! An error occured when trying to load the calendar! Please try again later.");
 			return;
 		}
 
@@ -204,11 +203,5 @@
 		<Calendar events={events} firstLoad={firstLoad} />
 	{/key}
 {:else}
-	{#if message == null}
-		<Loader />
-	{:else}
-		<div class="m-1 font-alata text-center">
-			{message}
-		</div>
-	{/if}
+	<Loader />
 {/if}
