@@ -1,4 +1,3 @@
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import CalendarItem from '$lib/components/CalendarItem.svelte';
@@ -21,8 +20,13 @@
 		events,
 		calendarStartHour = 6,
 		calendarEndHour = 24,
-		firstLoad,
-	}: { calendarStartHour?: number; calendarEndHour?: number; events: EventData[], firstLoad: boolean } = $props();
+		firstLoad
+	}: {
+		calendarStartHour?: number;
+		calendarEndHour?: number;
+		events: EventData[];
+		firstLoad: boolean;
+	} = $props();
 
 	// removing {calendarStartHour} hours from total day of 24 hours
 	let rows = calendarEndHour - calendarStartHour;
@@ -45,8 +49,7 @@
 		});
 		cols = occupiedGrids.length;
 		updateTimeLocation();
-		if (firstLoad)
-			window.scrollTo({ top: top + window.innerHeight - noShowTimeStampHeight * 2})
+		if (firstLoad) window.scrollTo({ top: top + window.innerHeight - noShowTimeStampHeight * 2 });
 		// Update the time every ~30 seconds
 		setInterval(updateTimeLocation, 1000 * 30);
 	});
@@ -86,9 +89,9 @@
 	}
 
 	// Utility functions to display the time
-	const padZeroes = (number: number) => number < 10 ? '0' + number.toString() : number.toString();
-	const to12Hours = (hours: number) => hours > 12 ? hours - 12 : hours;
-	const timeDesignator = (hours: number) => hours >= 12 ? 'PM' : 'AM';
+	const padZeroes = (number: number) => (number < 10 ? '0' + number.toString() : number.toString());
+	const to12Hours = (hours: number) => (hours > 12 ? hours - 12 : hours);
+	const timeDesignator = (hours: number) => (hours >= 12 ? 'PM' : 'AM');
 
 	// Update the location of the time display bar
 	const updateTimeLocation = () => {
@@ -104,25 +107,32 @@
 			timeString = `${to12Hours(hours)}:${padZeroes(minutes)} ${timeDesignator(hours)}`;
 
 			// The time-line is below the timestamp
-			if (top % hourHeight <= noShowTimeStampHeight)
-				disabledTimeStamp = hourTop / hourHeight;
+			if (top % hourHeight <= noShowTimeStampHeight) disabledTimeStamp = hourTop / hourHeight;
 			// The time-line is above the time stamp
-			else if (hourHeight - top % hourHeight <= noShowTimeStampHeight)
+			else if (hourHeight - (top % hourHeight) <= noShowTimeStampHeight)
 				disabledTimeStamp = hourTop / hourHeight + 1;
 			// The time-line is not near a timestamp
 			else disabledTimeStamp = -1;
 		}
-	}
+	};
 </script>
 
 <div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
-	<div class="flex flex-col text-xs font-semibold relative">
+	<div class="relative flex flex-col text-xs font-semibold">
 		{#if timeString}
-			<div class="time text-red-600 absolute bg-background font-bold text-[10px]" style="top: {top}px;">{timeString}</div>
+			<div
+				class="time absolute bg-background text-[10px] font-bold text-red-600"
+				style="top: {top}px;"
+			>
+				{timeString}
+			</div>
 		{/if}
 		{#each { length: rows }, i}
-			<div class="h-20 w-12 pr-1 text-white { i == disabledTimeStamp ? 'invisible' : '' }" bind:offsetHeight={hourHeight}>
+			<div
+				class="h-20 w-12 pr-1 text-white {i == disabledTimeStamp ? 'invisible' : ''}"
+				bind:offsetHeight={hourHeight}
+			>
 				{((i + calendarStartHour - 1) % 12) + 1}
 				{i < 12 - calendarStartHour ? 'AM' : 'PM'}
 			</div>
@@ -135,8 +145,14 @@
 
 	<div class="relative my-2 overflow-x-scroll {cols <= 2 ? 'w-full' : ''}">
 		{#if timeString}
-			<div class="line bg-red-600 h-px absolute before:bg-red-600 w-full z-[1]" style="top: {top}px;">
-				<div class="border-solid border-l-red-600 border-l-8 border-y-transparent border-y-4 border-r-0 absolute left-0" style="top: -3.5px"></div>
+			<div
+				class="line absolute z-[1] h-px w-full bg-red-600 before:bg-red-600"
+				style="top: {top}px;"
+			>
+				<div
+					class="absolute left-0 border-y-4 border-l-8 border-r-0 border-solid border-y-transparent border-l-red-600"
+					style="top: -3.5px"
+				></div>
 			</div>
 		{/if}
 		<!-- background grid -->

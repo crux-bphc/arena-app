@@ -24,7 +24,7 @@ const buttonVariants = tv({
 		width: {
 			long: 'min-w-44',
 			short: 'min-w-28',
-			unset: '',
+			unset: ''
 		}
 	},
 	defaultVariants: {
@@ -41,7 +41,7 @@ type Width = VariantProps<typeof buttonVariants>['width'];
 type Props = ButtonPrimitive.Props & {
 	variant?: Variant;
 	size?: Size;
-	width?: Width,
+	width?: Width;
 };
 
 type Events = ButtonPrimitive.Events;

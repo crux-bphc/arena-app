@@ -15,17 +15,21 @@
 
 	const computeWidth = () => {
 		switch (width) {
-			case 'long': return 'min-w-44';
-			case 'short': return 'min-w-28';
-			default: return '';
+			case 'long':
+				return 'min-w-44';
+			case 'short':
+				return 'min-w-28';
+			default:
+				return '';
 		}
-	}
-
+	};
 </script>
 
 <ButtonPrimitive.Root
 	{builders}
-	class="{cn(buttonVariants({ variant, size, className }))} {variant == 'calendar' ? computeWidth() : ''}"
+	class="{cn(buttonVariants({ variant, size, className }))} {variant == 'calendar'
+		? computeWidth()
+		: ''}"
 	type="button"
 	{...$$restProps}
 	on:click
@@ -40,9 +44,7 @@
 			<slot />
 		</span>
 	{:else if variant == 'calendar'}
-		<span
-			class="absolute inset-0 rounded-md bg-secondary"
-		></span>
+		<span class="absolute inset-0 rounded-md bg-secondary"></span>
 		<span
 			class="absolute inset-7 rounded-md bg-primary transition-all duration-100 ease-in group-[.active]:inset-0"
 		></span>
