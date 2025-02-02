@@ -1,23 +1,3 @@
-<style>
-	.line::before {
-		width: 8px;
-		height: 8px;
-		position: absolute;
-		top: -3.5px;
-		display: block;
-		left: -1px;
-		border-radius: 100%;
-	}
-
-	.time {
-		font-size: 10px;
-	}
-
-	.line {
-		z-index: 1;
-		width: calc(100% - 1px);
-	}
-</style>
 
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -40,8 +20,9 @@
 	let {
 		events,
 		calendarStartHour = 6,
-		calendarEndHour = 24
-	}: { calendarStartHour?: number; calendarEndHour?: number; events: EventData[] } = $props();
+		calendarEndHour = 24,
+		firstLoad,
+	}: { calendarStartHour?: number; calendarEndHour?: number; events: EventData[], firstLoad: boolean } = $props();
 
 	// removing {calendarStartHour} hours from total day of 24 hours
 	let rows = calendarEndHour - calendarStartHour;
@@ -63,8 +44,9 @@
 			return { ...event, ...calculatePos(event) };
 		});
 		cols = occupiedGrids.length;
-
 		updateTimeLocation();
+		if (firstLoad)
+			window.scrollTo({ top: top + window.innerHeight - noShowTimeStampHeight * 2})
 		// Update the time every ~30 seconds
 		setInterval(updateTimeLocation, 1000 * 30);
 	});
@@ -111,6 +93,7 @@
 	// Update the location of the time display bar
 	const updateTimeLocation = () => {
 		if (timestamp == null) return;
+
 		const time = new Date(Date.now());
 		const hourHeight = parseFloat(window.getComputedStyle(timestamp).height);
 		const hours = time.getHours();
@@ -136,7 +119,7 @@
 <div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
 	<div class="flex flex-col text-xs font-semibold relative">
-		<div class="time text-red-600 absolute bg-background font-bold" style="top: {top}px">{timeString}</div>
+		<div class="time text-red-600 absolute bg-background font-bold" style="top: {top}px; font-size: 10px;">{timeString}</div>
 		{#each { length: rows }, i}
 			<div class="h-20 w-12 pr-1 text-white { i == disabledTimeStamp ? 'invisible' : '' }" bind:this={timestamp}>
 				{((i + calendarStartHour - 1) % 12) + 1}
@@ -150,7 +133,9 @@
 	</div>
 
 	<div class="relative my-2 overflow-x-scroll {cols <= 2 ? 'w-full' : ''}">
-		<div class="line bg-red-600 h-px absolute before:bg-red-600 left-px" style="top: {top}px"></div>
+		<div class="line bg-red-600 h-px absolute before:bg-red-600 w-full" style="top: {top}px; z-index: 1;">
+			<div class="border-solid border-l-red-600 border-l-8 border-y-transparent border-y-4 border-r-0 absolute left-0" style="top: -3.5px"></div>
+		</div>
 		<!-- background grid -->
 		<div
 			class="grid"

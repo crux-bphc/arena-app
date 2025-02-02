@@ -21,6 +21,8 @@
 
 	// For the loading spinner
 	let loaded = $state(false);
+	let firstLoad = $state(true);
+
 	let message = $state<string | null>(null)
 
 	// Stores all the events available
@@ -131,8 +133,8 @@
 
 		// Enable only the current day
 		filters.days[currentDay - 1] = true;
-
-		applyFilters();
+		
+		applyFilters(true);
 
 		loaded = true;
 	}
@@ -142,7 +144,8 @@
 	});
 	
 	// Apply date and sport filters
-	const applyFilters = () => {
+	const applyFilters = (firstLoadValue = false) => {
+		firstLoad = firstLoadValue;
 		events = fullEvents.filter((value) =>
 			filters.sports[value.sport] && 
 			filters.days[getEventDay(value.startTime) - 1]
@@ -198,7 +201,7 @@
 		{/if}
 	</div>
 	{#key events}
-		<Calendar events={events} />
+		<Calendar events={events} firstLoad={firstLoad} />
 	{/key}
 {:else}
 	{#if message == null}
