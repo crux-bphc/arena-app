@@ -3,6 +3,8 @@ FROM node:lts-alpine3.21 AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
+ENV COREPACK_INTEGRITY_KEYS=0
+
 RUN corepack enable
 
 WORKDIR /app

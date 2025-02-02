@@ -1,8 +1,10 @@
-FROM node:lts-alpine
+FROM node:lts-alpine3.21
 
 ENV NODE_ENV development
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+
+ENV COREPACK_INTEGRITY_KEYS=0
 
 RUN corepack enable
 
