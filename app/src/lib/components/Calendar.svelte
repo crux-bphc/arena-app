@@ -1,3 +1,24 @@
+<style>
+	.line::before {
+		width: 8px;
+		height: 8px;
+		position: absolute;
+		top: -3.5px;
+		display: block;
+		left: -1px;
+		border-radius: 100%;
+	}
+
+	.time {
+		font-size: 10px;
+	}
+
+	.line {
+		z-index: 1;
+		width: calc(100% - 1px);
+	}
+</style>
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import CalendarItem from '$lib/components/CalendarItem.svelte';
@@ -28,11 +49,24 @@
 	let eventsWithPos: EventDataWithPos[] = $state([]);
 	let occupiedGrids: number[][] = [[]];
 
+	let top = $state(0);
+	let timeString = $state("6:00 AM");
+	let timestamp = $state<Element | null>(null);
+	let disabledTimeStamp = $state(-1);
+
+	// If the time-line is withing 13 pixels above or below a timestamp, do not show the timestamp
+	// This is an aribtrary constant that seems to cause no visual defects with overlapping times
+	const noShowTimeStampHeight = 13;
+
 	onMount(() => {
 		eventsWithPos = events.map((event) => {
 			return { ...event, ...calculatePos(event) };
 		});
 		cols = occupiedGrids.length;
+
+		updateTimeLocation();
+		// Update the time every ~30 seconds
+		setInterval(updateTimeLocation, 1000 * 30);
 	});
 
 	// returns the position of a specific event on the event grid
@@ -68,24 +102,55 @@
 	function isAnyNumberInRange(x: number, y: number, arr: number[]) {
 		return arr.some((num) => num >= x && num <= y);
 	}
+
+	// Utility functions to display the time
+	const padZeroes = (number: number) => number < 10 ? '0' + number.toString() : number.toString();
+	const to12Hours = (hours: number) => hours > 12 ? hours - 12 : hours;
+	const timeDesignator = (hours: number) => hours > 12 ? 'PM' : 'AM';
+
+	// Update the location of the time display bar
+	const updateTimeLocation = () => {
+		if (timestamp == null) return;
+		const time = new Date(Date.now());
+		const hourHeight = parseFloat(window.getComputedStyle(timestamp).height);
+		const hours = time.getHours();
+		const minutes = time.getMinutes();
+		if (hours >= calendarStartHour) {
+			let hourTop = (hours - (12 - calendarStartHour)) * hourHeight;
+			let minuteTop = (hourHeight / 60) * minutes;
+			top = hourTop + minuteTop;
+			timeString = `${to12Hours(hours)}:${padZeroes(minutes)} ${timeDesignator(hours)}`;
+
+			// The time-line is below the timestamp
+			if (top % hourHeight <= noShowTimeStampHeight)
+				disabledTimeStamp = hourTop / hourHeight;
+			// The time-line is above the time stamp
+			else if (hourHeight - top % hourHeight <= noShowTimeStampHeight)
+				disabledTimeStamp = hourTop / hourHeight + 1;
+			// The time-line is not near a timestamp
+			else disabledTimeStamp = -1;
+		}
+	}
 </script>
 
 <div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
-	<div class="flex flex-col text-xs font-semibold">
+	<div class="flex flex-col text-xs font-semibold relative">
+		<div class="time text-red-600 absolute bg-background font-bold" style="top: {top}px">{timeString}</div>
 		{#each { length: rows }, i}
-			<div class="h-20 w-10 pr-1 text-white">
+			<div class="h-20 w-12 pr-1 text-white { i == disabledTimeStamp ? 'invisible' : '' }" bind:this={timestamp}>
 				{((i + calendarStartHour - 1) % 12) + 1}
 				{i < 12 - calendarStartHour ? 'AM' : 'PM'}
 			</div>
 		{/each}
-		<div class="w-10 pr-1">
+		<div class="w-12 pr-1">
 			{((calendarEndHour - 1) % 12) + 1}
 			{calendarEndHour % 24 >= 12 ? 'PM' : 'AM'}
 		</div>
 	</div>
 
 	<div class="relative my-2 overflow-x-scroll {cols <= 2 ? 'w-full' : ''}">
+		<div class="line bg-red-600 h-px absolute before:bg-red-600 left-px" style="top: {top}px"></div>
 		<!-- background grid -->
 		<div
 			class="grid"

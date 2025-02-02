@@ -107,7 +107,7 @@
 			const res = await fetch('/api/events');
 			json = await res.json();
 
-			if (json?.events?.length == 0) {
+			if (json?.events?.length == 0 || !json.events) {
 				message = "It looks like there are no events yet!";
 				return;
 			}
