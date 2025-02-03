@@ -3,23 +3,36 @@
 
 	import { onMount } from 'svelte';
 
-	import type { PageData } from './$types';
 	import type { EventsRecord } from '$lib/types/pocketbase';
 
 	import Loader from '$lib/components/Loader.svelte';
 	import Banner from '$lib/components/Banner.svelte';
 
-	const { data }: { data: PageData } = $props();
-	let events = $state(data.events);
-	let otherEvents = $state<EventsRecord[]>([]);
+	interface EventsData {
+		events: EventsRecord[];
+	}
+	onMount(() => {
+		getEventsData();
+	});
+
+	let events = $state<EventsData | null>(null);
+	let otherEvents = $state<EventsData | null>(null);
 	let mainEvent = $state<EventsRecord | null>(null);
 
-	onMount(() => {
-		if (events.length > 0) {
-			mainEvent = events[0];
-			otherEvents = events.slice(1, 3);
+	async function getEventsData() {
+		try {
+			const response = await fetch('/api/events?priority=true');
+			if (!response.ok) {
+				console.error(`Failed to fetch leaderboard data: ${response.status}`);
+				return;
+			}
+			events = await response.json();
+			mainEvent = events['events'][0];
+			otherEvents = events['events'].slice(1, 3);
+		} catch (e) {
+			console.error(`Failed to fetch leaderboard data: ${e}`);
 		}
-	});
+	}
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
