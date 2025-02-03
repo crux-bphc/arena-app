@@ -80,7 +80,7 @@
 	const updateDayRange = (minTime: number, maxTime: number) => {
 		let curr = new Date(minTime);
 		startDate = new Date(minTime);
-		let now = new Date(Date.now());
+		const now = new Date(Date.now());
 		while (true) {
 			days += 1;
 			filters.days.push(false);
@@ -110,7 +110,7 @@
 		events = fullEvents = json.events;
 
 		// Find start and end dates of all events and apply sports filters
-		let [minTime, maxTime] = updateEventData();
+		const [minTime, maxTime] = updateEventData();
 
 		// Find the number of days and the day we are currently at
 		updateDayRange(minTime, maxTime);
@@ -161,7 +161,7 @@
 	};
 </script>
 
-<h1 class="m-6 text-center text-3xl font-bold">Calendar</h1>
+<h1 class="m-6 text-center text-3xl font-bold select-none">Calendar</h1>
 {#if loaded}
 	<div class="button-container m-1 flex justify-center overflow-auto">
 		<span>
@@ -220,7 +220,7 @@
 {:else if !noEvents}
 	<Loader />
 {:else}
-	<div class="flex flex-col items-center gap-5">
+	<div class="flex flex-col items-center gap-5 select-none">
 		<Bird color="#77767b" size={144} />
 		<div class="m-1 text-center font-alata">It looks like there are no events yet!</div>
 	</div>
@@ -232,6 +232,7 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		overflow: -moz-scrollbars-none;
+		user-select: none;
 	}
 
 	.button-container::-webkit-scrollbar {

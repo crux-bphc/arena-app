@@ -97,12 +97,12 @@
 	const updateTimeLocation = () => {
 		if (hourHeight == null) return;
 
-		let time = new Date(Date.now());
+		const time = new Date(Date.now());
 		const hours = time.getHours();
 		const minutes = time.getMinutes();
 		if (hours >= calendarStartHour) {
-			let hourTop = (hours - (12 - calendarStartHour)) * hourHeight;
-			let minuteTop = (hourHeight / 60) * minutes;
+			const hourTop = (hours - (12 - calendarStartHour)) * hourHeight;
+			const minuteTop = (hourHeight / 60) * minutes;
 			top = hourTop + minuteTop;
 			timeString = `${to12Hours(hours)}:${padZeroes(minutes)} ${timeDesignator(hours)}`;
 
@@ -119,7 +119,7 @@
 
 <div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
-	<div class="relative flex flex-col text-xs font-semibold">
+	<div class="relative flex flex-col text-xs font-semibold select-none">
 		{#if timeString}
 			<div
 				class="time absolute bg-background text-[10px] font-bold text-red-600"
