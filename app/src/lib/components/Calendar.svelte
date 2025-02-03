@@ -57,8 +57,20 @@
 
 	// returns the position of a specific event on the event grid
 	function calculatePos(event: EventData) {
-		let startRow = getRow(new Date(event.startTime));
-		let endRow = getRow(new Date(event.endTime));
+		let startTime = new Date(event.startTime);
+		let endTime = new Date(event.endTime);
+
+		// round down start time
+		startTime.setUTCMinutes(Math.floor(startTime.getUTCMinutes() / 15) * 15);
+		const startRow = getRow(startTime);
+
+		// round up end time
+		const minutes = Math.ceil(endTime.getUTCMinutes() / 15) * 15;
+		const hours = endTime.getUTCHours() + Number(minutes == 60);
+		endTime.setUTCHours(hours % 24, minutes % 60);
+		
+		// this handles times that were either already aligned or rounded up rn
+		const endRow = getRow(endTime, hours == 0 || hours == 24);
 
 		// finding column with no clashes
 		let col = -1;
@@ -81,8 +93,8 @@
 		};
 	}
 	// converts hours and mins to its corresponding row
-	function getRow(date: Date) {
-		return (date.getUTCHours() - calendarStartHour) * 4 + 1 + date.getUTCMinutes() / 15;
+	function getRow(date: Date, isMidnight = false) {
+		return ((isMidnight ? 24 : date.getUTCHours()) - calendarStartHour) * 4 + 1 + date.getUTCMinutes() / 15;
 	}
 	// finds if any number between x & y (inclusive) is in arr
 	function isAnyNumberInRange(x: number, y: number, arr: number[]) {
