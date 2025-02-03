@@ -49,7 +49,7 @@
 		});
 		cols = occupiedGrids.length;
 		updateTimeLocation();
-		if (firstLoad) window.scrollTo({ top: top + window.innerHeight - noShowTimeStampHeight * 2 });
+		if (firstLoad) window.scrollTo({ top });
 		// Update the time every ~30 seconds
 		setInterval(updateTimeLocation, 1000 * 30);
 	});
@@ -97,7 +97,7 @@
 	const updateTimeLocation = () => {
 		if (hourHeight == null) return;
 
-		const time = new Date(new Date(Date.now()).setHours(11, 45));
+		let time = new Date(Date.now());
 		const hours = time.getHours();
 		const minutes = time.getMinutes();
 		if (hours >= calendarStartHour) {
@@ -113,7 +113,7 @@
 				disabledTimeStamp = hourTop / hourHeight + 1;
 			// The time-line is not near a timestamp
 			else disabledTimeStamp = -1;
-		}
+		} else timeString = null;
 	};
 </script>
 
