@@ -44,9 +44,9 @@
 			<slot />
 		</span>
 	{:else if variant == 'calendar'}
-		<span class="absolute inset-0 rounded-md bg-secondary"></span>
+		<span class="absolute inset-0 rounded-lg bg-secondary"></span>
 		<span
-			class="absolute inset-7 rounded-md bg-primary transition-all duration-100 ease-in group-[.active]:inset-0"
+			class="absolute inset-7 rounded-lg bg-primary transition-all duration-100 ease-in group-[.active]:inset-0"
 		></span>
 		<span class="z-10">
 			<slot />

@@ -17,7 +17,7 @@
 		grid-row: {rowStart} / span {rowSpan};"
 >
 	<div
-		class="flex h-full w-full flex-col justify-between overflow-hidden rounded-sm bg-accent/90 px-2 py-1 font-alata text-xs"
+		class="flex h-full w-full flex-col justify-between overflow-hidden rounded-md bg-accent/90 px-2 py-1 font-alata text-xs"
 	>
 		{#if rowSpan > 2}
 			<div class="flex flex-col {rowSpan > 6 ? 'gap-1' : ''}">

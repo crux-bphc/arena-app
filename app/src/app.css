@@ -36,9 +36,6 @@
 		--destructive-foreground: 210 40% 98%;
 
 		--ring: 212.7 26.8% 83.9%;
-
-		/* For some reason this was not defined before? Everything that used radius-md, lg, sm had border-radius: 0; */
-		--radius: 15px;
 	}
 }
 

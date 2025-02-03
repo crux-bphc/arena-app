@@ -49,11 +49,6 @@ const config: Config = {
 					foreground: 'hsl(var(--card-foreground) / <alpha-value>)'
 				}
 			},
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 4px)',
-				sm: 'calc(var(--radius) - 6px)'
-			},
 			fontFamily: {
 				sans: [...fontFamily.sans],
 				alata: ['alata', 'sans']
