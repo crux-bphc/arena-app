@@ -111,6 +111,8 @@ export type BetsRecord = {
 };
 
 export enum EventsSportOptions {
+	'basketball' = 'basketball',
+	'esports' = 'esports',
 	'football' = 'football',
 	'skating' = 'skating',
 	'squash' = 'squash',
@@ -125,7 +127,7 @@ export enum EventsSportOptions {
 	'swimming' = 'swimming',
 	'carrom' = 'carrom',
 	'throwball' = 'throwball',
-	'kabbadi' = 'kabbadi',
+	'kabaddi' = 'kabaddi',
 	'badminton' = 'badminton',
 	'snooker' = 'snooker',
 	'volleyball' = 'volleyball',

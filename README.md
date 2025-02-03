@@ -9,7 +9,7 @@
     nvm use v22.12.0
     ```
 
-2. Install `pnpm` by running `npm i -g pnpm`.
+2. Install `pnpm v9.15.5` by running `npm i -g pnpm@9.15.5`.
 
 3. Create a `.env` file. You can use the `.env.example` as a template.
 
