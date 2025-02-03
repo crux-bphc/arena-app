@@ -842,6 +842,8 @@ migrate((app) => {
           "system": false,
           "type": "select",
           "values": [
+            "basketball",
+            "esports",
             "football",
             "skating",
             "squash",
@@ -856,7 +858,7 @@ migrate((app) => {
             "swimming",
             "carrom",
             "throwball",
-            "kabbadi",
+            "kabaddi",
             "badminton",
             "snooker",
             "volleyball",

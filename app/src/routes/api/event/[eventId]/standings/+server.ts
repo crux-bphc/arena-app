@@ -12,7 +12,8 @@ const handleGET: RequestHandler = async ({ params }) => {
 		});
 		return json({ standings });
 	} catch (err) {
-		return error(500, `Failed to get event standings: ${err}`);
+		console.error(`Failed to get event standings: ${err}`);
+		return error(500);
 	}
 };
 

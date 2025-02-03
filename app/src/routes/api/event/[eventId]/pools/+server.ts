@@ -9,7 +9,8 @@ const handleGET: RequestHandler = async ({ params }) => {
 			.getFullList({ filter: `event.id="${params.eventId}"` });
 		return json(betPools);
 	} catch (err) {
-		return error(500, `Failed to get event bet pools: ${err}`);
+		console.error(`Failed to get event bet pools: ${err}`);
+		return error(500);
 	}
 };
 

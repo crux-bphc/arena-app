@@ -1,4 +1,3 @@
-/// <reference path="../pb_data/types.d.ts" />
 migrate((app) => {
   const snapshot = [
     {
@@ -625,6 +624,8 @@ migrate((app) => {
           "system": false,
           "type": "select",
           "values": [
+            "basketball",
+            "esports",
             "football",
             "skating",
             "squash",
@@ -639,7 +640,7 @@ migrate((app) => {
             "swimming",
             "carrom",
             "throwball",
-            "kabbadi",
+            "kabaddi",
             "badminton",
             "snooker",
             "volleyball",
