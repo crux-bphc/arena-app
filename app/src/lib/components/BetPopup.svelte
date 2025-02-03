@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from './ui/button/button.svelte';
+	import { toast } from 'svelte-sonner';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import type { EventRecWithStandAndBet } from '$lib/types/expand';
 	import { formatTime, getBalance } from '$lib/util/helpers';
@@ -27,11 +28,11 @@
 
 	async function submitBet() {
 		if (betAmount <= 0) {
-			console.log('Invalid amount');
+			toast.error('Invalid amount');
 			return;
 		}
 		if (userBalance < betAmount) {
-			console.log('Your balance is too low!');
+			toast.error('Your balance is too low!');
 			return;
 		}
 
@@ -44,14 +45,14 @@
 
 			if (res.status == 400) throw new Error(data.message);
 
-			console.log(`Successfully bet in event ${event.title}!`);
+			toast.success(`Successfully bet ${betAmount} in ${event.title}!`);
 			// loading new balance
 			loadBalance();
 
 			let userBetRecord = bets.find((obj) => obj.team == activeTeamId && obj.event == event.id);
 			if (userBetRecord) userBetRecord.amount = data.amount;
 		} catch (error) {
-			console.log(`An error occured while trying to process your request: ${error}`);
+			toast.error(`An error occured while trying to process your request: ${error}`);
 		}
 	}
 

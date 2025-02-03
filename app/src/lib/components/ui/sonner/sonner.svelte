@@ -7,7 +7,7 @@
 <Sonner
 	richColors
 	theme="dark"
-	class="toaster group mb-24"
+	class="toaster group"
 	toastOptions={{
 		classes: {
 			toast:
