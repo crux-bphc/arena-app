@@ -161,7 +161,7 @@
 			class="grid"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows}, minmax(0, 1fr));
-				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 7.5rem)`}"
+				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 5rem)`}"
 			bind:clientWidth={width}
 		>
 			{#each { length: rows * cols }, i}
@@ -178,7 +178,7 @@
 			class="absolute inset-0 grid h-full"
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows * 4}, minmax(0, 1fr));
-				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 7.5rem)`}"
+				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 5rem)`}"
 		>
 			{#each eventsWithPos as event}
 				<CalendarItem {...event} />
