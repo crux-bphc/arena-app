@@ -38,6 +38,7 @@
 	let timeString = $state<string | null>(null);
 	let hourHeight = $state<number | null>(null);
 	let disabledTimeStamp = $state(-1);
+	let width = $state(0);
 
 	// If the time-line is within 13 pixels above or below a timestamp, do not show the timestamp
 	// This is an aribtrary constant that seems to cause no visual defects with overlapping times
@@ -147,7 +148,7 @@
 		{#if timeString}
 			<div
 				class="line absolute z-[1] h-px w-full bg-red-600 before:bg-red-600"
-				style="top: {top}px;"
+				style="top: {top}px; min-width: {width}px"
 			>
 				<div
 					class="absolute left-0 border-y-4 border-l-8 border-r-0 border-solid border-y-transparent border-l-red-600"
@@ -161,6 +162,7 @@
 			style="grid-template-columns: repeat({cols}, minmax(0, 1fr)); 
                 grid-template-rows: repeat({rows}, minmax(0, 1fr));
 				width: {cols <= 2 ? '100%' : `calc(${(100 * cols) / 3}vw - 7.5rem)`}"
+			bind:clientWidth={width}
 		>
 			{#each { length: rows * cols }, i}
 				<div
