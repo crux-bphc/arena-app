@@ -186,3 +186,17 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* Disable scrollbars being visible */
+	div {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+		overflow: -moz-scrollbars-none;
+		user-select: none;
+	}
+
+	div::-webkit-scrollbar {
+		display: none;
+	}
+</style>
