@@ -170,7 +170,7 @@
 	};
 </script>
 
-<h1 class="m-6 text-center text-3xl font-bold select-none">Calendar</h1>
+<h1 class="m-6 select-none text-center text-3xl font-bold">Calendar</h1>
 {#if loaded}
 	<div class="button-container m-1 flex justify-center overflow-auto">
 		<span>
@@ -179,7 +179,7 @@
 				width="short"
 				onclick={() => clickSwitch('sports')}
 				id="sports"
-				class="m-1 font-alata transition-all duration-100 {active.sports
+				class="font-alata m-1 transition-all duration-100 {active.sports
 					? 'active text-black'
 					: ''}">SPORTS</Button
 			>
@@ -188,14 +188,14 @@
 				width="short"
 				onclick={() => clickSwitch('days')}
 				id="days"
-				class="m-1 font-alata transition-all duration-100 {active.days ? 'active text-black' : ''}"
+				class="font-alata m-1 transition-all duration-100 {active.days ? 'active text-black' : ''}"
 				>DAYS</Button
 			>
 		</span>
 	</div>
 	<div class="button-container m-1 flex overflow-auto">
 		{#if active.sports || active.days}
-			<Button variant="calendar" width="short" onclick={resetFilters} class="m-1 font-alata"
+			<Button variant="calendar" width="short" onclick={resetFilters} class="font-alata m-1"
 				>RESET</Button
 			>
 		{/if}
@@ -205,7 +205,7 @@
 					variant="calendar"
 					width="long"
 					onclick={() => filterClick(sport, false)}
-					class="calendar-filter m-1 font-alata transition-all duration-100 {filters.sports[sport]
+					class="calendar-filter font-alata m-1 transition-all duration-100 {filters.sports[sport]
 						? 'active text-black'
 						: ''}">{sport.toUpperCase()}</Button
 				>
@@ -216,7 +216,7 @@
 					variant="calendar"
 					width="short"
 					onclick={() => filterClick(i, true)}
-					class="calendar-filter m-1 font-alata transition-all duration-100 {filters.days[i]
+					class="calendar-filter font-alata m-1 transition-all duration-100 {filters.days[i]
 						? 'active text-black'
 						: ''}">DAY {i + 1}</Button
 				>
@@ -229,9 +229,9 @@
 {:else if !noEvents}
 	<Loader />
 {:else}
-	<div class="flex flex-col items-center gap-5 select-none">
+	<div class="flex select-none flex-col items-center gap-5">
 		<Bird color="#77767b" size={144} />
-		<div class="m-1 text-center font-alata">It looks like there are no events yet!</div>
+		<div class="font-alata m-1 text-center">It looks like there are no events yet!</div>
 	</div>
 {/if}
 

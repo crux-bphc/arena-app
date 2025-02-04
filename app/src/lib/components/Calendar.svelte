@@ -69,12 +69,12 @@
 		// clamp end time
 		const dayAfterSelectedDate = new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000);
 		endTime = new Date(Math.min(endTime.getTime(), dayAfterSelectedDate.getTime()));
-		
+
 		// round up end time
 		const minutes = Math.ceil(endTime.getUTCMinutes() / 15) * 15;
 		const hours = endTime.getUTCHours() + Number(minutes == 60);
 		endTime.setUTCHours(hours % 24, minutes % 60);
-		
+
 		// this handles times that were either already aligned or rounded up rn
 		const endRow = getRow(endTime, hours == 0 || hours == 24);
 
@@ -100,7 +100,11 @@
 	}
 	// converts hours and mins to its corresponding row
 	function getRow(date: Date, isMidnight = false) {
-		return ((isMidnight ? 24 : date.getUTCHours()) - calendarStartHour) * 4 + 1 + date.getUTCMinutes() / 15;
+		return (
+			((isMidnight ? 24 : date.getUTCHours()) - calendarStartHour) * 4 +
+			1 +
+			date.getUTCMinutes() / 15
+		);
 	}
 	// finds if any number between x & y (inclusive) is in arr
 	function isAnyNumberInRange(x: number, y: number, arr: number[]) {
@@ -138,10 +142,10 @@
 
 <div class="flex flex-row bg-transparent px-1 py-2">
 	<!-- Time stamps -->
-	<div class="relative flex flex-col text-xs font-semibold select-none">
+	<div class="relative flex select-none flex-col text-xs font-semibold">
 		{#if timeString}
 			<div
-				class="time absolute bg-background text-[10px] font-bold text-red-600"
+				class="time bg-background absolute text-[10px] font-bold text-red-600"
 				style="top: {top}px;"
 			>
 				{timeString}

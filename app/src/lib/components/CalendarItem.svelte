@@ -17,20 +17,20 @@
 		grid-row: {rowStart} / span {rowSpan};"
 >
 	<div
-		class="flex h-full w-full flex-col justify-between overflow-hidden rounded-md bg-accent/90 px-2 py-1 font-alata text-xs"
+		class="bg-accent/90 font-alata flex h-full w-full flex-col justify-between overflow-hidden rounded-md px-2 py-1 text-xs"
 	>
 		{#if rowSpan > 2}
 			<div class="flex flex-col {rowSpan > 6 ? 'gap-1' : ''}">
-				<div class="line-clamp-2 font-bold text-accent-foreground/90">
+				<div class="text-accent-foreground/90 line-clamp-2 font-bold">
 					{title.toUpperCase()}
 				</div>
 				<div class="{rowSpan > 6 ? 'line-clamp-2' : 'line-clamp-1'} text-accent-foreground/70">
 					{location.toUpperCase()}
 				</div>
 			</div>
-			<div class="line-clamp-1 text-accent-foreground/70">{sport.toUpperCase()}</div>
+			<div class="text-accent-foreground/70 line-clamp-1">{sport.toUpperCase()}</div>
 		{:else}
-			<div class="my-auto line-clamp-2 inline-flex gap-1 font-bold text-accent-foreground/90">
+			<div class="text-accent-foreground/90 my-auto line-clamp-2 inline-flex gap-1 font-bold">
 				<span class="overflow-hidden overflow-ellipsis whitespace-nowrap"
 					>{title.toUpperCase()}</span
 				>
