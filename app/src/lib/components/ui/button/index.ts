@@ -14,6 +14,7 @@ const buttonVariants = tv({
 			ghost: 'hover:bg-accent hover:text-accent-foreground',
 			navbar: 'group-[.on-page]:text-primary-foreground rounded-full',
 			accent: 'bg-accent text-accent-foreground',
+			calendar: 'group-[.active]:text-primary-foreground',
 			link: 'text-primary underline-offset-4 hover:underline'
 		},
 		size: {
@@ -21,20 +22,28 @@ const buttonVariants = tv({
 			sm: 'h-9 rounded-md px-3',
 			lg: 'h-11 rounded-md px-8',
 			icon: 'p-3 rounded-full'
+		},
+		width: {
+			long: 'min-w-44',
+			short: 'min-w-28',
+			unset: ''
 		}
 	},
 	defaultVariants: {
 		variant: 'default',
+		width: 'unset',
 		size: 'default'
 	}
 });
 
 type Variant = VariantProps<typeof buttonVariants>['variant'];
 type Size = VariantProps<typeof buttonVariants>['size'];
+type Width = VariantProps<typeof buttonVariants>['width'];
 
 type Props = ButtonPrimitive.Props & {
 	variant?: Variant;
 	size?: Size;
+	width?: Width;
 };
 
 type Events = ButtonPrimitive.Events;
