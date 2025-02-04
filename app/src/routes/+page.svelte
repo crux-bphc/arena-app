@@ -21,7 +21,7 @@
 
 	async function getEventsData() {
 		try {
-			const response = await fetch('/api/events?priority=true');
+			const response = await fetch('/api/events?pool=true');
 			if (!response.ok) {
 				console.error(`Failed to fetch leaderboard data: ${response.status}`);
 				return;

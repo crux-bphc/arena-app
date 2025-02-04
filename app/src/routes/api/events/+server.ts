@@ -9,7 +9,9 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 	const sport = url.searchParams.get('sport');
 	// Filter by priority
 	const isPriority = url.searchParams.get('priority');
-
+	// Filter by bet pool
+	const isPool = url.searchParams.get('pool');
+	console.log(`isPool is ${isPool}`)
 	try {
 		if (isPriority) {
 			// Only return events that are yet to happen
@@ -30,6 +32,29 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 						return true;
 					});
 
+			return json({ events: sortedEvents });
+		} else if (isPool) {
+			// Only return events that are yet to happen
+			const options = { filter: `endTime > "${new Date().toISOString()}"`, limit: 10 };
+			const events: EventsRecord[] = await pb.collection('events').getFullList(options);
+			
+			// Get the total amount in each event
+			const eventsWithPools = await Promise.all(events.map(async (event) => {
+                const poolData = await pb.collection('betPool').getFullList({ filter: `event.id="${event.id}"` });
+				const totalAmount = poolData.reduce((sum: number, pool: any) => sum + pool.amount, 0);
+				return { ...event, totalAmount };
+            }));
+			
+			// Sort the events by total amount and then by start time
+			const sortedEvents = eventsWithPools
+                .sort((a, b) => {
+                    if (b.totalAmount === a.totalAmount) {
+                        return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
+                    }
+                    return b.totalAmount - a.totalAmount;
+                })
+                .slice(0, 3);
+			
 			return json({ events: sortedEvents });
 		} else {
 			const options = sport ? { filter: `sport="${sport}"` } : {};
