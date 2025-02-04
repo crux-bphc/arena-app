@@ -11,7 +11,6 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 	const isPriority = url.searchParams.get('priority');
 	// Filter by bet pool
 	const isPool = url.searchParams.get('pool');
-	console.log(`isPool is ${isPool}`)
 	try {
 		if (isPriority) {
 			// Only return events that are yet to happen

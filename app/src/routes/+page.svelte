@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 
 	import type { EventsRecord } from '$lib/types/pocketbase';
+	import { defaultImages } from '$lib/defaultImages';
 
 	import Loader from '$lib/components/Loader.svelte';
 	import Banner from '$lib/components/Banner.svelte';
@@ -60,6 +61,12 @@
 		} else {
 			return `Starting in ${Math.floor(min / 60)} hours ${min % 60} minutes`;
 		}
+	}
+
+	function getEventImage(event: EventsRecord) {
+		return event.banner
+			? `${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`
+			: defaultImages[event.sport.toLowerCase()] || '<default-image-url>';
 	}
 </script>
 
