@@ -61,7 +61,8 @@ const config: Config = {
 				ring: 'hsl(var(--ring) / <alpha-value>)'
 			},
 			fontFamily: {
-				sans: [...fontFamily.sans]
+				sans: [...fontFamily.sans],
+				alata: ['alata', 'sans']
 			},
 			screens: {
 				xs: '380px'
