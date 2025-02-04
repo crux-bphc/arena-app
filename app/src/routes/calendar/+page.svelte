@@ -37,6 +37,8 @@
 		sports: {}
 	});
 
+	let selectedDate = $state<Date>(new Date(new Date().setUTCHours(0, 0, 0, 0)));
+
 	// Checks if a day matches another
 	const isDateEqual = (dayA: Date, dayB: Date) =>
 		dayA.getDate() == dayB.getDate() &&
@@ -57,6 +59,10 @@
 
 		return day;
 	};
+
+	// day is 0-indexed
+	const getDateFromDay = (day: number) =>
+		new Date(startDate.setUTCHours(0, 0, 0, 0) + day * 24 * 60 * 60 * 1000);
 
 	const updateEventData = (): [number, number] => {
 		let minTime = Infinity;
@@ -121,6 +127,7 @@
 
 		// Enable only the current day
 		filters.days[currentDay - 1] = true;
+		selectedDate = getDateFromDay(currentDay - 1);
 
 		applyFilters(true);
 
@@ -148,6 +155,7 @@
 	// reset filters to load state
 	const resetFilters = () => {
 		for (let i = 0; i < filters.days.length; i += 1) filters.days[i] = i == currentDay - 1;
+		selectedDate = getDateFromDay(currentDay - 1);
 		for (let sport of sports) filters.sports[sport] = true;
 		applyFilters();
 	};
@@ -155,6 +163,7 @@
 	// When a filter button is clicked, add it to the filter list
 	const filterClick = (entry: string | number, days: boolean) => {
 		if (days) {
+			selectedDate = getDateFromDay(Number(entry));
 			for (let i = 0; i < filters.days.length; i += 1) filters.days[i] = i == entry;
 		} else filters.sports[entry] = !filters.sports[entry];
 		applyFilters();
@@ -215,7 +224,7 @@
 		{/if}
 	</div>
 	{#key events}
-		<Calendar {events} {firstLoad} />
+		<Calendar {events} {firstLoad} {selectedDate} />
 	{/key}
 {:else if !noEvents}
 	<Loader />

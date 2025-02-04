@@ -20,12 +20,14 @@
 		events,
 		calendarStartHour = 6,
 		calendarEndHour = 24,
-		firstLoad
+		firstLoad,
+		selectedDate
 	}: {
 		calendarStartHour?: number;
 		calendarEndHour?: number;
 		events: EventData[];
 		firstLoad: boolean;
+		selectedDate: Date;
 	} = $props();
 
 	// removing {calendarStartHour} hours from total day of 24 hours
@@ -64,6 +66,10 @@
 		startTime.setUTCMinutes(Math.floor(startTime.getUTCMinutes() / 15) * 15);
 		const startRow = getRow(startTime);
 
+		// clamp end time
+		const dayAfterSelectedDate = new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000);
+		endTime = new Date(Math.min(endTime.getTime(), dayAfterSelectedDate.getTime()));
+		
 		// round up end time
 		const minutes = Math.ceil(endTime.getUTCMinutes() / 15) * 15;
 		const hours = endTime.getUTCHours() + Number(minutes == 60);
