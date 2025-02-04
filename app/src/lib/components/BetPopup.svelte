@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Button from './ui/button/button.svelte';
+	import { Button } from '$lib/components/ui/button';
 	import { toast } from 'svelte-sonner';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import type { EventRecWithStandAndBet } from '$lib/types/expand';
 	import { formatTime, getBalance } from '$lib/util/helpers';
-	import Input from './ui/input/input.svelte';
+	import { Input } from '$lib/components/ui/input';
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
 	import { UsersRound, Wallet, X } from 'lucide-svelte';

@@ -8,7 +8,7 @@
 	import type { EventRecWithStandAndBet, StandingsRecordWithTeam } from '$lib/types/expand';
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { formatTime, getStatus, getTimeLeft } from '$lib/util/helpers';
-	import BetPopup from './BetPopup.svelte';
+	import BetPopup from '$lib/components/BetPopup.svelte';
 
 	interface EventCardProps {
 		isMinimized?: boolean;
