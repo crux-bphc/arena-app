@@ -15,7 +15,7 @@ type StandingsRecordWithTeam = StandingsRecord & {
 };
 
 // this is the data type for sports page events
-type EventRecWithStandAndBet = EventsRecord & {
+type EventRecWithStandAndBet = Omit<EventsRecord, 'teams'> & {
 	teams: TeamsRecord[];
 	standings?: StandingsRecordWithTeam[];
 	betPools?: BetPoolRecord[];
