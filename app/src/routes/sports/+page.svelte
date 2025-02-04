@@ -59,7 +59,7 @@
 		<!-- this is a hidden tag whose sole purpose is to go to event specified in [eventId] -->
 		<!-- gets automatically clicked on load -->
 		<a
-			href="#{data.url.searchParams.get('eventId')}"
+			href="#{data.url.searchParams.get('eventId') ?? ''}"
 			id="defaultScrollTarget"
 			aria-label="none"
 			class="hidden"
@@ -97,7 +97,14 @@
 		<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
 		{#each events as event}
 			{#if event.sport === activeSport || showAllSports}
-				<EventCard id={event.id} isMinimized={showSidebar} {event} userBets={data.bets} {balance} />
+				<EventCard
+					id={event.id}
+					isMinimized={showSidebar}
+					{event}
+					userBets={data.bets}
+					{balance}
+					isHighlight={data.url.searchParams.get('eventId') === event.id}
+				/>
 			{/if}
 		{/each}
 	</div>

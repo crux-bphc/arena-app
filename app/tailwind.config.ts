@@ -66,6 +66,9 @@ const config: Config = {
 			screens: {
 				xs: '380px'
 			}
+		},
+		animation: {
+			highlight: 'pulse 1.2s 3 linear'
 		}
 	}
 };

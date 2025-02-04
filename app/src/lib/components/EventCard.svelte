@@ -16,11 +16,19 @@
 		userBets: BetsRecord[];
 		balance: number;
 		id?: string;
+		isHighlight?: boolean;
 	}
 
 	// if isMinimized is true, the whole component scales down
 	// (this is for sports page when the side bar opens)
-	let { isMinimized = false, event, userBets, balance, id }: EventCardProps = $props();
+	let {
+		isMinimized = false,
+		event,
+		userBets,
+		balance,
+		id,
+		isHighlight = false
+	}: EventCardProps = $props();
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
 	// calculates which color should a team have based on won/lost/ongoing etc
@@ -35,9 +43,9 @@
 
 <div
 	{id}
-	class="bg-secondary flex w-full flex-col items-center justify-between gap-2 scroll-mt-24 {isMinimized
+	class="bg-secondary flex w-full scroll-mt-24 flex-col items-center justify-between gap-2 {isMinimized
 		? 'rounded-lg p-2'
-		: 'rounded-[10px] p-3'}"
+		: 'rounded-[10px] p-3'} {isHighlight ? 'animate-highlight' : ''}"
 >
 	<!-- status & title text -->
 	<div
