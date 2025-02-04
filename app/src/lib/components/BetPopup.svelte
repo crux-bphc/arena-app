@@ -16,7 +16,7 @@
 		balance: number;
 	}
 	let { isMinimized = false, event, userBets, balance }: BetPopupProps = $props();
-	let activeTeamId = $state(event.teams[0].id);
+	let activeTeamId = $state(event.teams.at(0)?.id);
 	let bets = $state(userBets);
 	let userBalance = $state(balance);
 	let totalPool: number | null = $state(null);

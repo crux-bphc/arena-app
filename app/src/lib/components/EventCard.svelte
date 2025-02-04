@@ -24,10 +24,10 @@
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
 	// calculates which color should a team have based on won/lost/ongoing etc
-	function calcColor(standing: StandingsRecordWithTeam) {
+	function calcColor(standing?: StandingsRecordWithTeam) {
 		if (status == 'ongoing') return 'text-warning';
 		else if (status == 'finished') {
-			return standing.position === 1 ? 'text-primary' : 'text-foreground/50';
+			return standing?.position === 1 ? 'text-primary' : 'text-foreground/50';
 		}
 		return '';
 	}
@@ -63,9 +63,9 @@
 		{#if status == 'default' || status == 'starting soon' || (status == 'ongoing' && !event.standings)}
 			<!-- shows teams if event is yet to start or if ongoing event has no standings-->
 			<div class="w-full text-start font-bold {isMinimized ? 'text-2xl' : 'text-3xl'}">
-				<span class="truncate uppercase">{event.teams[0].name} {' '}</span>
+				<span class="truncate uppercase">{event.teams.at(0)?.name} {' '}</span>
 				<span class="text-xl">vs {' '}</span>
-				<span class="truncate uppercase">{event.teams[1].name} {' '}</span>
+				<span class="truncate uppercase">{event.teams.at(1)?.name} {' '}</span>
 
 				<!-- extra teams indicator -->
 				{#if event.teams.length > 2}
@@ -78,19 +78,19 @@
 			<!-- shows standings if event is ongoing or ended -->
 			<div
 				class="flex w-full flex-row items-center justify-between font-bold {calcColor(
-					event.standings[0]
+					event.standings.at(0)
 				)} {isMinimized ? 'text-2xl' : 'text-3xl'}"
 			>
-				<div class="uppercase">{event.standings[0].team.name}</div>
-				<div class="">{event?.standings[0].score}</div>
+				<div class="uppercase">{event.standings.at(0)?.team.name}</div>
+				<div class="">{event?.standings.at(0)?.score}</div>
 			</div>
 			<div
 				class="flex w-full flex-row items-center justify-between font-bold {calcColor(
-					event.standings[1]
+					event.standings.at(1)
 				)} {isMinimized ? 'text-2xl' : 'text-3xl'}"
 			>
-				<div class="uppercase">{event.standings[1].team.name}</div>
-				<div class="">{event.standings[1].score}</div>
+				<div class="uppercase">{event.standings.at(1)?.team.name}</div>
+				<div class="">{event.standings.at(1)?.score}</div>
 			</div>
 
 			<!-- extra standings indicator -->
