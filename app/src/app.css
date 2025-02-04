@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -44,4 +46,12 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+* {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 }
