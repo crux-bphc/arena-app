@@ -35,7 +35,7 @@
 
 <div
 	{id}
-	class="bg-secondary flex w-full flex-col items-center justify-between gap-2 {isMinimized
+	class="bg-secondary flex w-full flex-col items-center justify-between gap-2 scroll-mt-24 {isMinimized
 		? 'rounded-lg p-2'
 		: 'rounded-[10px] p-3'}"
 >

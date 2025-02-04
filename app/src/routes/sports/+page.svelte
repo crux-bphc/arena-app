@@ -40,14 +40,19 @@
 </script>
 
 <!-- filter button -->
-<Button variant="secondary" size="icon" class="m-3" onclick={() => (showSidebar = !showSidebar)}>
+<Button
+	variant="accent"
+	size="icon"
+	class="fixed left-0 top-0 z-10 m-3"
+	onclick={() => (showSidebar = !showSidebar)}
+>
 	<ListFilter class="size-8" />
 </Button>
 
-<div class="flex h-[90vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
+<div class="flex h-[95vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
 	<!-- side bar -->
 	<div
-		class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 [direction:rtl] {showSidebar
+		class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 pt-20 [direction:rtl] {showSidebar
 			? 'flex'
 			: 'hidden'}"
 	>
@@ -85,7 +90,7 @@
 
 	<!-- event cards -->
 	<div
-		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto {showSidebar
+		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto pt-20 {showSidebar
 			? 'w-2/3'
 			: 'w-full'}"
 	>
