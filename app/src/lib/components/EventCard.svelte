@@ -60,8 +60,8 @@
 
 	<!-- teams & scoreboard -->
 	<div class="flex w-full flex-col">
-		{#if status == 'default' || status == 'starting soon'}
-			<!-- shows teams if event is yet to start -->
+		{#if status == 'default' || status == 'starting soon' || (status == 'ongoing' && !event.standings)}
+			<!-- shows teams if event is yet to start or if ongoing event has no standings-->
 			<div class="w-full text-start font-bold {isMinimized ? 'text-2xl' : 'text-3xl'}">
 				<span class="truncate uppercase">{event.teams[0].name} {' '}</span>
 				<span class="text-xl">vs {' '}</span>
@@ -75,7 +75,7 @@
 				{/if}
 			</div>
 		{:else if event.standings}
-			<!-- shows standings event is ongoing on ended -->
+			<!-- shows standings if event is ongoing or ended -->
 			<div
 				class="flex w-full flex-row items-center justify-between font-bold {calcColor(
 					event.standings[0]
@@ -98,7 +98,6 @@
 				<span class="text-foreground/50 text-xs">(+{event.standings.length - 2} more)</span>
 			{/if}
 		{:else}
-			<!-- if no standings data is available after event starts -->
 			<span class="text-foreground/50 capitalize italic">data unavailable</span>
 		{/if}
 	</div>
