@@ -2,6 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { EventRecWithStandAndBet } from '$lib/types/expand';
 import type { BetsRecord } from '$lib/types/pocketbase';
+import { getBalance } from '$lib/util/helpers';
 
 export const load: PageLoad = async ({ fetch, url }: { fetch: Function; url: URL }) => {
 	// gets event data
@@ -14,5 +15,8 @@ export const load: PageLoad = async ({ fetch, url }: { fetch: Function; url: URL
 	if (betRes.status == 308) redirect(308, '/login');
 	let bets: BetsRecord[] = (await betRes.json())?.bets;
 
-	return { events, bets, url };
+	// gets user's balance
+	let balance = await getBalance();
+
+	return { events, bets, url, balance };
 };
