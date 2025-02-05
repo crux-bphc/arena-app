@@ -28,7 +28,7 @@
 
 	async function submitBet() {
 		if (betAmount <= 0) {
-			toast.error('Invalid amount');
+			toast.error('Bet amount must be positive!');
 			return;
 		}
 		if (userBalance < betAmount) {
@@ -43,16 +43,18 @@
 			});
 			const data = await res.json();
 
-			if (res.status == 400) throw new Error(data.message);
+			if (!res.ok) {
+				throw new Error('message' in data ? data.message : `API returned ${data.status}`);
+			}
 
 			toast.success(`Successfully bet ${betAmount} in ${event.title}!`);
-			// loading new balance
 			loadBalance();
 
 			let userBetRecord = bets.find((obj) => obj.team == activeTeamId && obj.event == event.id);
 			if (userBetRecord) userBetRecord.amount = data.amount;
 		} catch (error) {
-			toast.error(`An error occured while trying to process your request: ${error}`);
+			console.error(`Failed to place bet: ${error}`);
+			toast.error(`Failed to place bet!`);
 		}
 	}
 

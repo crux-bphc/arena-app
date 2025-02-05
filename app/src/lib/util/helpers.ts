@@ -32,7 +32,7 @@ export async function getBalance(fetch: Function) {
 
 		return bal;
 	} catch (error) {
-		console.log('Failed to get user balance, error:', error);
+		console.error('Failed to get user balance, error:', error);
 		return 0;
 	}
 }
