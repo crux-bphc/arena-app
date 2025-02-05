@@ -54,6 +54,13 @@
 	}
 }
 
+@font-face {
+	font-family: "Haettenschweiler";
+	src: url("$lib/assets/fonts/Haettenschweiler-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .hide-scrollbar::-webkit-scrollbar {
 	display: none;
