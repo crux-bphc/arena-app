@@ -126,6 +126,15 @@
 				You've put {bet.amount} points on {teamNameMap[bet.team]}
 			</div>
 		{/each}
+		{#if status === 'finished' && event.standings}
+			<div
+				class="mr-1 w-full overflow-hidden truncate text-ellipsis text-start font-semibold text-foreground/50 {isMinimized
+					? 'text-sm'
+					: 'text-base'}"
+			>
+				Bet payouts will be done soon!
+			</div>
+		{/if}
 	{:else}
 		{#each filteredBets as bet}
 			<div
@@ -134,7 +143,7 @@
 					: 'text-base'} {bet.payout >= bet.amount ? 'text-[#91DE43]' : 'text-[#FF5050]'}"
 			>
 				{bet.payout >= bet.amount ? 'Won' : 'Lost'}
-				{bet.payout - bet.amount} points on {teamNameMap[bet.team]}
+				{Math.abs(bet.payout - bet.amount)} points on {teamNameMap[bet.team]}
 			</div>
 		{/each}
 	{/if}
