@@ -1,3 +1,4 @@
+// TODO: move this to onMount
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { EventRecWithStandAndBet } from '$lib/types/expand';
