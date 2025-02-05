@@ -18,7 +18,7 @@
 	});
 
 	let events = $state<EventsData | null>(null);
-	let otherEvents = $state<EventsData | null>(null);
+	let otherEvents = $state<EventsRecord[] | null>(null);
 	let mainEvent = $state<EventsRecord | null>(null);
 
 	async function getEventsData() {
@@ -29,8 +29,10 @@
 				return;
 			}
 			events = await response.json();
-			mainEvent = events['events'][0];
-			otherEvents = events['events'].slice(1, 3);
+			if (events) {
+				mainEvent = events['events'][0];
+				otherEvents = events['events'].slice(1, 3);
+			}
 		} catch (e) {
 			console.error(`Failed to fetch leaderboard data: ${e}`);
 		}
@@ -96,7 +98,7 @@
 				</a>
 			</div>
 
-			{#if otherEvents.length}
+			{#if otherEvents?.length}
 				<!-- Other Events Section -->
 				<div class="font-inter mt-4 flex w-full items-start text-[20px] font-semibold text-white">
 					Other Events
