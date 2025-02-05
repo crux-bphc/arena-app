@@ -4,10 +4,11 @@
 	import { onMount } from 'svelte';
 
 	import type { EventsRecord } from '$lib/types/pocketbase';
-	import { defaultImages } from '$lib/defaultImages';
 
 	import Loader from '$lib/components/Loader.svelte';
 	import Banner from '$lib/components/Banner.svelte';
+
+	import { defaultImages } from '$lib/utils/defaultImages.js';
 
 	interface EventsData {
 		events: EventsRecord[];
@@ -64,9 +65,10 @@
 	}
 
 	function getEventImage(event: EventsRecord) {
+		console.log(event.sport.toLowerCase());
 		return event.banner
 			? `${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`
-			: defaultImages[event.sport.toLowerCase()] || '<default-image-url>';
+			: defaultImages[event.sport.toLowerCase()] || '$lib/assets/images/default/sports.jpg';
 	}
 </script>
 
@@ -88,7 +90,7 @@
 			<div class="mt-3 h-[193px] w-[330px] overflow-hidden rounded-[14px] bg-white">
 				<img
 					class="h-full w-full rounded-[14px] object-cover"
-					src={`${PUBLIC_PB_URL}/api/files/events/${mainEvent.id}/${mainEvent.banner}`}
+					src={getEventImage(mainEvent)}
 					alt="Main Event"
 				/>
 			</div>
@@ -105,7 +107,7 @@
 						<div class="relative h-[160px] w-[160px] overflow-hidden rounded-[10px] bg-white">
 							<img
 								class="h-full w-full rounded-[10px] object-cover"
-								src={`${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`}
+								src={getEventImage(event)}
 								alt={`Event ${event.title}`}
 							/>
 							<div

@@ -45,3 +45,10 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@font-face {
+	font-family: "Haettenschweiler";
+	src: url("$lib/assets/fonts/Haettenschweiler-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
