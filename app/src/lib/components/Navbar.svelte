@@ -8,7 +8,7 @@
 </script>
 
 <div
-	class="fixed inset-x-0 bottom-0 z-10 w-full bg-gradient-to-b from-transparent via-background/80 to-background px-2 py-4 xs:px-4"
+	class="fixed inset-x-0 bottom-0 z-10 w-full bg-gradient-to-b from-transparent via-background/80 to-background px-2 py-4 xs:px-4 { page.url.pathname == '/login' ? 'hidden' : '' }"
 >
 	<div
 		class="flex w-full flex-row items-center justify-between rounded-full border-[1.5px] bg-secondary p-3"
