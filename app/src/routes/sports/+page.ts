@@ -16,7 +16,7 @@ export const load: PageLoad = async ({ fetch, url }: { fetch: Function; url: URL
 	let bets: BetsRecord[] = (await betRes.json())?.bets;
 
 	// gets user's balance
-	let balance = await getBalance();
+	let balance = await getBalance(fetch);
 
 	return { events, bets, url, balance };
 };

@@ -23,7 +23,7 @@
 	let betAmount: number = $state(0);
 
 	async function loadBalance() {
-		userBalance = await getBalance();
+		userBalance = await getBalance(fetch);
 	}
 
 	async function submitBet() {

@@ -25,7 +25,7 @@ export function getTimeLeft(time: string) {
 	return `${hrString}${diff % 60} min`;
 }
 // gets user's balance
-export async function getBalance() {
+export async function getBalance(fetch: Function) {
 	try {
 		const res = await fetch('/api/user/balance');
 		const { balance: bal }: { balance: number } = await res.json();
