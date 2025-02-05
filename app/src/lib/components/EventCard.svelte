@@ -113,14 +113,14 @@
 	<!-- location text -->
 	{#if status == 'default' || status == 'starting soon'}
 		<div class="flex w-full items-end justify-between {isMinimized ? 'text-sm' : 'text-base'}">
-			<span class="text-foreground/50 line-clamp-1 capitalize">
+			<span class="text-foreground/50 mr-1 overflow-hidden truncate text-ellipsis capitalize">
 				{event.location}
 			</span>
 			<BetPopup {isMinimized} {event} {userBets} {balance} />
 		</div>
 	{:else}
 		<div
-			class="text-foreground/50 line-clamp-1 w-full text-start capitalize {isMinimized
+			class="text-foreground/50 mr-1 w-full overflow-hidden truncate text-ellipsis text-start capitalize {isMinimized
 				? 'text-sm'
 				: 'text-base'}"
 		>
