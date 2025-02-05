@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_PB_URL } from '$env/static/public';
+	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import Loader from '$lib/components/Loader.svelte';
 	import type { UsersResponse } from '$lib/types/pocketbase';
@@ -12,13 +12,14 @@
 	async function getLeaderboardData() {
 		try {
 			const response = await fetch(`api/user/leaderboard`);
+			const json = await response.json();
 			if (!response.ok) {
-				console.error(`Failed to fetch leaderboard data: ${response.status}`);
-				return;
+				throw new Error("message" in json ? json.message : `API returned ${response.status}`);
 			}
-			leaderboard = await response.json();
+			leaderboard = json;
 		} catch (e) {
 			console.error(`Failed to fetch leaderboard data: ${e}`);
+			toast.error('Failed to fetch leaderboard data!');
 		}
 	}
 
