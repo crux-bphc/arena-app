@@ -32,6 +32,7 @@
 		"tailwind-variants": "^0.3.0",
 		"tailwindcss": "^3.4.9",
 		"typescript": "^5.0.0",
+		"vaul-svelte": "^0.3.2",
 		"vite": "^5.4.11"
 	},
 	"packageManager": "pnpm@9.15.5+sha1.cb1f6372ef64e2ba352f2f46325adead1c99ff8f",

@@ -1,0 +1,23 @@
+export enum EventsSportOptions {
+	'basketball' = 'basketball',
+	'esports' = 'esports',
+	'football' = 'football',
+	'skating' = 'skating',
+	'squash' = 'squash',
+	'table tennis' = 'table tennis',
+	'pool' = 'pool',
+	'hockey' = 'hockey',
+	'chess' = 'chess',
+	'tennis' = 'tennis',
+	'cricket' = 'cricket',
+	'athletics' = 'athletics',
+	'powerlifting' = 'powerlifting',
+	'swimming' = 'swimming',
+	'carrom' = 'carrom',
+	'throwball' = 'throwball',
+	'kabaddi' = 'kabaddi',
+	'badminton' = 'badminton',
+	'snooker' = 'snooker',
+	'volleyball' = 'volleyball',
+	'ultimate frisbee' = 'ultimate frisbee'
+}
