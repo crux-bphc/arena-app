@@ -33,10 +33,6 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		return error(400, 'Team not found!');
 	}
 
-	if (locals.user.balance < amount) {
-		return error(400, 'Balance too low!');
-	}
-
 	let bet;
 	try {
 		bet = (
@@ -53,6 +49,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 	const now = Date.now();
 
 	let newBet: BetsResponse;
+	let delta = 0;
 	if (bet) {
 		if (amount < 0) {
 			return error(400, 'Bet amount cannot be negative!');
@@ -64,6 +61,10 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		try {
+			delta = amount - bet.amount; 
+			if (delta > locals.user.balance) {
+				return error(400, 'Balance too low!');
+			}
 			newBet = await pb.collection('bets').update(bet.id, { amount });
 		} catch (err) {
 			console.error(`Failed to update bet: ${err}`);
@@ -80,6 +81,10 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		try {
+			delta = amount;
+			if (delta > locals.user.balance) {
+				return error(400, 'Balance too low!');
+			}
 			newBet = await pb
 				.collection('bets')
 				.create({ user: locals.user.id, team: teamId, event: eventId, amount });
@@ -97,9 +102,9 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		).at(0);
 
 		if (betPool) {
-			await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + amount });
+			await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + delta });
 		} else {
-			await pb.collection('betPool').create({ event: eventId, team: teamId, amount });
+			await pb.collection('betPool').create({ event: eventId, team: teamId, delta });
 		}
 	} catch (err) {
 		console.error(`Failed to fetch and update bet pool: ${err}`);
@@ -107,7 +112,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	try {
-		await pb.collection('users').update(locals.user.id, { balance: locals.user.balance - amount });
+		await pb.collection('users').update(locals.user.id, { balance: locals.user.balance - delta });
 	} catch (err) {
 		console.error(`Failed to update user balance: ${err}`);
 		return error(500);
