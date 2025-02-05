@@ -17,6 +17,7 @@
 		balance: number;
 		id?: string;
 		isHighlight?: boolean;
+		showSport?: boolean;
 	}
 
 	// if isMinimized is true, the whole component scales down
@@ -27,7 +28,8 @@
 		userBets,
 		balance,
 		id,
-		isHighlight = false
+		isHighlight = false,
+		showSport = false
 	}: EventCardProps = $props();
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
@@ -114,7 +116,7 @@
 	{#if status == 'default' || status == 'starting soon'}
 		<div class="flex w-full items-end justify-between {isMinimized ? 'text-sm' : 'text-base'}">
 			<span class="text-foreground/50 mr-1 overflow-hidden truncate text-ellipsis capitalize">
-				{event.location}
+				{showSport ? `${event.sport.toString()} - ` : ''}{event.location}
 			</span>
 			<BetPopup {isMinimized} {event} {userBets} {balance} />
 		</div>
@@ -124,7 +126,7 @@
 				? 'text-sm'
 				: 'text-base'}"
 		>
-			{event.location}
+			{showSport ? `${event.sport.toString()} - ` : ''}{event.location}
 		</div>
 	{/if}
 </div>

@@ -104,11 +104,12 @@
 					userBets={data.bets}
 					{balance}
 					isHighlight={data.url.searchParams.get('eventId') === event.id}
+					showSport={showAllSports}
 				/>
 			{/if}
 		{/each}
 		{#if events.filter((e) => showAllSports || e.sport === activeSport).length === 0}
-			<div class="flex select-none flex-col items-center w-full gap-5">
+			<div class="flex w-full select-none flex-col items-center gap-5">
 				<Bird color="#77767b" size={144} />
 				<div class="font-alata m-1 text-center">It looks like there are no events yet!</div>
 			</div>
