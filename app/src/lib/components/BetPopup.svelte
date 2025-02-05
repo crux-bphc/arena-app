@@ -162,12 +162,12 @@
 								<span class="px-2 text-xl">x{findTeamOdds(team.id)}</span>
 							</div>
 							<!-- bet pool bar -->
-							<div class="relative col-span-8 row-start-2 flex items-center justify-center">
+							<div class="relative col-span-8 row-start-2 flex items-start justify-center">
 								<div
 									class="bg-background border-foreground/10 h-5 w-full items-center rounded-full border-2"
 								></div>
 								<div
-									class="bg-accent absolute left-0 top-2 flex h-5 items-center rounded-full px-2 text-start text-sm font-bold"
+									class="bg-accent absolute left-0 top-0 flex h-5 items-center rounded-full px-2 text-start text-sm font-bold"
 									style="width: {findTeamPoolPercent(team.id)}%;"
 								>
 									{findTeamPoolPercent(team.id)}%
