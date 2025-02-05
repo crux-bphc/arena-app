@@ -122,8 +122,8 @@
 				<Drawer.Title class="line-clamp-2 w-full truncate text-wrap text-center text-3xl capitalize"
 					>{event.title}</Drawer.Title
 				>
-				<Drawer.Description class="text-xl capitalize"
-					>Bets close at {formatTime(event.startTime).toUpperCase()}</Drawer.Description
+				<Drawer.Description class="text-xl"
+					>Closes at {formatTime(event.startTime).toUpperCase()}</Drawer.Description
 				>
 			</Drawer.Header>
 			<div class="flex w-full items-center justify-between px-6 text-xl font-bold capitalize">
