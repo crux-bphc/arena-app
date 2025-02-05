@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
-	import { ListFilter } from 'lucide-svelte';
+	import { Bird, ListFilter } from 'lucide-svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -107,5 +107,11 @@
 				/>
 			{/if}
 		{/each}
+		{#if events.length === 0}
+			<div class="flex select-none flex-col items-center w-full gap-5">
+				<Bird color="#77767b" size={144} />
+				<div class="font-alata m-1 text-center">It looks like there are no events yet!</div>
+			</div>
+		{/if}
 	</div>
 </div>
