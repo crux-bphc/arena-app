@@ -48,6 +48,13 @@
 	}
 }
 
+@font-face {
+	font-family: "Haettenschweiler";
+	src: url("$lib/assets/fonts/Haettenschweiler-Regular.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
 * {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
