@@ -6,6 +6,6 @@
 	let { children } = $props();
 </script>
 
-<Toaster />
+<Toaster position="top-center" />
 {@render children()}
 <Navbar />

@@ -21,6 +21,12 @@
 		--accent: 269 97% 44%;
 		--accent-foreground: 0 0% 100%;
 
+		--warning: 48 100% 64%;
+		--warning-foreground: 0 0% 100%;
+
+		--error: 0 100% 66%;
+		--error-foreground: 0 0% 100%;
+
 		/* these colors are not customised for this app yet */
 		/* if you are using a new shadcn-svelte component which uses these colors pls configure first */
 		--muted: 217.2 32.6% 17.5%;
@@ -53,6 +59,30 @@
 	src: url("$lib/assets/fonts/Haettenschweiler-Regular.ttf") format("truetype");
 	font-weight: normal;
 	font-style: normal;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+/* Hide number input arrows Chrome, Safari, Edge, Opera */
+.hide-arrows::-webkit-outer-spin-button,
+.hide-arrows::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Hide number input arrows Firefox */
+.hide-arrows {
+	appearance: textfield;
+	-moz-appearance: textfield;
 }
 
 * {

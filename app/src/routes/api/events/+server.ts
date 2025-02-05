@@ -1,5 +1,5 @@
 import pb from '$lib/server/database';
-import type { EventsRecord } from '$lib/types/pocketbase';
+import type { EventRecWithStandAndBet } from '$lib/types/expand';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { sportsPriority } from '$lib/sportsPriority';
 
@@ -7,6 +7,9 @@ import { sportsPriority } from '$lib/sportsPriority';
 const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 	// Filter by sport
 	const sport = url.searchParams.get('sport');
+	const isStandings = url.searchParams.get('standings') === 'true';
+	const isBetPools = url.searchParams.get('betPools') === 'true';
+
 	// Filter by priority
 	const isPriority = url.searchParams.get('priority');
 	// Filter by bet pool
@@ -56,9 +59,40 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 			
 			return json({ events: sortedEvents });
 		} else {
-			const options = sport ? { filter: `sport="${sport}"` } : {};
-			const events: EventsRecord[] = await pb.collection('events').getFullList(options);
-			return json({ events: events });
+			const options = {
+				filter: sport ? `sport="${sport}"` : ``,
+				expand: `teams, ${isStandings ? ' standings_via_event.team' : ''}, ${isBetPools ? 'betPool_via_event, bets_via_event' : ''}`,
+				sort: 'startTime'
+			};
+	
+			const eventsData: any = await pb.collection('events').getFullList(options);
+			// processing the incoming data to a nicer format
+			const events: EventRecWithStandAndBet[] = eventsData.map((event: any) => {
+				const standings = event.expand?.standings_via_event?.map((standing: any) => {
+					const team = standing.expand.team;
+					delete standing.expand;
+					return { ...standing, team: team };
+				});
+				standings?.sort(
+					(a: { position: number }, b: { position: number }) => a.position - b.position
+				);
+				const betPools = event.expand?.betPool_via_event;
+				const userCount = new Set(
+					event.expand?.bets_via_event?.map((obj: { user: string }) => obj.user)
+				).size;
+	
+				const teams = event.expand.teams;
+				delete event.expand;
+				return {
+					...event,
+					standings,
+					teams,
+					betPools,
+					userCount
+				};
+			});
+	
+			return json({ events });
 		}
 	} catch (err) {
 		console.error(`Failed to get events: ${err}`);
