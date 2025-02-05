@@ -43,7 +43,7 @@
 <Button
 	variant="accent"
 	size="icon"
-	class="fixed left-0 top-0 z-10 m-3"
+	class="fixed right-0 top-0 z-10 m-3"
 	onclick={() => (showSidebar = !showSidebar)}
 >
 	<ListFilter class="size-8" />
