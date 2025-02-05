@@ -57,6 +57,11 @@
 		setInterval(updateTimeLocation, 1000 * 30);
 	});
 
+	const isUTCDateEqual = (dayA: Date, dayB: Date) =>
+		dayA.getUTCDate() == dayB.getUTCDate() &&
+		dayA.getUTCMonth() == dayB.getUTCMonth() &&
+		dayA.getUTCFullYear() == dayB.getUTCFullYear();
+
 	// returns the position of a specific event on the event grid
 	function calculatePos(event: EventData) {
 		let startTime = new Date(event.startTime);
@@ -64,6 +69,11 @@
 
 		// round down start time
 		startTime.setUTCMinutes(Math.floor(startTime.getUTCMinutes() / 15) * 15);
+		// The start time is not on this day, therefore it can be assumed that it's on some previous day
+		if (!isUTCDateEqual(startTime, selectedDate)) {
+			startTime.setUTCHours(calendarStartHour);
+		}
+
 		const startRow = getRow(startTime);
 
 		// clamp end time
