@@ -101,9 +101,9 @@
 					</a>
 				</div>
 			{:else}
-				<div class="flex select-none flex-col w-full items-center gap-5">
+				<div class="flex w-full select-none flex-col items-center gap-5">
 					<Bird color="#77767b" size={144} />
-					<div class="font-alata m-1 text-center">It looks like there are no events yet!</div>
+					<div class="font-alata m-1 text-center">It looks like there are no events coming up!</div>
 				</div>
 			{/if}
 
