@@ -7,7 +7,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
-	import { UsersRound, Wallet, X } from 'lucide-svelte';
+	import { HandCoins, UsersRound, Wallet, X } from 'lucide-svelte';
 
 	interface BetPopupProps {
 		isMinimized?: Boolean;
@@ -96,8 +96,8 @@
 			<Button
 				variant="accent"
 				class=" uppercase {isMinimized
-					? 'rounded-lg px-6 text-sm'
-					: 'rounded-xl px-8 py-6 text-lg'}">BET</Button
+					? 'rounded-lg px-4 text-sm'
+					: 'rounded-xl px-6 py-6 text-lg'}"><HandCoins /></Button
 			>
 		</Drawer.Trigger>
 		<Drawer.Content>
