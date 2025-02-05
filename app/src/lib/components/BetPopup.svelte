@@ -16,6 +16,8 @@
 		balance: number;
 	}
 	let { isMinimized = false, event, userBets, balance }: BetPopupProps = $props();
+
+	let dialogOpen = $state(false);
 	let activeTeamId = $state(event.teams.at(0)?.id);
 	let bets = $state(userBets);
 	let userBalance = $state(balance);
@@ -52,6 +54,8 @@
 
 			let userBetRecord = bets.find((obj) => obj.team == activeTeamId && obj.event == event.id);
 			if (userBetRecord) userBetRecord.amount = data.amount;
+
+			dialogOpen = false;
 		} catch (error) {
 			console.error(`Failed to place bet: ${error}`);
 			toast.error(`Failed to place bet!`);
@@ -92,7 +96,7 @@
 {#if totalPool == null}
 	<div class="text-foreground/50">...loading</div>
 {:else}
-	<Drawer.Root>
+	<Drawer.Root bind:open={dialogOpen}>
 		<!-- popup trigger buttom -->
 		<Drawer.Trigger>
 			<Button
