@@ -65,7 +65,6 @@
 	}
 
 	function getEventImage(event: EventsRecord) {
-		console.log(event.sport.toLowerCase());
 		return event.banner
 			? `${PUBLIC_PB_URL}/api/files/events/${event.id}/${event.banner}`
 			: defaultImages[event.sport.toLowerCase()] || '$lib/assets/images/default/sports.jpg';
@@ -88,11 +87,13 @@
 
 			<!-- Main Event Image -->
 			<div class="mt-3 h-[193px] w-[330px] overflow-hidden rounded-[14px] bg-white">
-				<img
-					class="h-full w-full rounded-[14px] object-cover"
-					src={getEventImage(mainEvent)}
-					alt="Main Event"
-				/>
+				<a href={`/sports?eventId=${mainEvent.id}`}>
+					<img
+						class="h-full w-full rounded-[14px] object-cover"
+						src={getEventImage(mainEvent)}
+						alt="Main Event"
+					/>
+				</a>
 			</div>
 
 			{#if otherEvents.length}
@@ -105,11 +106,13 @@
 				<div class="mt-3 flex gap-4">
 					{#each otherEvents.slice(0, 2) as event}
 						<div class="relative h-[160px] w-[160px] overflow-hidden rounded-[10px] bg-white">
-							<img
-								class="h-full w-full rounded-[10px] object-cover"
-								src={getEventImage(event)}
-								alt={`Event ${event.title}`}
-							/>
+							<a href={`/sports?eventId=${event.id}`}>
+								<img
+									class="h-full w-full rounded-[10px] object-cover"
+									src={getEventImage(event)}
+									alt={`Event ${event.title}`}
+								/>
+							</a>
 							<div
 								class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 p-2 text-xs text-white"
 							>
