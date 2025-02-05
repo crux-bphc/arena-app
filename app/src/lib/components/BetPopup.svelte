@@ -8,7 +8,7 @@
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
 	import { HandCoins, UsersRound, Wallet, X } from 'lucide-svelte';
-	
+
 	interface BetPopupProps {
 		isMinimized?: Boolean;
 		event: EventRecWithStandAndBet;
@@ -50,8 +50,9 @@
 
 			let userBetRecord = bets.find((obj) => obj.team == activeTeamId && obj.event == event.id);
 			if (userBetRecord) userBetRecord.amount = data.amount;
-			
+
 			dialogOpen = false;
+			location.reload();
 		} catch (error) {
 			console.error(`Failed to place bet: ${error}`);
 			toast.error(`Failed to place bet!`);
@@ -63,8 +64,7 @@
 	}
 	onMount(() => {
 		calcTotalPool();
-		if (event.teams.length > 0) 
-		{
+		if (event.teams.length > 0) {
 			activeTeamId = event.teams[0].id;
 			betAmount = findBetAmount(activeTeamId);
 		}
@@ -95,7 +95,11 @@
 </script>
 
 {#if totalPool == null}
-	<div class="text-foreground/50">...loading</div>
+	<Button
+		variant="accent"
+		class=" uppercase {isMinimized ? 'rounded-lg px-4 text-sm' : 'rounded-xl px-6 py-6 text-lg'}"
+		><HandCoins /></Button
+	>
 {:else}
 	<Drawer.Root bind:open={dialogOpen}>
 		<!-- popup trigger buttom -->
