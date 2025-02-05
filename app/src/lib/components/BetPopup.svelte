@@ -68,7 +68,7 @@
 		if (totalPool == null) return 1;
 
 		const teamPool = event.betPools?.find((obj) => obj.team === id)?.amount ?? 0;
-		const value = Math.floor(Math.round((teamPool / totalPool) * 1000)) / 10;
+		const value = (100 * teamPool) / totalPool;
 
 		return !Number.isNaN(value) ? value : 0;
 	}
@@ -77,7 +77,7 @@
 		if (totalPool == null) return 1;
 
 		const teamPool = event.betPools?.find((obj) => obj.team === id)?.amount ?? 0;
-		const value = Math.floor(Math.round((totalPool / teamPool) * 100)) / 100;
+		const value = totalPool / teamPool;
 
 		return !Number.isNaN(value) && Number.isFinite(value) ? value : 1;
 	}
@@ -159,7 +159,7 @@
 							<!-- team name and odds -->
 							<div class="col-span-8 flex flex-row items-end justify-between gap-1">
 								<span class="truncate text-3xl font-bold">{team.name}</span>
-								<span class="px-2 text-xl">x{findTeamOdds(team.id)}</span>
+								<span class="px-2 text-xl">x{findTeamOdds(team.id).toFixed(2)}</span>
 							</div>
 							<!-- bet pool bar -->
 							<div class="relative col-span-8 row-start-2 flex items-start justify-center">
@@ -168,7 +168,7 @@
 								></div>
 								<div
 									class="bg-accent absolute left-0 top-0 flex h-5 items-center rounded-full px-2 text-start text-sm font-bold"
-									style="width: {findTeamPoolPercent(team.id)}%;"
+									style="width: {findTeamPoolPercent(team.id).toFixed(1)}%;"
 								>
 									{findTeamPoolPercent(team.id)}%
 								</div>
@@ -194,7 +194,7 @@
 						<Input
 							type="number"
 							class="hide-arrows border-secondary h-14 w-20 rounded-none border-x-0 border-y-2 p-1 text-center text-2xl"
-							placeholder="custom amount"
+							placeholder=""
 							bind:value={betAmount}
 						/>
 						<Button
@@ -203,8 +203,8 @@
 							onclick={() => (betAmount = Math.max(betAmount + 50, 0))}>+</Button
 						>
 					</div>
-					<Button type="submit" class="h-14 rounded-lg px-6 text-2xl" onclick={submitBet}
-						>Bet</Button
+					<Button type="submit" class="h-14 rounded-lg px-4 text-2xl" onclick={submitBet}
+						><HandCoins /></Button
 					>
 				</form>
 			</div>
