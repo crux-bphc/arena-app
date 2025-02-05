@@ -104,7 +104,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		if (betPool) {
 			await pb.collection('betPool').update(betPool.id, { amount: betPool.amount + delta });
 		} else {
-			await pb.collection('betPool').create({ event: eventId, team: teamId, delta });
+			await pb.collection('betPool').create({ event: eventId, team: teamId, amount: delta });
 		}
 	} catch (err) {
 		console.error(`Failed to fetch and update bet pool: ${err}`);
