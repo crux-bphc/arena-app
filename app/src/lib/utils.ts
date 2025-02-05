@@ -1,3 +1,5 @@
+import type { IsoDateString } from "./types/pocketbase";
+
 const unauthenticatedRoutePrefixes = [
 	'/(auth)/',
 	'/api/event/',
