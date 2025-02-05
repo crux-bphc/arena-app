@@ -1,7 +1,13 @@
+<style>
+    .background {
+        background: url('$lib/assets/images/spots.png')
+    }
+</style>
+
 <script lang="ts">
     import Button from "$lib/components/ui/button/button.svelte";
 </script>
-<div class="flex flex-col gap-7 justify-center items-center font-bold h-full absolute w-full">
+<div class="background flex flex-col gap-7 justify-center items-center font-bold h-full absolute w-full">
     <!-- Arena 2025 svg logo because css is hard -->
     <svg width="336" height="132" viewBox="0 0 336 132" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M58.7885 131.819H37.7299L34.1527 96.9652H24.6358L21.0586 131.819H0L15.9289 2H42.8596L58.7885 131.819ZM32.3978 78.9499L29.3605 40.2033L26.4582 78.9499H32.3978Z" fill="#91de45"/>
