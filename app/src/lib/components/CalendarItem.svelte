@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { redirect } from '@sveltejs/kit';
+
 	interface CalendarItemProps {
 		colStart: number;
 		rowStart: number;
@@ -6,15 +8,18 @@
 		title: string;
 		location: string;
 		sport: string;
+		id: string,
 	}
 
-	let { colStart, rowStart, rowSpan, title, location, sport }: CalendarItemProps = $props();
+	let { colStart, rowStart, rowSpan, title, location, sport, id }: CalendarItemProps = $props();
 </script>
 
-<div
-	class="col-span-1 p-[3px]"
+<a
+	class="col-span-1 p-[3px] block"
 	style="grid-column-start: {colStart};
 		grid-row: {rowStart} / span {rowSpan};"
+	href="/sports?eventId={id}"
+
 >
 	<div
 		class="bg-accent/90 font-alata flex h-full w-full flex-col justify-between overflow-hidden rounded-md px-2 py-1 text-xs"
@@ -41,4 +46,4 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</a>

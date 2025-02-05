@@ -3,6 +3,7 @@
 	import CalendarItem from '$lib/components/CalendarItem.svelte';
 
 	interface EventData {
+		id: string,
 		title: string;
 		sport: string;
 		startTime: string;
