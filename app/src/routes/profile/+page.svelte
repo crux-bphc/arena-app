@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 	import { PUBLIC_PB_URL } from '$env/static/public';
 	import BetCard from '$lib/components/BetCard.svelte';
-	import EventCard from '$lib/components/EventCard.svelte';
 	import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';
@@ -16,6 +15,9 @@
 
 	let currentBets: BetsResponse[] = $state([]);
 	let currentBetEvents: EventRecWithStandAndBet[] = $state([]);
+
+	let pastBets: BetsResponse[] = $state([]);
+	let pastBetEvents: EventRecWithStandAndBet[] = $state([]);
 
 	const getBets = async () => {
 		try {
@@ -47,12 +49,47 @@
 					return event;
 				})
 			);
-			// remove duplicates by id 
+			// remove duplicates by id
 			currentBetEvents = [...new Map(arr.map((item) => [item['id'], item])).values()];
-			console.log('currentBetEvents', currentBetEvents);
 		} catch (e) {
 			console.error(`Failed to fetch current predictions: ${e}`);
 			toast.error('Failed to fetch current predictions!');
+		}
+
+		try {
+			let response = await fetch(`api/user/bets?open=false`);
+			let json = await response.json();
+			if (!response.ok) {
+				throw new Error('message' in json ? json.message : `API returned ${response.status}`);
+			}
+			pastBets = json.bets;
+
+			const arr = await Promise.all(
+				pastBets.map(async (bet) => {
+					response = await fetch(`api/event/${bet.event}`);
+					json = await response.json();
+					if (!response.ok) {
+						throw new Error('message' in json ? json.message : `API returned ${response.status}`);
+					}
+					const event = json;
+
+					response = await fetch(`api/event/${bet.event}/standings`);
+					json = await response.json();
+					if (!response.ok) {
+						throw new Error('message' in json ? json.message : `API returned ${response.status}`);
+					}
+
+					event.standings = json.standings;
+					event.teams = event.expand.teams;
+					delete event.expand;
+					return event;
+				})
+			);
+			// remove duplicates by id
+			pastBetEvents = [...new Map(arr.map((item) => [item['id'], item])).values()];
+		} catch (e) {
+			console.error(`Failed to fetch past predictions: ${e}`);
+			toast.error('Failed to fetch past predictions!');
 		}
 	};
 
@@ -88,7 +125,15 @@
 		<p class="text-lg font-bold">CURRENT PREDICTIONS</p>
 		{#each currentBetEvents as event}
 			{#if event}
-				<BetCard {event} {currentBets}/>
+				<BetCard {event} bets={currentBets} current />
+			{/if}
+		{/each}
+	</div>
+	<div class="flex w-screen flex-col gap-4 px-4">
+		<p class="text-lg font-bold">PAST PREDICTIONS</p>
+		{#each pastBetEvents as event}
+			{#if event}
+				<BetCard {event} bets={pastBets} />
 			{/if}
 		{/each}
 	</div>

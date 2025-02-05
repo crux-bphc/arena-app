@@ -5,17 +5,18 @@
 
 	interface BetCardProps {
 		event: EventRecWithStandAndBet;
-		currentBets: BetsResponse[];
+		bets: BetsResponse[];
+		current?: boolean;
 	}
 
-	let { event, currentBets }: BetCardProps = $props();
+	let { event, bets, current = false }: BetCardProps = $props();
 	let status: 'finished' | 'ongoing' | 'starting soon' | 'default' = $state(getStatus(event));
 
-	const bets = currentBets.filter((bet) => bet.event === event.id);
+	const filteredBets = bets.filter((bet) => bet.event === event.id);
 
 	const isMinimized = false;
 
-	const teamNameMap: {[key: string]: string} = {};
+	const teamNameMap: { [key: string]: string } = {};
 	event.teams.forEach((team) => {
 		teamNameMap[team.id] = team.name;
 	});
@@ -77,7 +78,7 @@
 					event.standings.at(0)
 				)} {isMinimized ? 'text-2xl' : 'text-3xl'}"
 			>
-				<div class="uppercase">{event.standings.at(0)?.team.name}</div>
+				<div class="uppercase">{teamNameMap[String(event.standings.at(0)?.team)]}</div>
 				<div class="">{event?.standings.at(0)?.score}</div>
 			</div>
 			<div
@@ -85,7 +86,7 @@
 					event.standings.at(1)
 				)} {isMinimized ? 'text-2xl' : 'text-3xl'}"
 			>
-				<div class="uppercase">{event.standings.at(1)?.team.name}</div>
+				<div class="uppercase">{teamNameMap[String(event.standings.at(1)?.team)]}</div>
 				<div class="">{event.standings.at(1)?.score}</div>
 			</div>
 
@@ -115,13 +116,26 @@
 		</div>
 	{/if}
 
-	{#each bets as bet}
-		<div
-			class="mr-1 w-full overflow-hidden truncate text-ellipsis text-start font-semibold italic text-[#FFDA46] {isMinimized
-				? 'text-sm'
-				: 'text-base'}"
-		>
-			You've put {bet.amount} points on {teamNameMap[bet.team]}
-		</div>
-	{/each}
+	{#if current}
+		{#each filteredBets as bet}
+			<div
+				class="mr-1 w-full overflow-hidden truncate text-ellipsis text-start font-semibold italic text-[#FFDA46] {isMinimized
+					? 'text-sm'
+					: 'text-base'}"
+			>
+				You've put {bet.amount} points on {teamNameMap[bet.team]}
+			</div>
+		{/each}
+	{:else}
+		{#each filteredBets as bet}
+			<div
+				class="mr-1 w-full overflow-hidden truncate text-ellipsis text-start font-semibold italic {isMinimized
+					? 'text-sm'
+					: 'text-base'} {bet.payout >= bet.amount ? 'text-[#91DE43]' : 'text-[#FF5050]'}"
+			>
+				{bet.payout >= bet.amount ? 'Won' : 'Lost'}
+				{bet.payout - bet.amount} points on {teamNameMap[bet.team]}
+			</div>
+		{/each}
+	{/if}
 </div>
