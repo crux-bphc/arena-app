@@ -10,7 +10,7 @@ export type StandingsExpand = {
 	team: TeamsResponse;
 };
 
-type StandingsRecordWithTeam = StandingsRecord & {
+type StandingsRecordWithTeam = Omit<StandingsRecord, 'team'> & {
 	team: TeamsRecord;
 };
 
