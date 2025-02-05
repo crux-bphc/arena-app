@@ -205,7 +205,7 @@
 							onclick={() => (betAmount = Math.max(betAmount + 50, 0))}>+</Button
 						>
 					</div>
-					<Button type="submit" class="h-14 rounded-lg px-4 text-2xl" onclick={submitBet}
+					<Button type="submit" class="h-14 rounded-lg px-4 text-2xl" on:click={() => submitBet()}
 						><HandCoins /></Button
 					>
 				</form>
