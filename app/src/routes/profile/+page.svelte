@@ -99,8 +99,8 @@
 </script>
 
 <div class="flex flex-col items-center gap-4 p-4">
-	<div class="flex w-screen flex-row items-center justify-between px-3">
-		<Avatar class="w-21 h-21">
+	<div class="flex w-screen flex-row items-center justify-around px-3">
+		<Avatar class="w-21 h-21 mt-2">
 			<AvatarImage
 				src={`${PUBLIC_PB_URL}/api/files/users/${data.user?.id}/${data.user?.avatar}`}
 				alt="Avatar"
