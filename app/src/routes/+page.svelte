@@ -9,14 +9,17 @@
 	import Banner from '$lib/components/Banner.svelte';
 
 	import { defaultImages } from '$lib/utils/defaultImages.js';
+	import { Bird } from 'lucide-svelte';
 
 	interface EventsData {
 		events: EventsRecord[];
 	}
 	onMount(() => {
 		getEventsData();
+		loaded = true;
 	});
 
+	let loaded = $state(false);
 	let events = $state<EventsData | null>(null);
 	let otherEvents = $state<EventsRecord[] | null>(null);
 	let mainEvent = $state<EventsRecord | null>(null);
@@ -76,27 +79,33 @@
 <div class="relative flex min-h-screen items-center justify-center">
 	<!-- Header -->
 	<Banner upper="app game app game app" center="arena app game" lower="game app game app" />
-
-	{#if mainEvent}
+	{#if loaded}
 		<div class="relative mt-[40px] flex w-[330px] flex-col items-start">
-			<!-- Main Event Title & Date -->
-			<div class="font-roboto w-full truncate text-[12px] font-bold uppercase text-white/60">
-				{formatDateCountdown(mainEvent.startTime)}
-			</div>
-			<div class="font-inter w-full truncate text-[20px] font-semibold text-white">
-				{mainEvent.title}
-			</div>
+			{#if mainEvent}
+				<!-- Main Event Title & Date -->
+				<div class="font-roboto w-full truncate text-[12px] font-bold uppercase text-white/60">
+					{formatDateCountdown(mainEvent.startTime)}
+				</div>
+				<div class="font-inter w-full truncate text-[20px] font-semibold text-white">
+					{mainEvent.title}
+				</div>
 
-			<!-- Main Event Image -->
-			<div class="mt-3 h-[193px] w-[330px] overflow-hidden rounded-[14px] bg-white">
-				<a href={`/sports?eventId=${mainEvent.id}`}>
-					<img
-						class="h-full w-full rounded-[14px] object-cover"
-						src={getEventImage(mainEvent)}
-						alt="Main Event"
-					/>
-				</a>
-			</div>
+				<!-- Main Event Image -->
+				<div class="mt-3 h-[193px] w-[330px] overflow-hidden rounded-[14px] bg-white">
+					<a href={`/sports?eventId=${mainEvent.id}`}>
+						<img
+							class="h-full w-full rounded-[14px] object-cover"
+							src={getEventImage(mainEvent)}
+							alt="Main Event"
+						/>
+					</a>
+				</div>
+			{:else}
+				<div class="flex select-none flex-col w-full items-center gap-5">
+					<Bird color="#77767b" size={144} />
+					<div class="font-alata m-1 text-center">It looks like there are no events yet!</div>
+				</div>
+			{/if}
 
 			{#if otherEvents?.length}
 				<!-- Other Events Section -->
