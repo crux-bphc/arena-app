@@ -8,7 +8,7 @@
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
 	import { HandCoins, UsersRound, Wallet, X } from 'lucide-svelte';
-
+	
 	interface BetPopupProps {
 		isMinimized?: Boolean;
 		event: EventRecWithStandAndBet;
@@ -33,10 +33,6 @@
 			toast.error('Bet amount must be positive!');
 			return;
 		}
-		if (userBalance < betAmount) {
-			toast.error('Your balance is too low!');
-			return;
-		}
 
 		try {
 			const res = await fetch('/api/user/bet', {
@@ -54,7 +50,7 @@
 
 			let userBetRecord = bets.find((obj) => obj.team == activeTeamId && obj.event == event.id);
 			if (userBetRecord) userBetRecord.amount = data.amount;
-
+			
 			dialogOpen = false;
 		} catch (error) {
 			console.error(`Failed to place bet: ${error}`);
@@ -67,6 +63,11 @@
 	}
 	onMount(() => {
 		calcTotalPool();
+		if (event.teams.length > 0) 
+		{
+			activeTeamId = event.teams[0].id;
+			betAmount = findBetAmount(activeTeamId);
+		}
 	});
 
 	// calculates a team's percentage of bet pools
@@ -88,7 +89,7 @@
 		return !Number.isNaN(value) && Number.isFinite(value) ? value : 1;
 	}
 	// calculates a user's already bet amount for a team
-	function findBetAmount(teamId: string) {
+	function findBetAmount(teamId?: string) {
 		return bets.find((obj) => obj.team == teamId && obj.event == event.id)?.amount ?? 0;
 	}
 </script>
@@ -160,6 +161,7 @@
 								: ''}"
 							onclick={() => {
 								activeTeamId = team.id;
+								betAmount = findBetAmount(team.id);
 							}}
 						>
 							<!-- team name and odds -->
@@ -176,7 +178,7 @@
 									class="bg-accent absolute left-0 top-0 flex h-5 items-center rounded-full px-2 text-start text-sm font-bold"
 									style="width: {findTeamPoolPercent(team.id).toFixed(1)}%;"
 								>
-									{findTeamPoolPercent(team.id)}%
+									{findTeamPoolPercent(team.id).toFixed(1)}%
 								</div>
 							</div>
 							<!-- bet amount -->
