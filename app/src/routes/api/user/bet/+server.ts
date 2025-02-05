@@ -54,7 +54,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 
 	let newBet: BetsResponse;
 	if (bet) {
-		if (bet.amount + amount < 0) {
+		if (amount < 0) {
 			return error(400, 'Bet amount cannot be negative!');
 		}
 
@@ -64,7 +64,7 @@ const handlePOST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		try {
-			newBet = await pb.collection('bets').update(bet.id, { amount: bet.amount + amount });
+			newBet = await pb.collection('bets').update(bet.id, { amount });
 		} catch (err) {
 			console.error(`Failed to update bet: ${err}`);
 			return error(500);
