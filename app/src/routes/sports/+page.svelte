@@ -52,7 +52,7 @@
 <div class="flex h-[95vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
 	<!-- side bar -->
 	<div
-		class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 pt-20 [direction:rtl] {showSidebar
+		class="hide-scrollbar bg-secondary box-content w-1/3 flex-wrap gap-2 overflow-y-auto p-2 [direction:rtl] {showSidebar
 			? 'flex'
 			: 'hidden'}"
 	>
