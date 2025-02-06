@@ -76,11 +76,11 @@
 	}
 </script>
 
-<div class="relative flex min-h-screen items-center justify-center">
+<div class="relative flex flex-col min-h-screen items-center justify-center">
 	<!-- Header -->
 	<Banner upper="app game app game app" center="arena app game" lower="game app game app" />
 	{#if loaded}
-		<div class="relative mt-[40px] flex w-[330px] flex-col items-start">
+		<div class="relative flex w-[330px] flex-col items-start">
 			{#if mainEvent}
 				<!-- Main Event Title & Date -->
 				<div class="font-roboto w-full truncate text-[12px] font-bold uppercase text-white/60">
