@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
-	import { Bird, ListFilter } from 'lucide-svelte';
+	import { Bird, Filter, FilterX } from 'lucide-svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -46,7 +46,11 @@
 	class="fixed right-0 top-0 z-10 m-3"
 	onclick={() => (showSidebar = !showSidebar)}
 >
-	<ListFilter class="size-8" />
+	{#if showSidebar}
+		<FilterX class="size-8" />
+	{:else}
+		<Filter class="size-8" />
+	{/if}
 </Button>
 
 <div class="flex h-[95vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
