@@ -58,6 +58,9 @@ const config: Config = {
 					DEFAULT: 'hsl(var(--destructive) / <alpha-value>)',
 					foreground: 'hsl(var(--destructive-foreground) / <alpha-value>)'
 				},
+				gold: 'hsl(var(--gold) / <alpha-value>)',
+				silver: 'hsl(var(--silver) / <alpha-value>)',
+				bronze: 'hsl(var(--bronze) / <alpha-value>)',
 				ring: 'hsl(var(--ring) / <alpha-value>)'
 			},
 			fontFamily: {
