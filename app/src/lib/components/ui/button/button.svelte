@@ -38,7 +38,7 @@
 	<!-- this condition is just so this component can be used in other places too -->
 	{#if variant === 'navbar'}
 		<span
-			class="absolute inset-7 rounded-full bg-primary transition-all duration-100 ease-in group-[.on-page]:inset-0"
+			class="absolute inset-8 rounded-full bg-primary transition-all duration-100 ease-in group-[.on-page]:inset-0"
 		></span>
 		<span class="z-10">
 			<slot />

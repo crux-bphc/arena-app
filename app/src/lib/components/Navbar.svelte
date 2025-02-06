@@ -15,17 +15,17 @@
 	>
 		<!-- Home / Events page buttom -->
 		<Button variant="navbar" size="icon" href="/" class="rounded-full {check('/')}">
-			<House class="size-8" />
+			<House class="size-7" />
 		</Button>
 
 		<!-- Sports page button -->
 		<Button variant="navbar" size="icon" href="/sports" class="rounded-full {check('/sports')}">
-			<Dribbble class="size-8" />
+			<Dribbble class="size-7" />
 		</Button>
 
 		<!-- Calendar page button -->
 		<Button variant="navbar" size="icon" href="/calendar" class="rounded-full {check('/calendar')}">
-			<Calendar class="size-8" />
+			<Calendar class="size-7" />
 		</Button>
 
 		<!-- Leaderboard page button -->
@@ -35,12 +35,12 @@
 			href="/leaderboard"
 			class="rounded-full {check('/leaderboard')}"
 		>
-			<ChartNoAxesColumn class="size-8" />
+			<ChartNoAxesColumn class="size-7" />
 		</Button>
 
 		<!-- Profile page button -->
 		<Button variant="navbar" size="icon" href="/profile" class="rounded-full {check('/profile')}">
-			<User class="size-8" />
+			<User class="size-7" />
 		</Button>
 	</div>
 </div>
