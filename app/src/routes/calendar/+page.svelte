@@ -69,10 +69,11 @@
 		let maxTime = -Infinity;
 
 		for (let event of events) {
-			const dateNum = getDate(event.startTime).getTime();
+			const startDateMs = getDate(event.startTime).getTime();
+			const endDateMs = getDate(event.endTime).getTime();
 
-			if (minTime > dateNum) minTime = dateNum;
-			if (maxTime < dateNum) maxTime = dateNum;
+			if (minTime > startDateMs) minTime = startDateMs;
+			if (maxTime < endDateMs) maxTime = endDateMs;
 
 			if (!sports.includes(event.sport)) {
 				sports.push(event.sport);
@@ -142,7 +143,9 @@
 	const applyFilters = (firstLoadValue = false) => {
 		firstLoad = firstLoadValue;
 		events = fullEvents.filter(
-			(value) => filters.sports[value.sport] && filters.days[getEventDay(value.startTime) - 1]
+			(value) => filters.sports[value.sport] && 
+				// If the day spans more than the entire day, check against the end time
+				(filters.days[getEventDay(value.startTime) - 1] || filters.days[getEventDay(value.endTime) - 1])
 		);
 	};
 
