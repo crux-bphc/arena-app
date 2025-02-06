@@ -59,6 +59,12 @@
 			}
 		}
 	}
+
+	function getTopNUsers(n: number) {
+		if (!leaderboard) return [];
+		let temp = [...leaderboard.users];
+		return temp.splice(0, n);
+	}
 </script>
 
 {#if leaderboard !== null}
@@ -82,7 +88,7 @@
 		{/if}
 		<Table.Root>
 			<Table.Body class="w-screen">
-				{#each leaderboard.users as user, i}
+				{#each getTopNUsers(50) as user, i}
 					<Table.Row>
 						<div class=" my-1 flex w-full items-center justify-center rounded-xl">
 							<Table.Cell class="w-1/6 text-center text-xl {calcColor(user, i, true)}">
