@@ -104,6 +104,7 @@
 			</Table.Body>
 		</Table.Root>
 	</div>
+	<div class="h-8"></div>
 {:else}
 	<Loader />
 {/if}
