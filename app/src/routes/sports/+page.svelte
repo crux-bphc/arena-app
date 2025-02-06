@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
-	import { Bird, ListFilter } from 'lucide-svelte';
+	import { Bird, Filter, FilterX } from 'lucide-svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -46,7 +46,11 @@
 	class="fixed right-0 top-0 z-10 m-3"
 	onclick={() => (showSidebar = !showSidebar)}
 >
-	<ListFilter class="size-8" />
+	{#if showSidebar}
+		<FilterX class="size-8" />
+	{:else}
+		<Filter class="size-8" />
+	{/if}
 </Button>
 
 <div class="flex h-[95vh] flex-row gap-2 {showSidebar ? 'pr-3' : 'px-3'}">
@@ -67,7 +71,7 @@
 		<Button
 			id="allSportsBtn"
 			href="#{getFirstOngoingEvent(null) ?? '_'}"
-			class="h-14 w-full rounded-xl text-base capitalize"
+			class="h-14 w-full rounded-xl text-base uppercase"
 			variant={showAllSports ? 'default' : 'secondary'}
 			onclick={() => (showAllSports = true)}
 		>
@@ -76,7 +80,7 @@
 		{#each sports as sport}
 			<Button
 				href="#{getFirstOngoingEvent(sport) ?? '_'}"
-				class="h-14 w-full rounded-xl text-base capitalize"
+				class="h-14 w-full rounded-xl text-base uppercase"
 				variant={!showAllSports && activeSport === sport ? 'default' : 'secondary'}
 				onclick={() => {
 					activeSport = sport;
@@ -90,10 +94,17 @@
 
 	<!-- event cards -->
 	<div
-		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto pt-20 {showSidebar
+		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto {showSidebar
 			? 'w-2/3'
 			: 'w-full'}"
 	>
+		<div
+			class="text-primary flex w-full items-center py-6 text-2xl font-bold {showSidebar
+				? 'justify-start px-8'
+				: 'justify-center'}"
+		>
+			<div class="uppercase">{showAllSports ? 'All Sports' : activeSport}</div>
+		</div>
 		<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
 		{#each events as event}
 			{#if event.sport === activeSport || showAllSports}

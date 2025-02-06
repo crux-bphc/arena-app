@@ -34,7 +34,7 @@
 			events = await response.json();
 			if (events) {
 				mainEvent = events['events'][0];
-				otherEvents = events['events'].slice(1, 3);
+				otherEvents = events['events'].slice(1, 7);
 			}
 		} catch (e) {
 			console.error(`Failed to fetch leaderboard data: ${e}`);
@@ -76,11 +76,11 @@
 	}
 </script>
 
-<div class="relative flex min-h-screen items-center justify-center">
+<div class="relative flex flex-col min-h-screen items-center justify-center">
 	<!-- Header -->
 	<Banner upper="app game app game app" center="arena app game" lower="game app game app" />
 	{#if loaded}
-		<div class="relative mt-[40px] flex w-[330px] flex-col items-start">
+		<div class="relative flex w-[330px] flex-col items-start">
 			{#if mainEvent}
 				<!-- Main Event Title & Date -->
 				<div class="font-roboto w-full truncate text-[12px] font-bold uppercase text-white/60">
@@ -114,9 +114,9 @@
 				</div>
 
 				<!-- Other Events List -->
-				<div class="mt-3 flex gap-4">
-					{#each otherEvents.slice(0, 2) as event}
-						<div class="relative h-[160px] w-[160px] overflow-hidden rounded-[10px] bg-white">
+				<div class="mt-3 flex w-full flex-wrap gap-2">
+					{#each otherEvents as event}
+						<div class="relative flex h-[160px] w-[160px] overflow-hidden rounded-[10px] bg-white">
 							<a href={`/sports?eventId=${event.id}`}>
 								<img
 									class="h-full w-full rounded-[10px] object-cover"
@@ -125,7 +125,7 @@
 								/>
 							</a>
 							<div
-								class="absolute bottom-0 left-0 w-full bg-black bg-opacity-40 p-2 text-xs text-white"
+								class="absolute bottom-0 left-0 w-full bg-black bg-opacity-80 p-2 text-xs text-white"
 							>
 								<p class="font-inter truncate text-[14px] font-semibold">{event.title}</p>
 								<p class="font-roboto truncate text-[10px] font-bold uppercase text-white/70">

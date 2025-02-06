@@ -7,7 +7,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import type { BetsRecord } from '$lib/types/pocketbase';
 	import { onMount } from 'svelte';
-	import { HandCoins, UsersRound, Wallet, X } from 'lucide-svelte';
+	import { UsersRound, Wallet, X } from 'lucide-svelte';
 
 	interface BetPopupProps {
 		isMinimized?: Boolean;
@@ -98,7 +98,7 @@
 	<Button
 		variant="accent"
 		class=" uppercase {isMinimized ? 'rounded-lg px-4 text-sm' : 'rounded-xl px-6 py-6 text-lg'}"
-		><HandCoins /></Button
+		>BET</Button
 	>
 {:else}
 	<Drawer.Root bind:open={dialogOpen}>
@@ -108,7 +108,7 @@
 				variant="accent"
 				class=" uppercase {isMinimized
 					? 'rounded-lg px-4 text-sm'
-					: 'rounded-xl px-6 py-6 text-lg'}"><HandCoins /></Button
+					: 'rounded-xl px-6 py-6 text-lg'}">BET</Button
 			>
 		</Drawer.Trigger>
 		<Drawer.Content>
@@ -161,7 +161,7 @@
 					{#each event.teams as team, i}
 						<button
 							class="grid grid-cols-10 grid-rows-2 gap-y-1 rounded-xl p-3 {team.id == activeTeamId
-								? 'bg-secondary'
+								? 'bg-secondary/50 border-2 border-primary'
 								: ''}"
 							onclick={() => {
 								activeTeamId = team.id;
@@ -216,7 +216,7 @@
 						>
 					</div>
 					<Button type="submit" class="h-14 rounded-lg px-4 text-2xl" on:click={() => submitBet()}
-						><HandCoins /></Button
+						>BET</Button
 					>
 				</form>
 			</div>
