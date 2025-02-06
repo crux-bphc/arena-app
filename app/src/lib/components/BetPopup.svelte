@@ -161,7 +161,7 @@
 					{#each event.teams as team, i}
 						<button
 							class="grid grid-cols-10 grid-rows-2 gap-y-1 rounded-xl p-3 {team.id == activeTeamId
-								? 'bg-secondary'
+								? 'bg-secondary/50 border-2 border-primary'
 								: ''}"
 							onclick={() => {
 								activeTeamId = team.id;
