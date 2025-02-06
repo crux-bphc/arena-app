@@ -67,7 +67,7 @@
 		<Button
 			id="allSportsBtn"
 			href="#{getFirstOngoingEvent(null) ?? '_'}"
-			class="h-14 w-full rounded-xl text-base capitalize"
+			class="h-14 w-full rounded-xl text-base uppercase"
 			variant={showAllSports ? 'default' : 'secondary'}
 			onclick={() => (showAllSports = true)}
 		>
@@ -76,7 +76,7 @@
 		{#each sports as sport}
 			<Button
 				href="#{getFirstOngoingEvent(sport) ?? '_'}"
-				class="h-14 w-full rounded-xl text-base capitalize"
+				class="h-14 w-full rounded-xl text-base uppercase"
 				variant={!showAllSports && activeSport === sport ? 'default' : 'secondary'}
 				onclick={() => {
 					activeSport = sport;
