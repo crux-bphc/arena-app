@@ -94,10 +94,17 @@
 
 	<!-- event cards -->
 	<div
-		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto pt-20 {showSidebar
+		class="hide-scrollbar flex flex-col items-start justify-start gap-2 overflow-y-auto {showSidebar
 			? 'w-2/3'
 			: 'w-full'}"
 	>
+		<div
+			class="text-primary flex w-full items-center py-6 text-2xl font-bold {showSidebar
+				? 'justify-start px-8'
+				: 'justify-center'}"
+		>
+			<div class="uppercase">{showAllSports ? 'All Sports' : activeSport}</div>
+		</div>
 		<!-- <EventCard isMinimized={showSidebar} event={events[0]} /> -->
 		{#each events as event}
 			{#if event.sport === activeSport || showAllSports}
