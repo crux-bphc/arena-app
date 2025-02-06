@@ -17,8 +17,8 @@ const handleGET: RequestHandler = async ({ locals, url }) => {
 
 		const now = Date.now();
 		const filteredBets = bets.filter((bet) => {
-			const startTime = new Date(bet.expand?.event.startTime ?? '').getTime();
-			return open ? startTime > now : startTime < now;
+			const done = bet.expand?.event.standingsUpdated;
+			return open ? !done : done;
 		});
 
 		return json({ bets: filteredBets });

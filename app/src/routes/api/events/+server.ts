@@ -2,6 +2,7 @@ import pb from '$lib/server/database';
 import type { EventRecWithStandAndBet } from '$lib/types/expand';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { sportsPriority } from '$lib/sportsPriority';
+import type { EventsRecord } from '$lib/types/pocketbase';
 
 // This does not require login
 const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
