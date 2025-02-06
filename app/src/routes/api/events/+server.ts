@@ -55,8 +55,7 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
                         return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
                     }
                     return b.totalAmount - a.totalAmount;
-                })
-                .slice(0, 3);
+                });
 			
 			return json({ events: sortedEvents });
 		} else {
