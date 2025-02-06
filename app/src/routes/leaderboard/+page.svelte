@@ -43,15 +43,15 @@
 		switch (index) {
 			case 0:
 				return isSolid
-					? 'text-gold'
+					? 'text-gold/75'
 					: `bg-gradient-to-br bg-clip-text text-transparent from-gold to-gold via-gold/50  ${commonClasses}`;
 			case 1:
 				return isSolid
-					? 'text-silver'
+					? 'text-silver/75'
 					: `bg-gradient-to-br bg-clip-text text-transparent from-silver to-silver via-silver/50  ${commonClasses}`;
 			case 2:
 				return isSolid
-					? 'text-bronze'
+					? 'text-bronze/75'
 					: `bg-gradient-to-br bg-clip-text text-transparent from-bronze to-bronze via-bronze/50 ${commonClasses}`;
 			default: {
 				if (data.user?.id == user.id) return `text-primary ${commonClasses}`;
@@ -92,8 +92,8 @@
 					<Table.Row>
 						<div class=" my-1 flex w-full items-center justify-center rounded-xl">
 							<Table.Cell class="w-1/6 text-center text-xl {calcColor(user, i, true)}">
-								{#if i == 0}
-									<Crown class="text-gold/70 size-8" />
+								{#if i <= 2}
+									<Crown class="size-8" />
 								{:else}
 									{i + 1}
 								{/if}
