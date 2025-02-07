@@ -5,7 +5,7 @@ import type { EventRecWithStandAndBet } from '$lib/types/expand';
 import type { BetsRecord } from '$lib/types/pocketbase';
 import { getBalance } from '$lib/util/helpers';
 
-export const load: PageLoad = async ({ fetch, url }: { fetch: Function; url: URL }) => {
+export const load: PageLoad = async ({ fetch }: { fetch: Function }) => {
 	// gets event data
 	let res = await fetch('/api/events?standings=true&betPools=true');
 	if (res.status == 308) redirect(308, '/login');
@@ -19,5 +19,5 @@ export const load: PageLoad = async ({ fetch, url }: { fetch: Function; url: URL
 	// gets user's balance
 	let balance = await getBalance(fetch);
 
-	return { events, bets, url, balance };
+	return { events, bets, balance };
 };

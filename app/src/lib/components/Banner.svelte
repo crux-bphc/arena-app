@@ -8,8 +8,7 @@
 	<div
 		class="font-inter text-foreground flex w-full flex-col items-start justify-center truncate text-base font-semibold"
 	>
-		<div>Looking for more points?</div>
-		<div>Jump into the game and start earning!</div>
+		<div>Play games to earn more points</div>
 	</div>
 	<div
 		class="border-primary bg-secondary box-border h-[120px] w-[331px] transform overflow-hidden rounded-[10px] border"

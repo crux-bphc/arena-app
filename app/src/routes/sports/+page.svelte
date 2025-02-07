@@ -10,10 +10,16 @@
 	import { Bird, Filter, FilterX } from 'lucide-svelte';
 
 	const { data }: { data: PageData } = $props();
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
-	let activeSport: string = $state(EventsSportOptions.football);
+	let activeSport: string = $state(page.url.searchParams.get('sport') ?? '');
 	let showSidebar = $state(true);
-	let showAllSports = $state(true);
+	let showAllSports = $state(
+		!Object.values(EventsSportOptions).includes(
+			(page.url.searchParams.get('sport') ?? '') as EventsSportOptions
+		)
+	);
 	let events: EventRecWithStandAndBet[] = $state(data.events);
 	let balance: number = $state(data.balance);
 
@@ -33,9 +39,11 @@
 	// this is to auto scroll to either event given in search param [eventId] in all sports or topmost ongoing event in all sports
 	onMount(() => {
 		if (balance == null) return;
-		if (data.url.searchParams.get('eventId'))
+		if (page.url.searchParams.get('eventId'))
 			document.getElementById('defaultScrollTarget')?.click();
-		else document.getElementById('allSportsBtn')?.click();
+		else if (!showAllSports) {
+			document.getElementById(`${activeSport.toString()}Btn`)?.click();
+		} else document.getElementById('allSportsBtn')?.click();
 	});
 </script>
 
@@ -63,7 +71,7 @@
 		<!-- this is a hidden tag whose sole purpose is to go to event specified in [eventId] -->
 		<!-- gets automatically clicked on load -->
 		<a
-			href="#{data.url.searchParams.get('eventId') ?? ''}"
+			href="#{page.url.searchParams.get('eventId') ?? ''}"
 			id="defaultScrollTarget"
 			aria-label="none"
 			class="hidden"
@@ -73,18 +81,22 @@
 			href="#{getFirstOngoingEvent(null) ?? '_'}"
 			class="h-14 w-full rounded-xl text-base uppercase"
 			variant={showAllSports ? 'default' : 'secondary'}
-			onclick={() => (showAllSports = true)}
+			onclick={() => {
+				showAllSports = true;
+			}}
 		>
 			All sports
 		</Button>
 		{#each sports as sport}
 			<Button
 				href="#{getFirstOngoingEvent(sport) ?? '_'}"
+				id="{sport.toString()}Btn"
 				class="h-14 w-full rounded-xl text-base uppercase"
 				variant={!showAllSports && activeSport === sport ? 'default' : 'secondary'}
 				onclick={() => {
 					activeSport = sport;
 					showAllSports = false;
+					goto(`?sport=${sport}`);
 				}}
 			>
 				{sport}
@@ -114,7 +126,7 @@
 					{event}
 					userBets={data.bets}
 					{balance}
-					isHighlight={data.url.searchParams.get('eventId') === event.id}
+					isHighlight={page.url.searchParams.get('eventId') === event.id}
 					showSport={showAllSports}
 				/>
 			{/if}
