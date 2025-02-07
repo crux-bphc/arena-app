@@ -38,7 +38,7 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
 			return json({ events: sortedEvents });
 		} else if (isPool) {
 			// Only return events that are yet to happen
-			const options = { filter: `endTime > "${new Date().toISOString()}"`, limit: 10 };
+			const options = { filter: `endTime > "${new Date(new Date().getTime() + 1000 * 60 * 330).toISOString()}"`};
 			const events: EventsRecord[] = await pb.collection('events').getFullList(options);
 			
 			// Get the total amount in each event
@@ -55,7 +55,7 @@ const handleGET: RequestHandler = async ({ url }: { url: URL }) => {
                         return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
                     }
                     return b.totalAmount - a.totalAmount;
-                });
+                }).slice(0,10);
 			
 			return json({ events: sortedEvents });
 		} else {
