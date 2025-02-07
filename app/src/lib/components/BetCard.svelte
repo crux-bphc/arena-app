@@ -29,8 +29,9 @@
 	}
 </script>
 
-<div
+<a
 	class="bg-secondary flex w-full scroll-mt-24 flex-col items-center justify-between gap-2 rounded-[10px] p-3"
+	href="/sports?eventId={event.id}"
 >
 	<!-- status & title text -->
 	<div class="text-foreground/50 line-clamp-1 w-full text-start text-base">
@@ -134,4 +135,4 @@
 			</div>
 		{/each}
 	{/if}
-</div>
+</a>
