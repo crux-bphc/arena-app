@@ -2,19 +2,22 @@
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import Loader from '$lib/components/Loader.svelte';
+	import * as Table from '$lib/components/ui/table';
 	import type { UsersResponse } from '$lib/types/pocketbase';
+	import { Crown } from 'lucide-svelte';
 
 	interface LeaderboardData {
 		users: UsersResponse[];
 	}
 	let leaderboard = $state<LeaderboardData | null>(null);
+	let { data } = $props();
 
 	async function getLeaderboardData() {
 		try {
 			const response = await fetch(`api/user/leaderboard`);
 			const json = await response.json();
 			if (!response.ok) {
-				throw new Error("message" in json ? json.message : `API returned ${response.status}`);
+				throw new Error('message' in json ? json.message : `API returned ${response.status}`);
 			}
 			leaderboard = json;
 		} catch (e) {
@@ -26,41 +29,88 @@
 	onMount(() => {
 		getLeaderboardData();
 	});
+
+	// finds user's position
+	function findUserPos() {
+		if (!leaderboard) return 0;
+		const index = leaderboard.users.findIndex((user) => user.id == data.user?.id);
+		return index != -1 ? index + 1 : '?';
+	}
+
+	// gets the color based on user's postion
+	function calcColor(user: UsersResponse, index: number, isSolid: boolean) {
+		const commonClasses = 'font-bold';
+		switch (index) {
+			case 0:
+				return isSolid
+					? 'text-gold/75'
+					: `bg-gradient-to-br bg-clip-text text-transparent from-gold to-gold via-gold/50  ${commonClasses}`;
+			case 1:
+				return isSolid
+					? 'text-silver/75'
+					: `bg-gradient-to-br bg-clip-text text-transparent from-silver to-silver via-silver/50  ${commonClasses}`;
+			case 2:
+				return isSolid
+					? 'text-bronze/75'
+					: `bg-gradient-to-br bg-clip-text text-transparent from-bronze to-bronze via-bronze/50 ${commonClasses}`;
+			default: {
+				if (data.user?.id == user.id) return `text-primary ${commonClasses}`;
+				else return '';
+			}
+		}
+	}
+
+	function getTopNUsers(n: number) {
+		if (!leaderboard) return [];
+		let temp = [...leaderboard.users];
+		return temp.splice(0, n);
+	}
 </script>
 
 {#if leaderboard !== null}
 	<div class="mx-auto max-w-2xl overflow-hidden rounded-lg p-4 text-white">
-		<h1 class="mb-6 text-center text-3xl font-bold">Leaderboard</h1>
-
-		<ul class="space-y-6">
-			{#each leaderboard.users as user, index}
-				<li
-					class="grid grid-cols-[0.5fr_2fr_1fr] items-center gap-[16px] rounded-lg bg-gray-800 p-4 shadow-lg"
+		<h1 class="my-6 text-center text-3xl font-bold">Leaderboard</h1>
+		<!-- bottom row for user's card -->
+		{#if data.user}
+			<div
+				class="text-primary-foreground fixed bottom-24 left-0 z-10 flex w-full items-center justify-center px-4 py-2"
+			>
+				<div
+					class="bg-primary flex w-full items-center justify-center rounded-xl px-6 py-4 text-xl"
 				>
-					<span class="position text-center text-xl font-bold">
-						{index + 1}
-					</span>
-					<span class="user-details flex items-center">
-						<span
-							class="ml-4 max-w-[200px] overflow-hidden truncate text-ellipsis text-lg font-semibold"
-						>
-							{user.name}
-						</span>
-						{#if index === 0}
-							<span class="ml-2 text-yellow-400">🏆</span>
-						{:else if index === 1}
-							<span class="ml-2 text-gray-300">🥈</span>
-						{:else if index === 2}
-							<span class="ml-2 text-yellow-600">🥉</span>
-						{/if}
-					</span>
-					<span class="text-center text-lg font-bold">
-						{user.balance}
-					</span>
-				</li>
-			{/each}
-		</ul>
+					<div class="w-1/6 text-center text-xl font-bold">
+						{findUserPos()}
+					</div>
+					<div class="w-2/3 font-bold">{data.user.name}</div>
+					<div class="w-1/6">{data.user.balance}</div>
+				</div>
+			</div>
+		{/if}
+		<Table.Root>
+			<Table.Body class="w-screen">
+				{#each getTopNUsers(50) as user, i}
+					<Table.Row>
+						<div class=" my-1 flex w-full items-center justify-center rounded-xl">
+							<Table.Cell class="w-1/6 text-center text-xl {calcColor(user, i, true)}">
+								{#if i <= 2}
+									<Crown class="size-8" />
+								{:else}
+									{i + 1}
+								{/if}
+							</Table.Cell>
+							<Table.Cell class="w-2/3 max-w-[22ch] truncate text-xl {calcColor(user, i, false)}">
+								{user.name}
+							</Table.Cell>
+							<Table.Cell class="w-1/6 text-xl {calcColor(user, i, true)}">
+								{user.balance}
+							</Table.Cell>
+						</div>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
 	</div>
+	<div class="h-8"></div>
 {:else}
 	<Loader />
 {/if}
